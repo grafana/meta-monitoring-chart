@@ -15,13 +15,13 @@ A meta-monitoring chart for GEL, GEM and GET.
 1. Install this helm chart
 
    ```
-   helm install -n meta meta ./meta-monitoring
+   helm install -n meta meta ./charts/meta-monitoring
    ```
 
 1. Upgrade
 
    ```
-   helm upgrade --install -n meta meta ./meta-monitoring
+   helm upgrade --install -n meta meta ./charts/meta-monitoring
    ```
 
 1. Delete this chart:
@@ -33,7 +33,7 @@ A meta-monitoring chart for GEL, GEM and GET.
 
 ## Update dependencies
 
-Run this after updating a dependency:
+Run this in the charts/meta-monitoring directory after updating a dependency:
 
 ```
 helm dependency update meta-monitoring
