@@ -1,0 +1,57 @@
+loki:
+  loki:
+    auth_enabled: false
+    commonConfig:
+      replication_factor: 1
+    storage:
+      type: 'filesystem'
+  singleBinary:
+    replicas: 1
+    extraArgs: ["-log.level=debug"]
+  monitoring:
+    dashboards:
+      enabled: false
+    rules:
+      enabled: false
+    serviceMonitor:
+      enabled: false
+    selfMonitoring:
+      enabled: false
+      grafanaAgent:
+        installOperator: false
+    lokiCanary:
+      enabled: false
+  test:
+    enabled: false
+
+grafana-agent:
+  agent:
+    configMap:
+      key: 'config.river'
+      content: |
+        discovery.kubernetes "pods" {
+          role = "pod"
+          namespaces {
+            names = ["loki"] // make configurable
+          }
+        }
+        loki.source.kubernetes "pods" {
+          targets    = discovery.kubernetes.pods.targets
+          forward_to = [loki.write.local.receiver]
+        }
+        loki.write "local" {
+          endpoint {
+            url = "http://meta-loki.meta.svc.cluster.local:3100/loki/api/v1/push"  // set namespace via config
+          }
+        }
+        prometheus.scrape "pods" {
+          targets    = discovery.kubernetes.pods.targets
+          forward_to = [prometheus.remote_write.default.receiver]
+        }
+        prometheus.remote_write "default" {
+          endpoint {
+            url = "http://meta-mimir-nginx.meta.svc:80/api/v1/push"  // set namespace via config
+          }
+        }
+
+# mimir-distributed:
