@@ -2,8 +2,10 @@ namespacesToMonitor:
 - loki
 - mimir
 - tempo
-clusterName: "observability"
+clusterName: "observability"  # TODO check if this can be derived
 
+# The following are configuration for the dependencies.
+# These should not be changed.
 loki:
   loki:
     auth_enabled: false
