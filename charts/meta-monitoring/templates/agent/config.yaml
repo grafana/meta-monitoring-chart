@@ -8,23 +8,55 @@ data:
     discovery.kubernetes "pods" {
       role = "pod"
       namespaces {
+        own_namespace = false
         names = [ {{ include "agent.namespaces" . }} ]
-
       }
     }
+
     loki.source.kubernetes "pods" {
       targets    = discovery.kubernetes.pods.targets
-      forward_to = [loki.write.local.receiver]
+      forward_to = [loki.relabel.loki.receiver]
     }
+
+    // TODO: fix this, it is not working
+    loki.relabel "loki" {
+      forward_to = [loki.process.loki.receiver]
+
+      rule {
+        source_labels = ["__meta_kubernetes_namespace"]
+        target_label = "namespace"
+      }
+      rule {
+        source_labels = ["__meta_kubernetes_pod_name"]
+        target_label = "pod"
+      }
+    }
+
+    loki.process "loki" {
+      forward_to = [loki.write.local.receiver]
+
+      stage.static_labels {
+        values = {
+          cluster = "{{- .Values.clusterName -}}",
+        }
+      }
+
+      stage.label_drop {
+        values = ["job"]
+      }
+    }
+
+    prometheus.scrape "pods" {
+      targets    = discovery.kubernetes.pods.targets
+      forward_to = [prometheus.remote_write.default.receiver]
+    }
+
     loki.write "local" {
       endpoint {
         url = "http://{{- .Release.Name -}}-loki.{{- .Release.Namespace -}}.svc.cluster.local:3100/loki/api/v1/push"
       }
     }
-    prometheus.scrape "pods" {
-      targets    = discovery.kubernetes.pods.targets
-      forward_to = [prometheus.remote_write.default.receiver]
-    }
+
     prometheus.remote_write "default" {
       endpoint {
         url = "http://{{- .Release.Name -}}-mimir-nginx.{{- .Release.Namespace -}}.svc:80/api/v1/push"

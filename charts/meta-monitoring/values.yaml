@@ -2,6 +2,7 @@ namespacesToMonitor:
 - loki
 - mimir
 - tempo
+clusterName: "observability"
 
 loki:
   loki:

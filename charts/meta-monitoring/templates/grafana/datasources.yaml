@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: loki-datasources-provisioning
+  namespace: {{ $.Release.Namespace }}
+data:
+  datasources.yaml: |
+    # Configuration file version
+    apiVersion: 1
+
+    # List of data sources to delete from the database.
+    deleteDatasources:
+      - name: Loki 
+        orgId: 1
+
+    # List of data sources to insert/update depending on what's
+    # available in the database.
+    datasources:
+      # <string, required> Sets the name you use to refer to
+      # the data source in panels and queries.
+      - name: Loki
+        # <string, required> Sets the data source type.
+        type: loki
+        # <int> Sets the organization id. Defaults to orgId 1.
+        orgId: 1
+        # <string> Sets a custom UID to reference this
+        # data source in other parts of the configuration.
+        # If not specified, Grafana generates one.
+        uid: loki_ds
+        # <string> Sets the data source's URL, including the
+        # port.
+        url: http://loki-gateway.{{- $.Release.Namespace -}}.svc.cluster.local
+        # <bool> Toggles whether the data source is pre-selected
+        # for new panels. You can set only one default
+        # data source per organization.
+        isDefault:
+        # <bool> Allows users to edit data sources from the
+        # Grafana UI.
+        editable: true
+      - name: Mimir
+        # <string, required> Sets the data source type.
+        type: prometheus
+        # <int> Sets the organization id. Defaults to orgId 1.
+        orgId: 1
+        # <string> Sets a custom UID to reference this
+        # data source in other parts of the configuration.
+        # If not specified, Grafana generates one.
+        uid: mimir_ds
+        # <string> Sets the data source's URL, including the
+        # port.
+        url: http://{{- $.Release.Name -}}-mimir-nginx.{{- $.Release.Namespace -}}.svc:80/prometheus
+        # <bool> Toggles whether the data source is pre-selected
+        # for new panels. You can set only one default
+        # data source per organization.
+        isDefault:
+        # <bool> Allows users to edit data sources from the
+        # Grafana UI.
+        editable: true
