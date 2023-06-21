@@ -13,23 +13,22 @@ data:
       }
     }
 
-    loki.source.kubernetes "pods" {
-      targets    = discovery.kubernetes.pods.targets
-      forward_to = [loki.relabel.loki.receiver]
-    }
-
-    // TODO: fix this, it is not working
-    loki.relabel "loki" {
-      forward_to = [loki.process.loki.receiver]
+    discovery.relabel "rename_meta_labels" {
+      targets = discovery.kubernetes.pods.targets
 
       rule {
         source_labels = ["__meta_kubernetes_namespace"]
-        target_label = "namespace"
+        target_label  = "namespace"
       }
       rule {
         source_labels = ["__meta_kubernetes_pod_name"]
-        target_label = "pod"
+        target_label  = "pod"
       }
+    }
+
+    loki.source.kubernetes "pods" {
+      targets    = discovery.relabel.rename_meta_labels.output
+      forward_to = [loki.process.loki.receiver]
     }
 
     loki.process "loki" {
@@ -47,7 +46,7 @@ data:
     }
 
     prometheus.scrape "pods" {
-      targets    = discovery.kubernetes.pods.targets
+      targets    = discovery.relabel.rename_meta_labels.output
       forward_to = [prometheus.remote_write.default.receiver]
     }
 
