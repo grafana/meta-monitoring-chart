@@ -1,3 +1,4 @@
+{{ if .Values.local.enabled }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -15,3 +16,4 @@ data:
     {{ $.Files.Get "src/dashboards/loki-writes-resources.json" | fromJson | toJson }}
   "loki-writes.json": |
     {{ $.Files.Get "src/dashboards/loki-writes.json" | fromJson | toJson }}
+{{- end }}

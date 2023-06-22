@@ -27,9 +27,11 @@ dependencies:
 - name: loki
   repository:  https://grafana.github.io/helm-charts
   version: "5.8.0"
+  condition: local.enabled
 - name: grafana-agent
   repository:  https://grafana.github.io/helm-charts
   version: "0.15.0"
 - name: mimir-distributed
   repository:  https://grafana.github.io/helm-charts
   version: "4.4.1"
+  condition: local.enabled

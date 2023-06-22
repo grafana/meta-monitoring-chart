@@ -1,3 +1,4 @@
+{{ if .Values.local.enabled }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -57,3 +58,4 @@ data:
         # <bool> Allows users to edit data sources from the
         # Grafana UI.
         editable: true
+{{- end }}

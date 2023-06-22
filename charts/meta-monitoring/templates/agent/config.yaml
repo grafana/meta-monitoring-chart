@@ -32,7 +32,7 @@ data:
     }
 
     loki.process "loki" {
-      forward_to = [loki.write.local.receiver]
+      forward_to = [ {{ include "agent.loki_write_targets" . }} ]
 
       stage.static_labels {
         values = {
@@ -47,19 +47,44 @@ data:
 
     prometheus.scrape "pods" {
       targets    = discovery.relabel.rename_meta_labels.output
-      forward_to = [prometheus.remote_write.default.receiver]
+      forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
     }
 
+
+    {{- if .Values.local.enabled }}
     loki.write "local" {
       endpoint {
         url = "http://{{- .Release.Name -}}-loki.{{- .Release.Namespace -}}.svc.cluster.local:3100/loki/api/v1/push"
       }
     }
 
-    prometheus.remote_write "default" {
+    prometheus.remote_write "local" {
       endpoint {
         url = "http://{{- .Release.Name -}}-mimir-nginx.{{- .Release.Namespace -}}.svc:80/api/v1/push"
       }
     }
+    {{- end }}
 
+    {{- if .Values.cloud.enabled }}
+    loki.write "cloud" {
+      endpoint {
+        url = "{{- .Values.cloud.logs.endpoint -}}/loki/api/v1/push"
 
+        basic_auth {
+          username = "{{- .Values.cloud.logs.username -}}"
+          password = "{{- .Values.cloud.logs.password -}}"
+        }
+      }
+    }
+
+    prometheus.remote_write "cloud" {
+      endpoint {
+        url = "{{- .Values.cloud.metrics.endpoint -}}/api/prom/push"
+
+        basic_auth {
+          username = "{{- .Values.cloud.metrics.username -}}"
+          password = "{{- .Values.cloud.metrics.password -}}"
+        }
+      }
+    }
+    {{- end }}

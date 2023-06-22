@@ -3,6 +3,18 @@ namespacesToMonitor:
 - mimir
 - tempo
 clusterName: "observability"  # TODO check if this can be derived
+local:
+  enabled: false
+cloud:
+  enabled: true
+  logs:
+    endpoint:
+    username:
+    password:
+  metrics:
+    endpoint:
+    username:
+    password:
 
 # The following are configuration for the dependencies.
 # These should not be changed.
