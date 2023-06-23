@@ -11,6 +11,8 @@ Create a values.yaml file based on the [default one](../charts/meta-monitoring/v
 
 1. Set the cluster name in the `clusterName` setting. This will be added as a label to all logs, metrics and traces.
 
+1. Create a `meta` namespace.
+
 ## Local and cloud modes
 
 The chart has 2 modes: local and cloud. In the local mode logs, metrics and traces are sent
@@ -28,10 +30,14 @@ To enable cloud mode set `cloud.enabled` to true. The `endpoint`, `username` and
 
 Both modes can be enabled at the same time.
 
-## More help topics
+## Installation
 
-- [installation](docs/installation.md)
+```
+helm install -n meta -f values.yaml meta ./charts/meta-monitoring
+```
 
-Developer help topics
+For more instructions including how to update the chart go to the [installation](docs/installation.md) page.
+
+## Developer help topics
 
 - [update dependencies](docs/dev_update_dependencies.md)

@@ -11,13 +11,13 @@
 1. Install this helm chart
 
    ```
-   helm install -n meta meta ./charts/meta-monitoring
+   helm install -n meta -f values.yaml meta ./charts/meta-monitoring
    ```
 
 1. Upgrade
 
    ```
-   helm upgrade --install -n meta meta ./charts/meta-monitoring
+   helm upgrade --install -f values.yaml -n meta meta ./charts/meta-monitoring
    ```
 
 1. Delete this chart:
