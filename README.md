@@ -1,47 +1,37 @@
 # meta-monitoring-chart
 
-A meta-monitoring chart for GEL, GEM and GET.
+This is a meta-monitoring chart for GEL, GEM and GET. It should be installed in a
+separate namespace next to GEM, GEL or GET installations.
 
-## Install this chart
+## Preparation
 
-1. Create the meta namespace
+Create a values.yaml file based on the [default one](../charts/meta-monitoring/values.yaml).
 
-   ```
-   kubectl create namespace meta
-   ```
+1. Add or remove the namespaces to monitor in the `namespacesToMonitor` setting
 
-1. Create a values.yaml file
+1. Set the cluster name in the `clusterName` setting. This will be added as a label to all logs, metrics and traces.
 
-1. Install this helm chart
+## Local and cloud modes
 
-   ```
-   helm install -n meta meta ./charts/meta-monitoring
-   ```
+The chart has 2 modes: local and cloud. In the local mode logs, metrics and traces are sent
+to small Loki, Mimir and Tempo installations running in the meta-monitoring namespace.
 
-1. Upgrade
+![local mode](docs/images/Meta%20monitoring%20local.png)
 
-   ```
-   helm upgrade --install -n meta meta ./charts/meta-monitoring
-   ```
+To enable local mode set `local.enabled` to true.
 
-1. Delete this chart:
+In the cloud mode the logs, metrics and traces are sent to
 
-   ```
-   helm delete -n meta meta
-   ```
+![cloud mode](docs/images/Meta%20monitoring%20cloud.png)
 
+To enable cloud mode set `cloud.enabled` to true. The `endpoint`, `username` and `password` settings for your Grafana Cloud logs, metrics and traces instances have to be filled in as well.
 
-## Update dependencies
+Both modes can be enabled at the same time.
 
-Run this in the charts/meta-monitoring directory after updating a dependency:
+## More help topics
 
-```
-helm dependency update meta-monitoring
-```
+- [installation](docs/installation.md)
 
-List dependencies:
+Developer help topics
 
-```
-helm dependency list meta-monitoring
-```
-
+- [update dependencies](docs/dev_update_dependencies.md)
