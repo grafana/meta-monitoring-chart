@@ -24,25 +24,22 @@ data:
         source_labels = ["__meta_kubernetes_pod_name"]
         target_label  = "pod"
       }
+      rule {
+        source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_label_app_kubernetes_io_name", "__meta_kubernetes_pod_label_app_kubernetes_io_component"]
+        separator = "/"
+        regex = "(.*)/(.*)/(.*)"
+        replacement = "${1}/${2}-${3}"
+        target_label = "job"
+      }
+      rule {
+        target_label = "cluster"
+        replacement = "{{- .Values.clusterName -}}"
+      }
     }
 
     loki.source.kubernetes "pods" {
       targets    = discovery.relabel.rename_meta_labels.output
-      forward_to = [loki.process.loki.receiver]
-    }
-
-    loki.process "loki" {
       forward_to = [ {{ include "agent.loki_write_targets" . }} ]
-
-      stage.static_labels {
-        values = {
-          cluster = "{{- .Values.clusterName -}}",
-        }
-      }
-
-      stage.label_drop {
-        values = ["job"]
-      }
     }
 
     prometheus.scrape "pods" {
