@@ -58,4 +58,23 @@ data:
         # <bool> Allows users to edit data sources from the
         # Grafana UI.
         editable: true
+      - name: Tempo
+        # <string, required> Sets the data source type.
+        type: tempo
+        # <int> Sets the organization id. Defaults to orgId 1.
+        orgId: 1
+        # <string> Sets a custom UID to reference this
+        # data source in other parts of the configuration.
+        # If not specified, Grafana generates one.
+        uid: tempo_ds
+        # <string> Sets the data source's URL, including the
+        # port.
+        url: http://{{- $.Release.Name -}}-tempo-query-frontend.{{- $.Release.Namespace -}}.svc:3100
+        # <bool> Toggles whether the data source is pre-selected
+        # for new panels. You can set only one default
+        # data source per organization.
+        isDefault:
+        # <bool> Allows users to edit data sources from the
+        # Grafana UI.
+        editable: true
 {{- end }}

@@ -27,3 +27,14 @@
 {{- end }}
 {{- join ", " $list }}
 {{- end }}
+
+{{- define "agent.tempo_write_targets" -}}
+{{- $list := list }}
+{{- if .Values.local.enabled }}
+{{- $list = append $list ("otelcol.exporter.otlp.local.input") }}
+{{- end }}
+{{- if .Values.cloud.enabled }}
+{{- $list = append $list ("otelcol.exporter.otlp.cloud.input") }}
+{{- end }}
+{{- join ", " $list }}
+{{- end }}
