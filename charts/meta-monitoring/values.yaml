@@ -32,9 +32,9 @@ loki:
     storage:
       type: "s3"
       s3:
-        endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
-        access_key_id: "{{ .Values.global.minio.rootUser }}"
-        secret_access_key: "{{ .Values.global.minio.rootPassword }}"
+        endpoint: "meta-minio.meta.svc:9000"
+        access_key_id: rootuser
+        secret_access_key: rootpassword
         insecure: true
       bucketNames:
         chunks: loki-chunks
@@ -91,8 +91,8 @@ mimir-distributed:
           insecure: true
 
 minio:
-  rootUser: "{{ .Values.global.minio.rootUser }}"
-  rootPassword: "{{ .Values.global.minio.rootPassword }}" 
+  rootUser: rootuser
+  rootPassword: rootpassword
   buckets:
     - name: loki-chunks
       policy: none
