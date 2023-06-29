@@ -16,12 +16,13 @@ cloud:
     username:
     password:
 
-# The following are configuration for the dependencies.
-# These should not be changed.
 global:
   minio:
     rootUser: "rootuser"
     rootPassword: "rootpassword"
+
+# The following are configuration for the dependencies.
+# These should not be changed.
 
 loki:
   loki:
@@ -29,10 +30,15 @@ loki:
     commonConfig:
       replication_factor: 1
     storage:
-      type: 'filesystem'
-  singleBinary:
-    replicas: 1
-    extraArgs: ["-log.level=debug"]
+      type: "s3"
+      s3:
+        endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
+        access_key_id: "{{ .Values.global.minio.rootUser }}"
+        secret_access_key: "{{ .Values.global.minio.rootPassword }}"
+        insecure: true
+      bucketNames:
+        chunks: loki-chunks
+        ruler: loki-ruler
   monitoring:
     dashboards:
       enabled: false
@@ -85,9 +91,13 @@ mimir-distributed:
           insecure: true
 
 minio:
-  rootUser: rootuser
+  rootUser: "{{ .Values.global.minio.rootUser }}"
+  rootPassword: "{{ .Values.global.minio.rootPassword }}" 
   buckets:
-    - name: loki
+    - name: loki-chunks
+      policy: none
+      purge: false
+    - name: loki-ruler
       policy: none
       purge: false
     - name: tempo
@@ -106,6 +116,5 @@ minio:
     requests:
       cpu: 100m
       memory: 128Mi
-  rootPassword: rootpassword
   # Changed the mc config path to '/tmp' from '/etc' as '/etc' is only writable by root and OpenShift will not permit this.
   configPathmc: "/tmp/minio/mc/"

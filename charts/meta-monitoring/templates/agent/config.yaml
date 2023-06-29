@@ -51,7 +51,7 @@ data:
     {{- if .Values.local.enabled }}
     loki.write "local" {
       endpoint {
-        url = "http://{{- .Release.Name -}}-loki.{{- .Release.Namespace -}}.svc.cluster.local:3100/loki/api/v1/push"
+        url = "http://loki-gateway.{{- .Release.Namespace -}}.svc.cluster.local:80/loki/api/v1/push"
       }
     }
 
