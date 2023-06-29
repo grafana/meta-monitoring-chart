@@ -8,5 +8,8 @@ dependencies:
 - name: mimir-distributed
   repository: https://grafana.github.io/helm-charts
   version: 4.4.1
-digest: sha256:9238265d064bb85c3607f8be22c32c84837f2115c25978aebf6782b0a125c22c
-generated: "2023-06-19T11:29:07.999693+01:00"
+- name: minio
+  repository: https://charts.min.io
+  version: 5.0.11
+digest: sha256:a010b5c0c7e82b65bee8c6b4b039b6bdcb294f8bd545afe6462221693a487291
+generated: "2023-06-28T10:37:38.589479+01:00"

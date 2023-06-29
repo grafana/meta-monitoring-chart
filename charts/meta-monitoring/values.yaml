@@ -4,9 +4,9 @@ namespacesToMonitor:
 - tempo
 clusterName: "observability"  # TODO check if this can be derived
 local:
-  enabled: false
-cloud:
   enabled: true
+cloud:
+  enabled: false
   logs:
     endpoint:
     username:
@@ -18,6 +18,11 @@ cloud:
 
 # The following are configuration for the dependencies.
 # These should not be changed.
+global:
+  minio:
+    rootUser: "rootuser"
+    rootPassword: "rootpassword"
+
 loki:
   loki:
     auth_enabled: false
@@ -51,4 +56,56 @@ grafana-agent:
       name: "agent-configmap"
       key: 'config.river'
 
-# mimir-distributed:
+mimir-distributed:
+  minio:
+    enabled: false
+  mimir:
+    structuredConfig:
+      alertmanager_storage:
+        s3:
+          bucket_name: mimir-ruler
+          access_key_id: "{{ .Values.global.minio.rootUser }}"
+          endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
+          secret_access_key: "{{ .Values.global.minio.rootPassword }}"
+          insecure: true
+      blocks_storage:
+        backend: s3
+        s3:
+          bucket_name: mimir-tsdb
+          access_key_id: "{{ .Values.global.minio.rootUser }}"
+          endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
+          secret_access_key: "{{ .Values.global.minio.rootPassword }}"
+          insecure: true
+      ruler_storage:
+        s3:
+          bucket_name: mimir-ruler
+          access_key_id: "{{ .Values.global.minio.rootUser }}"
+          endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
+          secret_access_key: "{{ .Values.global.minio.rootPassword }}"
+          insecure: true
+
+minio:
+  rootUser: rootuser
+  buckets:
+    - name: loki
+      policy: none
+      purge: false
+    - name: tempo
+      policy: none
+      purge: false
+    - name: mimir-ruler
+      policy: none
+      purge: false
+    - name: mimir-tsdb
+      policy: none
+      purge: false
+  mode: standalone
+  persistence:
+    size: 5Gi
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  rootPassword: rootpassword
+  # Changed the mc config path to '/tmp' from '/etc' as '/etc' is only writable by root and OpenShift will not permit this.
+  configPathmc: "/tmp/minio/mc/"
