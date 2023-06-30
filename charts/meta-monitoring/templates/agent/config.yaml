@@ -47,11 +47,39 @@ data:
       forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
     }
 
+    // Shamelessly copied from https://github.com/grafana/intro-to-mlt/blob/main/agent/config.river
+    otelcol.receiver.otlp "otlp_receiver" {
+      // We don't technically need this, but it shows how to change listen address and incoming port.
+      // In this case, the Agent is listening on all available bindable addresses on port 4317 (which is the
+      // default OTLP gRPC port) for the OTLP protocol.
+      grpc {
+          endpoint = "0.0.0.0:4317"
+      }
+
+      // We define where to send the output of all ingested traces. In this case, to the OpenTelemetry batch processor
+      // named 'default'.
+      output {
+          traces = [otelcol.processor.batch.default.input]
+      }
+    }
+
+    // The OpenTelemetry batch processor collects trace spans until a batch size or timeout is met, before sending those
+    // spans onto another target. This processor is labeled 'default'.
+    otelcol.processor.batch "default" {
+        // Wait until we've received 16K of data.
+        send_batch_size = 16384
+        // Or until 2 seconds have elapsed.
+        timeout = "2s"
+        // When the Agent has enough batched data, send it to the OpenTelemetry exporter named 'local'.
+        output {
+            traces = [ {{ include "agent.tempo_write_targets" . }} ]
+        }
+    }
 
     {{- if .Values.local.enabled }}
     loki.write "local" {
       endpoint {
-        url = "http://{{- .Release.Name -}}-loki.{{- .Release.Namespace -}}.svc.cluster.local:3100/loki/api/v1/push"
+        url = "http://loki-gateway.{{- .Release.Namespace -}}.svc.cluster.local:80/loki/api/v1/push"
       }
     }
 
@@ -59,6 +87,23 @@ data:
       endpoint {
         url = "http://{{- .Release.Name -}}-mimir-nginx.{{- .Release.Namespace -}}.svc:80/api/v1/push"
       }
+    }
+
+    // The OpenTelemetry exporter exports processed trace spans to another target that is listening for OTLP format traces.
+    // A unique label, 'local', is added to uniquely identify this exporter.
+    otelcol.exporter.otlp "local" {
+        // Define the client for exporting.
+        client {
+            // Send to the locally running Tempo instance, on port 4317 (OTLP gRPC).
+            endpoint = "meta-tempo-distributor:4317"
+            // Configure TLS settings for communicating with the endpoint.
+            tls {
+                // The connection is insecure.
+                insecure = true
+                // Do not verify TLS certificates when connecting.
+                insecure_skip_verify = true
+            }
+        }
     }
     {{- end }}
 
@@ -83,5 +128,17 @@ data:
           password = "{{- .Values.cloud.metrics.password -}}"
         }
       }
+    }
+
+    otelcol.exporter.otlp "cloud" {
+        client {
+            endpoint = "{{- .Values.cloud.traces.endpoint -}}"
+            auth = otelcol.auth.basic.creds.handler
+        }
+    }
+
+    otelcol.auth.basic "creds" {
+      username = "{{- .Values.cloud.traces.username -}}"
+      password = "{{- .Values.cloud.traces.password -}}"
     }
     {{- end }}
