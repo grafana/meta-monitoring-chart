@@ -1,4 +1,4 @@
-{{ if .Values.local.enabled }}
+{{- if or (or .Values.local.logs.enabled .Values.local.metrics.enabled) .Values.local.traces.enabled }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -20,6 +20,7 @@ data:
     datasources:
       # <string, required> Sets the name you use to refer to
       # the data source in panels and queries.
+      {{- if .Values.local.logs.enabled }}
       - name: Loki
         # <string, required> Sets the data source type.
         type: loki
@@ -39,6 +40,8 @@ data:
         # <bool> Allows users to edit data sources from the
         # Grafana UI.
         editable: true
+      {{- end }}
+      {{- if .Values.local.metrics.enabled }}
       - name: Mimir
         # <string, required> Sets the data source type.
         type: prometheus
@@ -58,6 +61,8 @@ data:
         # <bool> Allows users to edit data sources from the
         # Grafana UI.
         editable: true
+      {{- end }}
+      {{- if .Values.local.traces.enabled }}
       - name: Tempo
         # <string, required> Sets the data source type.
         type: tempo
@@ -77,4 +82,5 @@ data:
         # <bool> Allows users to edit data sources from the
         # Grafana UI.
         editable: true
+      {{- end }}
 {{- end }}

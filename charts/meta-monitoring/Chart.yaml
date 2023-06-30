@@ -27,19 +27,22 @@ dependencies:
 - name: loki
   repository:  https://grafana.github.io/helm-charts
   version: "5.8.0"
-  condition: local.enabled
+  condition: local.logs.enabled
 - name: grafana-agent
   repository:  https://grafana.github.io/helm-charts
   version: "0.15.0"
 - name: mimir-distributed
   repository:  https://grafana.github.io/helm-charts
   version: "4.4.1"
-  condition: local.enabled
+  condition: local.metrics.enabled
 - name: tempo-distributed
   repository:  https://grafana.github.io/helm-charts
   version: "1.4.7"
-  condition: local.enabled
+  condition: local.traces.enabled
 - name: minio
   repository: https://charts.min.io
   version: "5.0.11"
-  condition: local.enabled
+  tags:
+  - local-logs
+  - local-metrics
+  - local-traces
