@@ -3,19 +3,35 @@ namespacesToMonitor:
 - mimir
 - tempo
 clusterName: "observability"  # TODO check if this can be derived
+
+# Turn on or off for local storing of metrics, logs or traces
+tags:
+  local-logs: true
+  local-metrics: true
+  local-traces: true
+
+# Unfortunately this is duplicate as Helm's tags and conditions fro dependencies are limited
 local:
-  enabled: true
-cloud:
-  enabled: false
   logs:
+    enabled: false
+  metrics:
+    enabled: false
+  traces:
+    enabled: false
+
+cloud:
+  logs:
+    enabled: true
     endpoint:
     username:
     password:
   metrics:
+    enabled: true
     endpoint:
     username:
     password:
   traces:
+    enabled: true
     endpoint:
     username:
     password:

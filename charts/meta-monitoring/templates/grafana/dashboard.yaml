@@ -1,4 +1,4 @@
-{{ if .Values.local.enabled }}
+{{- if .Values.local.logs.enabled }}
 ---
 apiVersion: v1
 kind: ConfigMap

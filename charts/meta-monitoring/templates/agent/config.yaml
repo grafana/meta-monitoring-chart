@@ -37,16 +37,21 @@ data:
       }
     }
 
+    {{- if or .Values.local.logs.enabled .Values.cloud.logs.enabled }}
     loki.source.kubernetes "pods" {
       targets    = discovery.relabel.rename_meta_labels.output
       forward_to = [ {{ include "agent.loki_write_targets" . }} ]
     }
+    {{- end }}
 
+    {{- if or .Values.local.metrics.enabled .Values.cloud.metrics.enabled }}
     prometheus.scrape "pods" {
       targets    = discovery.relabel.rename_meta_labels.output
       forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
     }
+    {{- end }}
 
+    {{- if or .Values.local.traces.enabled .Values.cloud.traces.enabled }}
     // Shamelessly copied from https://github.com/grafana/intro-to-mlt/blob/main/agent/config.river
     otelcol.receiver.otlp "otlp_receiver" {
       // We don't technically need this, but it shows how to change listen address and incoming port.
@@ -75,20 +80,25 @@ data:
             traces = [ {{ include "agent.tempo_write_targets" . }} ]
         }
     }
+    {{- end }}
 
-    {{- if .Values.local.enabled }}
+    {{- if .Values.local.logs.enabled }}
     loki.write "local" {
       endpoint {
         url = "http://loki-gateway.{{- .Release.Namespace -}}.svc.cluster.local:80/loki/api/v1/push"
       }
     }
+    {{- end }}
 
+    {{- if .Values.local.metrics.enabled }}
     prometheus.remote_write "local" {
       endpoint {
         url = "http://{{- .Release.Name -}}-mimir-nginx.{{- .Release.Namespace -}}.svc:80/api/v1/push"
       }
     }
+    {{- end }}
 
+    {{- if or .Values.local.traces.enabled .Values.cloud.traces.enabled }}
     // The OpenTelemetry exporter exports processed trace spans to another target that is listening for OTLP format traces.
     // A unique label, 'local', is added to uniquely identify this exporter.
     otelcol.exporter.otlp "local" {
@@ -107,7 +117,7 @@ data:
     }
     {{- end }}
 
-    {{- if .Values.cloud.enabled }}
+    {{- if .Values.cloud.logs.enabled }}
     loki.write "cloud" {
       endpoint {
         url = "{{- .Values.cloud.logs.endpoint -}}/loki/api/v1/push"
@@ -118,7 +128,9 @@ data:
         }
       }
     }
+    {{- end }}
 
+    {{- if .Values.cloud.metrics.enabled }}
     prometheus.remote_write "cloud" {
       endpoint {
         url = "{{- .Values.cloud.metrics.endpoint -}}/api/prom/push"
@@ -129,7 +141,9 @@ data:
         }
       }
     }
+    {{- end }}
 
+    {{- if .Values.cloud.traces.enabled }}
     otelcol.exporter.otlp "cloud" {
         client {
             endpoint = "{{- .Values.cloud.traces.endpoint -}}"
