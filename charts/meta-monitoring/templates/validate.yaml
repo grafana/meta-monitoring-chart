@@ -1,0 +1,21 @@
+{{- if not (eq .Values.local.minio.enabled (or .Values.local.traces.enabled (or .Values.local.logs.enabled .Values.local.metrics.enabled))) -}}
+  {{- fail "minio.enabled should be set to true if any of the the local databases is enabled " -}}
+{{- end -}}
+
+{{- if eq .Values.cloud.logs.enabled true -}}
+  {{- if or (empty .Values.cloud.logs.endpoint) (or (empty .Values.cloud.logs.username) (empty .Values.cloud.logs.password)) -}}
+    {{- fail "if cloud.logs is enabled then the endpoint, username and password have to be filled in" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if eq .Values.cloud.metrics.enabled true -}}
+  {{- if or (empty .Values.cloud.metrics.endpoint) (or (empty .Values.cloud.metrics.username) (empty .Values.cloud.metrics.password)) -}}
+    {{- fail "if cloud.metrics is enabled then the endpoint, username and password have to be filled in" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if eq .Values.cloud.traces.enabled true -}}
+  {{- if or (empty .Values.cloud.traces.endpoint) (or (empty .Values.cloud.traces.username) (empty .Values.cloud.traces.password)) -}}
+    {{- fail "if cloud.traces is enabled then the endpoint, username and password have to be filled in" -}}
+  {{- end -}}
+{{- end -}}
