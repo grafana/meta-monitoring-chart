@@ -33,3 +33,7 @@
 {{- end -}}
 {{- end -}}
 {{- end -}}
+
+{{- if empty .Values.namespacesToMonitor -}}
+  {{- fail "No namespaces have been specified in namespacesToMonitor" -}}
+{{- end -}}
