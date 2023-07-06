@@ -19,3 +19,17 @@
     {{- fail "if cloud.traces is enabled then the endpoint, username and password have to be filled in" -}}
   {{- end -}}
 {{- end -}}
+
+{{- if eq .Values.cloud.traces.enabled false -}}
+{{- if eq .Values.cloud.metrics.enabled false -}}
+{{- if eq .Values.cloud.logs.enabled false -}}
+{{- if eq .Values.local.traces.enabled false -}}
+{{- if eq .Values.local.metrics.enabled false -}}
+{{- if eq .Values.local.logs.enabled false -}}
+    {{- fail "nothing has been enabled" -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
