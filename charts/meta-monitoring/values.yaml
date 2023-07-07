@@ -39,7 +39,7 @@ cloud:
 # with:
 #  we should not be logging the password ***** at all
 logs:
-  PIIregexes:
+  piiregexes:
 
 global:
   minio:

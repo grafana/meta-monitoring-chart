@@ -55,7 +55,6 @@ data:
       {{- end }}
     }
     {{- end }}
-
     {{- end }}
 
     {{- if or .Values.local.metrics.enabled .Values.cloud.metrics.enabled }}
