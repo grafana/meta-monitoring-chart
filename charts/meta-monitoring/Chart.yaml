@@ -42,7 +42,4 @@ dependencies:
 - name: minio
   repository: https://charts.min.io
   version: "5.0.11"
-  tags:
-  - local-logs
-  - local-metrics
-  - local-traces
+  condition: local.minio.enabled

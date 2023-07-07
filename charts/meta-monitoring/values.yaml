@@ -2,15 +2,8 @@ namespacesToMonitor:
 - loki
 - mimir
 - tempo
-clusterName: "observability"  # TODO check if this can be derived
+clusterName: "meta-monitoring"  # TODO check if this can be derived
 
-# Turn on or off for local storing of metrics, logs or traces
-tags:
-  local-logs: true
-  local-metrics: true
-  local-traces: true
-
-# Unfortunately this is duplicate as Helm's tags and conditions fro dependencies are limited
 local:
   logs:
     enabled: false
@@ -18,6 +11,9 @@ local:
     enabled: false
   traces:
     enabled: false
+  minio:
+    enabled: false  # This should be set to true if any of the previous is enabled
+
 
 cloud:
   logs:
