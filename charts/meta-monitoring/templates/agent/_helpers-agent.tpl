@@ -17,6 +17,14 @@
 {{- join ", " $list }}
 {{- end }}
 
+{{- define "agent.loki_process_targets" -}}
+{{- if empty .Values.logs.piiregexes }}
+{{- include "agent.loki_write_targets" . }}
+{{- else }}
+{{- printf "loki.process.PII.receiver" }}
+{{- end }}
+{{- end }}
+
 {{- define "agent.prometheus_write_targets" -}}
 {{- $list := list }}
 {{- if .Values.local.metrics.enabled }}

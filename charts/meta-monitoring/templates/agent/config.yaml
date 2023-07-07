@@ -40,8 +40,22 @@ data:
     {{- if or .Values.local.logs.enabled .Values.cloud.logs.enabled }}
     loki.source.kubernetes "pods" {
       targets    = discovery.relabel.rename_meta_labels.output
-      forward_to = [ {{ include "agent.loki_write_targets" . }} ]
+      forward_to = [ {{ include "agent.loki_process_targets" . }} ]
     }
+
+    {{- if not (empty .Values.logs.piiregexes) }}
+    loki.process "PII" {
+      forward_to = [ {{ include "agent.loki_write_targets" . }} ]
+
+      {{- range .Values.logs.piiregexes }}
+      stage.replace {
+        expression = "{{ . }}"
+        replace = "*****"
+      }
+      {{- end }}
+    }
+    {{- end }}
+
     {{- end }}
 
     {{- if or .Values.local.metrics.enabled .Values.cloud.metrics.enabled }}

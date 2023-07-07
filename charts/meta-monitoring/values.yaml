@@ -32,6 +32,9 @@ cloud:
     username:
     password:
 
+logs:
+  PIIregexes:
+
 global:
   minio:
     rootUser: "rootuser"
