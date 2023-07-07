@@ -32,6 +32,12 @@ cloud:
     username:
     password:
 
+# Adding regexes here will add a stage.replace block that parses the log lines using a regular expression
+# and replaces the capture group in the regex with "*****".
+# For example the regex "password (\\S+)" will replace the line
+#  we should not be logging the password xyzabc at all
+# with:
+#  we should not be logging the password ***** at all
 logs:
   PIIregexes:
 
