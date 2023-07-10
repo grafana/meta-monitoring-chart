@@ -33,10 +33,20 @@ Both modes can be enabled at the same time.
 ## Installation
 
 ```
-helm install -n meta -f values.yaml meta ./charts/meta-monitoring
+helm install -n meta --skip-crds -f values.yaml meta ./charts/meta-monitoring
 ```
 
 For more instructions including how to update the chart go to the [installation](docs/installation.md) page.
+
+## Supported features
+
+- Specify which namespaces are monitored
+- Specify if logs, metrics or traces should be enabled for cloud or local
+- Specify the cluster name used for the logs, metrics and traces
+- Specify PII regexes that are applied to logs before they are sent to Loki (cloud or local). The capture group in the regex is replaced with *****.
+- a Grafana instance is installed (when local mode is used) with the relevant datasources and dashboards installed.
+  - TBD: add dashboard for metrics and traces
+  - TBD: update the logs dashboards to be the SSD ones
 
 ## Developer help topics
 
