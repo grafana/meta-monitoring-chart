@@ -32,14 +32,14 @@ cloud:
     username:
     password:
 
-# Adding regexes here will add a stage.replace block that parses the log lines using a regular expression
-# and replaces the capture group in the regex with "*****".
-# For example the regex "password (\\S+)" will replace the line
-#  we should not be logging the password xyzabc at all
-# with:
-#  we should not be logging the password ***** at all
+# Adding regexes here will add a stage.replace block. For more information see
+# https://grafana.com/docs/agent/latest/flow/reference/components/loki.process/#stagereplace-block
 logs:
-  piiregexes:
+  piiRegexes:
+  # This example replaces the word after password with *****
+  # - expression: "password (\\\\S+)"
+  #   source: ""         # Empty uses the log message
+  #   replace: "*****""
 
 global:
   minio:

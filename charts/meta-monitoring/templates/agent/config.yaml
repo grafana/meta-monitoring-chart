@@ -43,14 +43,15 @@ data:
       forward_to = [ {{ include "agent.loki_process_targets" . }} ]
     }
 
-    {{- if not (empty .Values.logs.piiregexes) }}
+    {{- if not (empty .Values.logs.piiRegexes) }}
     loki.process "PII" {
       forward_to = [ {{ include "agent.loki_write_targets" . }} ]
 
-      {{- range .Values.logs.piiregexes }}
+      {{- range .Values.logs.piiRegexes }}
       stage.replace {
-        expression = "{{ . }}"
-        replace = "*****"
+        expression = "{{ .expression }}"
+        source = "{{ .source }}"
+        replace = "{{ .replace }}"
       }
       {{- end }}
     }

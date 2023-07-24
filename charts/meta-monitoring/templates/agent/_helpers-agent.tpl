@@ -18,7 +18,7 @@
 {{- end }}
 
 {{- define "agent.loki_process_targets" -}}
-{{- if empty .Values.logs.piiregexes }}
+{{- if empty .Values.logs.piiRegexes }}
 {{- include "agent.loki_write_targets" . }}
 {{- else }}
 {{- printf "loki.process.PII.receiver" }}
