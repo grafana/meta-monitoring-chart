@@ -1,4 +1,4 @@
-{{- if .Values.local.logs.enabled }}
+{{- if or (or .Values.local.logs.enabled .Values.local.metrics.enabled) .Values.local.traces.enabled }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -10,6 +10,7 @@ data:
     ---
     apiVersion: 1
     providers:
+{{- if .Values.local.logs.enabled }}
       - disableDeletion: true
         editable: false
         folder: Loki
@@ -26,4 +27,47 @@ data:
           path: /var/lib/grafana/dashboards/loki-2
         orgId: 1
         type: file
+{{- end }}
+{{- if .Values.local.metrics.enabled }}
+      - disableDeletion: true
+        editable: false
+        folder: Mimir
+        name: mimir-1
+        options:
+          path: /var/lib/grafana/dashboards/mimir-1
+        orgId: 1
+        type: file
+      - disableDeletion: true
+        editable: false
+        folder: Mimir
+        name: mimir-2
+        options:
+          path: /var/lib/grafana/dashboards/mimir-2
+        orgId: 1
+        type: file
+      - disableDeletion: true
+        editable: false
+        folder: Mimir
+        name: mimir-3
+        options:
+          path: /var/lib/grafana/dashboards/mimir-3
+        orgId: 1
+        type: file
+      - disableDeletion: true
+        editable: false
+        folder: Mimir
+        name: mimir-4
+        options:
+          path: /var/lib/grafana/dashboards/mimir-4
+        orgId: 1
+        type: file
+      - disableDeletion: true
+        editable: false
+        folder: Mimir
+        name: mimir-5
+        options:
+          path: /var/lib/grafana/dashboards/mimir-5
+        orgId: 1
+        type: file
+{{- end }}
 {{- end }}

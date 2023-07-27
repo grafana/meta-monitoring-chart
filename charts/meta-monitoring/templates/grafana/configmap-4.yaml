@@ -1,0 +1,19 @@
+{{- if .Values.local.metrics.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mimir-dashboards-2
+  namespace: {{ $.Release.Namespace }}
+data:
+  "mimir-object-store.json": |
+    {{ $.Files.Get "src/dashboards/mimir-object-store.json" | fromJson | toJson }}
+  "mimir-overrides.json": |
+    {{ $.Files.Get "src/dashboards/mimir-overrides.json" | fromJson | toJson }}
+  "mimir-overview-networking.json": |
+    {{ $.Files.Get "src/dashboards/mimir-overview-networking.json" | fromJson | toJson }}
+  "mimir-overview-resources.json": |
+    {{ $.Files.Get "src/dashboards/mimir-overview-resources.json" | fromJson | toJson }}
+  "mimir-overview.json": |
+    {{ $.Files.Get "src/dashboards/mimir-overview.json" | fromJson | toJson }}
+{{- end }}

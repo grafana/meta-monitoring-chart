@@ -1,0 +1,19 @@
+{{- if .Values.local.metrics.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mimir-dashboards-1
+  namespace: {{ $.Release.Namespace }}
+data:
+  "mimir-alertmanager-resources.json": |
+    {{ $.Files.Get "src/dashboards/mimir-alertmanager-resources.json" | fromJson | toJson }}
+  "mimir-alertmanager.json": |
+    {{ $.Files.Get "src/dashboards/mimir-alertmanager.json" | fromJson | toJson }}
+  "mimir-compactor-resources.json": |
+    {{ $.Files.Get "src/dashboards/mimir-compactor-resources.json" | fromJson | toJson }}
+  "mimir-compactor.json": |
+    {{ $.Files.Get "src/dashboards/mimir-compactor.json" | fromJson | toJson }}
+  "mimir-config.json": |
+    {{ $.Files.Get "src/dashboards/mimir-config.json" | fromJson | toJson }}
+{{- end }}
