@@ -37,6 +37,14 @@ global:
     rootUser: "rootuser"
     rootPassword: "rootpassword"
 
+kubeStateMetrics:
+  # Scrape https://github.com/kubernetes/kube-state-metrics by default
+  enabled: true
+  # This endpoint is created when the helm chart from
+  # https://artifacthub.io/packages/helm/prometheus-community/kube-state-metrics/
+  # is used. Change this if kube-state-metrics is installed somewhere else.
+  endpoint: kube-state-metrics.kube-state-metrics.svc.cluster.local:8080
+
 # The following are configuration for the dependencies.
 # These should not be changed.
 

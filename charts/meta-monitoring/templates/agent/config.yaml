@@ -49,6 +49,13 @@ data:
       targets    = discovery.relabel.rename_meta_labels.output
       forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
     }
+    {{- if .Values.kubeStateMetrics.enabled }}
+
+    prometheus.scrape "kubeStateMetrics" {
+      targets    = [ { "__address__" = "{{ .Values.kubeStateMetrics.endpoint }}" } ]
+      forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
+    }
+    {{- end }}
     {{- end }}
 
     {{- if or .Values.local.traces.enabled .Values.cloud.traces.enabled }}
