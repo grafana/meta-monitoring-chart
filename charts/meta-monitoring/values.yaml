@@ -32,6 +32,15 @@ cloud:
     username:
     password:
 
+# Adding regexes here will add a stage.replace block. For more information see
+# https://grafana.com/docs/agent/latest/flow/reference/components/loki.process/#stagereplace-block
+logs:
+  piiRegexes:
+  # This example replaces the word after password with *****
+  # - expression: "password (\\\\S+)"
+  #   source: ""         # Empty uses the log message
+  #   replace: "*****""
+
 global:
   minio:
     rootUser: "rootuser"
