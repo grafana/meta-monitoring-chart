@@ -64,22 +64,34 @@ spec:
             - mountPath: /var/lib/grafana
               name: grafana-pv
             - mountPath: /etc/grafana/provisioning/datasources
-              name: loki-datasources-provisioning
-            {{- if .Values.local.logs.enabled }}
+              name: datasources-provisioning
             - mountPath: /etc/grafana/provisioning/dashboards
               name: loki-dashboards-provisioning
+            {{- if .Values.local.logs.enabled }}
             - mountPath: /var/lib/grafana/dashboards/loki-1
               name: loki-dashboards-1
             - mountPath: /var/lib/grafana/dashboards/loki-2
               name: loki-dashboards-2
             {{- end }}
+            {{- if .Values.local.metrics.enabled }}
+            - mountPath: /var/lib/grafana/dashboards/mimir-1
+              name: mimir-dashboards-1
+            - mountPath: /var/lib/grafana/dashboards/mimir-2
+              name: mimir-dashboards-2
+            - mountPath: /var/lib/grafana/dashboards/mimir-3
+              name: mimir-dashboards-3
+            - mountPath: /var/lib/grafana/dashboards/mimir-4
+              name: mimir-dashboards-4
+            - mountPath: /var/lib/grafana/dashboards/mimir-5
+              name: mimir-dashboards-5
+            {{- end }}
       volumes:
         - name: grafana-pv
           persistentVolumeClaim:
             claimName: grafana-pvc
-        - name: loki-datasources-provisioning
+        - name: datasources-provisioning
           configMap:
-            name: loki-datasources-provisioning
+            name: datasources-provisioning
         {{- if .Values.local.logs.enabled }}
         - name: loki-dashboards-provisioning
           configMap:
@@ -90,6 +102,26 @@ spec:
         - name: loki-dashboards-2
           configMap:
             name: loki-dashboards-2
+        {{- end }}
+        {{- if .Values.local.metrics.enabled }}
+        - name: mimir-dashboards-provisioning
+          configMap:
+            name: mimir-dashboards-provisioning
+        - name: mimir-dashboards-1
+          configMap:
+            name: mimir-dashboards-1
+        - name: mimir-dashboards-2
+          configMap:
+            name: mimir-dashboards-2
+        - name: mimir-dashboards-3
+          configMap:
+            name: mimir-dashboards-3
+        - name: mimir-dashboards-4
+          configMap:
+            name: mimir-dashboards-4
+        - name: mimir-dashboards-5
+          configMap:
+            name: mimir-dashboards-5
         {{- end }}
 
 ---
