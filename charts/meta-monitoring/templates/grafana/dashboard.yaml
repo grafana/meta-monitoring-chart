@@ -1,16 +1,16 @@
-{{- if or (or .Values.local.logs.enabled .Values.local.metrics.enabled) .Values.local.traces.enabled }}
+{{- if or (or .Values.dashboards.logs.enabled .Values.dashboards.metrics.enabled) .Values.dashboards.traces.enabled }}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: loki-dashboards-provisioning
+  name: dashboards-provisioning
   namespace: {{ $.Release.Namespace }}
 data:
   dashboards.yaml: |
     ---
     apiVersion: 1
     providers:
-{{- if .Values.local.logs.enabled }}
+{{- if .Values.dashboards.logs.enabled }}
       - disableDeletion: true
         editable: false
         folder: Loki
@@ -28,7 +28,7 @@ data:
         orgId: 1
         type: file
 {{- end }}
-{{- if .Values.local.metrics.enabled }}
+{{- if .Values.dashboards.metrics.enabled }}
       - disableDeletion: true
         editable: false
         folder: Mimir
@@ -67,6 +67,16 @@ data:
         name: mimir-5
         options:
           path: /var/lib/grafana/dashboards/mimir-5
+        orgId: 1
+        type: file
+{{- end }}
+{{- if .Values.dashboards.traces.enabled }}
+      - disableDeletion: true
+        editable: false
+        folder: Tempo
+        name: tempo-1
+        options:
+          path: /var/lib/grafana/dashboards/tempo-1
         orgId: 1
         type: file
 {{- end }}

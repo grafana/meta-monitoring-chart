@@ -14,7 +14,6 @@ local:
   minio:
     enabled: false  # This should be set to true if any of the previous is enabled
 
-
 cloud:
   logs:
     enabled: true
@@ -40,6 +39,15 @@ logs:
   # - expression: "password (\\\\S+)"
   #   source: ""         # Empty uses the log message
   #   replace: "*****""
+
+# Set enabled = true to add the default logs/metrics/traces dashboards to the local Grafana
+dashboards:
+  logs:
+    enabled: true
+  metrics:
+    enabled: true
+  traces:
+    enabled: true
 
 global:
   minio:
