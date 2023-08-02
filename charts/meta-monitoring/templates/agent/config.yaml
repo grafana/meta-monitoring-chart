@@ -37,6 +37,8 @@ data:
       }
     }
 
+    // Logs
+
     {{- if or .Values.local.logs.enabled .Values.cloud.logs.enabled }}
     loki.source.kubernetes "pods" {
       targets    = discovery.relabel.rename_meta_labels.output
@@ -58,6 +60,8 @@ data:
     {{- end }}
     {{- end }}
 
+    // Metrics
+
     {{- if or .Values.local.metrics.enabled .Values.cloud.metrics.enabled }}
     prometheus.scrape "pods" {
       targets    = discovery.relabel.rename_meta_labels.output
@@ -70,7 +74,116 @@ data:
       forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
     }
     {{- end }}
+
+    // cAdvisor and Kubelete metrics
+    // Based on https://github.com/Chewie/loutretelecom-manifests/blob/main/manifests/addons/monitoring/config.river
+    discovery.kubernetes "all_nodes" {
+      role = "node"
+    }
+
+    discovery.relabel "all_nodes" {
+      targets = discovery.kubernetes.all_nodes.targets
+      rule {
+        source_labels = ["__meta_kubernetes_node_name"]
+        target_label = "node"
+      }
+      rule {
+        source_labels = ["__meta_kubernetes_namespace"]
+        target_label  = "namespace"
+      }
+      rule {
+        source_labels = ["__meta_kubernetes_pod_name"]
+        target_label  = "pod"
+      }
+      rule {
+        source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_label_app_kubernetes_io_name", "__meta_kubernetes_pod_label_app_kubernetes_io_component"]
+        separator = "/"
+        regex = "(.*)/(.*)/(.*)"
+        replacement = "${1}/${2}-${3}"
+        target_label = "job"
+      }
+      rule {
+        target_label = "cluster"
+        replacement = "{{- .Values.clusterName -}}"
+      }
+    }
+
+    prometheus.scrape "cadvisor" {
+      targets    = discovery.relabel.all_nodes.output
+      forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
+
+      scrape_interval = "15s"
+      metrics_path = "/metrics/cadvisor"
+      scheme = "https"
+
+      bearer_token_file = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+      tls_config {
+        ca_file = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+      }
+    }
+
+    prometheus.scrape "kubelet" {
+      targets    = discovery.relabel.all_nodes.output
+      forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
+
+      scrape_interval = "15s"
+      metrics_path = "/metrics"
+      scheme = "https"
+
+      bearer_token_file = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+      tls_config {
+        ca_file = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+      }
+    }
+
+    prometheus.exporter.unix {}
+
+    prometheus.scrape "node_exporter" {
+      targets = prometheus.exporter.unix.targets
+      forward_to = [prometheus.relabel.node_exporter.receiver]
+
+      job_name = "node-exporter"
+      scrape_interval = "15s"
+    }
+
+    prometheus.relabel "node_exporter" {
+      forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
+
+      rule {
+        replacement = env("HOSTNAME")
+        target_label = "nodename"
+      }
+      rule {
+        replacement = "node-exporter"
+        target_label = "job"
+      }
+      rule {
+        source_labels = ["__meta_kubernetes_node_name"]
+        target_label = "node"
+      }
+      rule {
+        source_labels = ["__meta_kubernetes_namespace"]
+        target_label  = "namespace"
+      }
+      rule {
+        source_labels = ["__meta_kubernetes_pod_name"]
+        target_label  = "pod"
+      }
+      rule {
+        source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_label_app_kubernetes_io_name", "__meta_kubernetes_pod_label_app_kubernetes_io_component"]
+        separator = "/"
+        regex = "(.*)/(.*)/(.*)"
+        replacement = "${1}/${2}-${3}"
+        target_label = "job"
+      }
+      rule {
+        target_label = "cluster"
+        replacement = "{{- .Values.clusterName -}}"
+      }
+    }
     {{- end }}
+
+    // Traces
 
     {{- if or .Values.local.traces.enabled .Values.cloud.traces.enabled }}
     // Shamelessly copied from https://github.com/grafana/intro-to-mlt/blob/main/agent/config.river
