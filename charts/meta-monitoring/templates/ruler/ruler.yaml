@@ -1,0 +1,126 @@
+{{- if or (or .Values.dashboards.logs.enabled .Values.dashboards.metrics.enabled) .Values.dashboards.traces.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meta-mimir-ruler-for-dashboards
+  namespace: meta
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: ruler-for-dashboards
+      app.kubernetes.io/instance: meta
+      app.kubernetes.io/name: mimir
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: ruler-for-dashboards
+        app.kubernetes.io/instance: meta
+        app.kubernetes.io/name: mimir
+      namespace: meta
+    spec:
+      containers:
+        - args:
+            - -target=ruler
+            - -log.level=debug
+            - -ruler-storage.backend=local
+            - -ruler-storage.local.directory=/etc/rules
+            - -ruler.ring.prefix=dashboards/
+            - -config.expand-env=true
+            - -config.file=/etc/mimir/mimir.yaml
+          image: grafana/mimir:2.8.0
+          imagePullPolicy: IfNotPresent
+          name: ruler
+          ports:
+            - containerPort: 8080
+              name: http-metrics
+              protocol: TCP
+            - containerPort: 9095
+              name: grpc
+              protocol: TCP
+            - containerPort: 7946
+              name: memberlist
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /ready
+              port: http-metrics
+              scheme: HTTP
+            initialDelaySeconds: 45
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /etc/mimir
+              name: config
+            - mountPath: /var/mimir
+              name: runtime-config
+            - mountPath: /data
+              name: storage
+            - mountPath: /active-query-tracker
+              name: active-queries
+            - mountPath: /etc/rules/anonymous
+              name: rules
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 10001
+        runAsGroup: 10001
+        runAsNonRoot: true
+        runAsUser: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccount: meta-mimir
+      serviceAccountName: meta-mimir
+      terminationGracePeriodSeconds: 180
+      topologySpreadConstraints:
+        - labelSelector:
+            matchLabels:
+              app.kubernetes.io/component: ruler
+              app.kubernetes.io/instance: meta
+              app.kubernetes.io/name: mimir
+          maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+      volumes:
+        - configMap:
+            defaultMode: 420
+            items:
+              - key: mimir.yaml
+                path: mimir.yaml
+            name: meta-mimir-config
+          name: config
+        - configMap:
+            defaultMode: 420
+            name: meta-mimir-runtime
+          name: runtime-config
+        - emptyDir: {}
+          name: storage
+        - emptyDir: {}
+          name: active-queries
+        - configMap:
+            defaultMode: 420
+            name: rules
+          name: rules
+{{- end }}
