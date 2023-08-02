@@ -65,15 +65,17 @@ spec:
               name: grafana-pv
             - mountPath: /etc/grafana/provisioning/datasources
               name: datasources-provisioning
+            {{- if or (or .Values.dashboards.logs.enabled .Values.dashboards.metrics.enabled) .Values.dashboards.traces.enabled }}
             - mountPath: /etc/grafana/provisioning/dashboards
-              name: loki-dashboards-provisioning
-            {{- if .Values.local.logs.enabled }}
+              name: dashboards-provisioning
+            {{- end }}
+            {{- if .Values.dashboards.logs.enabled }}
             - mountPath: /var/lib/grafana/dashboards/loki-1
               name: loki-dashboards-1
             - mountPath: /var/lib/grafana/dashboards/loki-2
               name: loki-dashboards-2
             {{- end }}
-            {{- if .Values.local.metrics.enabled }}
+            {{- if .Values.dashboards.metrics.enabled }}
             - mountPath: /var/lib/grafana/dashboards/mimir-1
               name: mimir-dashboards-1
             - mountPath: /var/lib/grafana/dashboards/mimir-2
@@ -85,6 +87,10 @@ spec:
             - mountPath: /var/lib/grafana/dashboards/mimir-5
               name: mimir-dashboards-5
             {{- end }}
+            {{- if .Values.dashboards.traces.enabled }}
+            - mountPath: /var/lib/grafana/dashboards/tempo-1
+              name: tempo-dashboards-1
+            {{- end }}
       volumes:
         - name: grafana-pv
           persistentVolumeClaim:
@@ -92,10 +98,10 @@ spec:
         - name: datasources-provisioning
           configMap:
             name: datasources-provisioning
-        {{- if .Values.local.logs.enabled }}
-        - name: loki-dashboards-provisioning
+        - name: dashboards-provisioning
           configMap:
-            name: loki-dashboards-provisioning
+            name: dashboards-provisioning
+        {{- if .Values.dashboards.logs.enabled }}
         - name: loki-dashboards-1
           configMap:
             name: loki-dashboards-1
@@ -103,10 +109,7 @@ spec:
           configMap:
             name: loki-dashboards-2
         {{- end }}
-        {{- if .Values.local.metrics.enabled }}
-        - name: mimir-dashboards-provisioning
-          configMap:
-            name: mimir-dashboards-provisioning
+        {{- if .Values.dashboards.metrics.enabled }}
         - name: mimir-dashboards-1
           configMap:
             name: mimir-dashboards-1
@@ -122,6 +125,11 @@ spec:
         - name: mimir-dashboards-5
           configMap:
             name: mimir-dashboards-5
+        {{- end }}
+        {{- if .Values.dashboards.traces.enabled }}
+        - name: tempo-dashboards-1
+          configMap:
+            name: tempo-dashboards-1
         {{- end }}
 
 ---
