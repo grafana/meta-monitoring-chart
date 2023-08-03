@@ -80,4 +80,12 @@ data:
         orgId: 1
         type: file
 {{- end }}
+      - disableDeletion: true
+        editable: false
+        folder: Agent
+        name: agent-1
+        options:
+          path: /var/lib/grafana/dashboards/agent-1
+        orgId: 1
+        type: file
 {{- end }}

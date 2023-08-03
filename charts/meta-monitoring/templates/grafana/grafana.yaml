@@ -91,6 +91,8 @@ spec:
             - mountPath: /var/lib/grafana/dashboards/tempo-1
               name: tempo-dashboards-1
             {{- end }}
+            - mountPath: /var/lib/grafana/dashboards/agent-1
+              name: agent-dashboards-1
       volumes:
         - name: grafana-pv
           persistentVolumeClaim:
@@ -131,6 +133,9 @@ spec:
           configMap:
             name: tempo-dashboards-1
         {{- end }}
+        - name: agent-dashboards-1
+          configMap:
+            name: agent-dashboards-1
 
 ---
 apiVersion: v1
