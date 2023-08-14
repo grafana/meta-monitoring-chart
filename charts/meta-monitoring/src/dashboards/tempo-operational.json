@@ -441,7 +441,7 @@
    "pluginVersion": "9.0.0-d373beebpre",
    "targets": [
     {
-     "expr": "rate(container_cpu_usage_seconds_total{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"/.*$component.*\", container!=\"POD\"}[$__rate_interval])",
+     "expr": "rate(container_cpu_usage_seconds_total{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\".*$component.*\", container!=\"POD\"}[$__rate_interval])",
      "interval": "",
      "intervalFactor": 5,
      "legendFormat": "{{pod}}",
@@ -537,7 +537,7 @@
    "pluginVersion": "9.0.0-d373beebpre",
    "targets": [
     {
-     "expr": "container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"/.*$component.*\", container!=\"POD\"}",
+     "expr": "container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\".*$component.*\", container!=\"POD\"}",
      "interval": "",
      "legendFormat": "{{pod}}",
      "refId": "A"
@@ -632,14 +632,14 @@
    "pluginVersion": "9.0.0-d373beebpre",
    "targets": [
     {
-     "expr": "rate(container_network_receive_bytes_total{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"/.*$component.*\"}[$__rate_interval])",
+     "expr": "rate(container_network_receive_bytes_total{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\".*$component.*\"}[$__rate_interval])",
      "hide": false,
      "interval": "",
      "legendFormat": "rx-{{pod}}",
      "refId": "A"
     },
     {
-     "expr": "rate(container_network_transmit_bytes_total{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"/.*$component.*\"}[$__rate_interval])",
+     "expr": "rate(container_network_transmit_bytes_total{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\".*$component.*\"}[$__rate_interval])",
      "hide": false,
      "interval": "",
      "legendFormat": "tx-{{pod}}",
@@ -735,7 +735,7 @@
    "pluginVersion": "9.0.0-d373beebpre",
    "targets": [
     {
-     "expr": "kubelet_volume_stats_available_bytes{cluster=\"$cluster\", namespace=\"$namespace\", persistentvolumeclaim=~\"/.*$component.*\"}",
+     "expr": "kubelet_volume_stats_available_bytes{cluster=\"$cluster\", namespace=\"$namespace\", persistentvolumeclaim=~\".*$component.*\"}",
      "legendFormat": "{{persistentvolumeclaim}}",
      "refId": "A"
     }
@@ -829,7 +829,7 @@
    "pluginVersion": "9.0.0-d373beebpre",
    "targets": [
     {
-     "expr": "rate(promtail_custom_bad_words_total{cluster=\"$cluster\", exported_namespace=\"$namespace\", app=~\"/.*$component.*\"}[$__rate_interval])",
+     "expr": "rate(promtail_custom_bad_words_total{cluster=\"$cluster\", exported_namespace=\"$namespace\", app=~\".*$component.*\"}[$__rate_interval])",
      "interval": "",
      "legendFormat": "{{exported_pod}}",
      "refId": "A"
