@@ -621,7 +621,7 @@
      "steppedLine": false,
      "targets": [
       {
-       "expr": "sum by(instance) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/distributor\"})",
+       "expr": "sum by(instance) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/.*distributor\"})",
        "format": "time_series",
        "interval": "1m",
        "intervalFactor": 2,
@@ -948,7 +948,7 @@
      "steppedLine": false,
      "targets": [
       {
-       "expr": "sum by(instance) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/ingester\"})",
+       "expr": "sum by(instance) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/.*ingester\"})",
        "format": "time_series",
        "interval": "1m",
        "intervalFactor": 2,
@@ -1275,7 +1275,7 @@
      "steppedLine": false,
      "targets": [
       {
-       "expr": "sum by(instance) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/metrics-generator\"})",
+       "expr": "sum by(instance) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/.*metrics-generator\"})",
        "format": "time_series",
        "interval": "1m",
        "intervalFactor": 2,
@@ -1602,7 +1602,7 @@
      "steppedLine": false,
      "targets": [
       {
-       "expr": "sum by(instance) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/query-frontend\"})",
+       "expr": "sum by(instance) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/.*query-frontend\"})",
        "format": "time_series",
        "interval": "1m",
        "intervalFactor": 2,
@@ -1929,7 +1929,7 @@
      "steppedLine": false,
      "targets": [
       {
-       "expr": "sum by(instance) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/querier\"})",
+       "expr": "sum by(instance) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/.*querier\"})",
        "format": "time_series",
        "interval": "1m",
        "intervalFactor": 2,
@@ -2256,7 +2256,7 @@
      "steppedLine": false,
      "targets": [
       {
-       "expr": "sum by(instance) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/compactor\"})",
+       "expr": "sum by(instance) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/.*compactor\"})",
        "format": "time_series",
        "interval": "1m",
        "intervalFactor": 2,
