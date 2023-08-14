@@ -161,7 +161,7 @@
    "pluginVersion": "9.0.0-d373beebpre",
    "targets": [
     {
-     "expr": "rate(go_gc_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}[$__rate_interval])",
+     "expr": "rate(go_gc_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}[$__rate_interval])",
      "interval": "",
      "legendFormat": "{{pod}}",
      "refId": "A"
@@ -256,7 +256,7 @@
    "pluginVersion": "9.0.0-d373beebpre",
    "targets": [
     {
-     "expr": "go_memstats_heap_inuse_bytes{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}",
+     "expr": "go_memstats_heap_inuse_bytes{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}",
      "interval": "",
      "legendFormat": "{{pod}}",
      "refId": "A"
@@ -351,7 +351,7 @@
    "pluginVersion": "9.0.0-d373beebpre",
    "targets": [
     {
-     "expr": "go_goroutines{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}",
+     "expr": "go_goroutines{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}",
      "legendFormat": "{{pod}}",
      "refId": "A"
     }
@@ -441,7 +441,7 @@
    "pluginVersion": "9.0.0-d373beebpre",
    "targets": [
     {
-     "expr": "rate(container_cpu_usage_seconds_total{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$component.*\", container!=\"POD\"}[$__rate_interval])",
+     "expr": "rate(container_cpu_usage_seconds_total{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"/.*$component.*\", container!=\"POD\"}[$__rate_interval])",
      "interval": "",
      "intervalFactor": 5,
      "legendFormat": "{{pod}}",
@@ -537,7 +537,7 @@
    "pluginVersion": "9.0.0-d373beebpre",
    "targets": [
     {
-     "expr": "container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$component.*\", container!=\"POD\"}",
+     "expr": "container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"/.*$component.*\", container!=\"POD\"}",
      "interval": "",
      "legendFormat": "{{pod}}",
      "refId": "A"
@@ -632,14 +632,14 @@
    "pluginVersion": "9.0.0-d373beebpre",
    "targets": [
     {
-     "expr": "rate(container_network_receive_bytes_total{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$component.*\"}[$__rate_interval])",
+     "expr": "rate(container_network_receive_bytes_total{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"/.*$component.*\"}[$__rate_interval])",
      "hide": false,
      "interval": "",
      "legendFormat": "rx-{{pod}}",
      "refId": "A"
     },
     {
-     "expr": "rate(container_network_transmit_bytes_total{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$component.*\"}[$__rate_interval])",
+     "expr": "rate(container_network_transmit_bytes_total{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"/.*$component.*\"}[$__rate_interval])",
      "hide": false,
      "interval": "",
      "legendFormat": "tx-{{pod}}",
@@ -735,7 +735,7 @@
    "pluginVersion": "9.0.0-d373beebpre",
    "targets": [
     {
-     "expr": "kubelet_volume_stats_available_bytes{cluster=\"$cluster\", namespace=\"$namespace\", persistentvolumeclaim=~\"$component.*\"}",
+     "expr": "kubelet_volume_stats_available_bytes{cluster=\"$cluster\", namespace=\"$namespace\", persistentvolumeclaim=~\"/.*$component.*\"}",
      "legendFormat": "{{persistentvolumeclaim}}",
      "refId": "A"
     }
@@ -829,7 +829,7 @@
    "pluginVersion": "9.0.0-d373beebpre",
    "targets": [
     {
-     "expr": "rate(promtail_custom_bad_words_total{cluster=\"$cluster\", exported_namespace=\"$namespace\", app=~\"$component.*\"}[$__rate_interval])",
+     "expr": "rate(promtail_custom_bad_words_total{cluster=\"$cluster\", exported_namespace=\"$namespace\", app=~\"/.*$component.*\"}[$__rate_interval])",
      "interval": "",
      "legendFormat": "{{exported_pod}}",
      "refId": "A"
@@ -934,7 +934,7 @@
      "pluginVersion": "9.0.0-d373beebpre",
      "targets": [
       {
-       "expr": "tempodb_work_queue_length{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"} / tempodb_work_queue_max{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}",
+       "expr": "tempodb_work_queue_length{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"} / tempodb_work_queue_max{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}",
        "legendFormat": "{{instance}}",
        "refId": "A"
       }
@@ -1024,17 +1024,17 @@
      "pluginVersion": "9.0.0-d373beebpre",
      "targets": [
       {
-       "expr": "sum(increase(tempodb_compaction_errors_total{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}[$__rate_interval])) by (job)",
+       "expr": "sum(increase(tempodb_compaction_errors_total{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}[$__rate_interval])) by (job)",
        "legendFormat": "compaction_err",
        "refId": "B"
       },
       {
-       "expr": "sum(increase(tempodb_retention_errors_total{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}[$__rate_interval])) by (job)",
+       "expr": "sum(increase(tempodb_retention_errors_total{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}[$__rate_interval])) by (job)",
        "legendFormat": "retention_err",
        "refId": "C"
       },
       {
-       "expr": "sum(increase(tempodb_blocklist_poll_errors_total{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}[$__rate_interval])) by (job)",
+       "expr": "sum(increase(tempodb_blocklist_poll_errors_total{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}[$__rate_interval])) by (job)",
        "legendFormat": "blocklist_err",
        "refId": "D"
       }
@@ -1124,18 +1124,18 @@
      "pluginVersion": "9.0.0-d373beebpre",
      "targets": [
       {
-       "expr": "histogram_quantile(.99, sum(rate(tempodb_blocklist_poll_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}[$__rate_interval])) by (le))",
+       "expr": "histogram_quantile(.99, sum(rate(tempodb_blocklist_poll_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}[$__rate_interval])) by (le))",
        "interval": "",
        "legendFormat": ".99",
        "refId": "A"
       },
       {
-       "expr": "histogram_quantile(.9, sum(rate(tempodb_blocklist_poll_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}[$__rate_interval])) by (le))",
+       "expr": "histogram_quantile(.9, sum(rate(tempodb_blocklist_poll_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}[$__rate_interval])) by (le))",
        "legendFormat": ".9",
        "refId": "B"
       },
       {
-       "expr": "histogram_quantile(.5, sum(rate(tempodb_blocklist_poll_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}[$__rate_interval])) by (le))",
+       "expr": "histogram_quantile(.5, sum(rate(tempodb_blocklist_poll_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}[$__rate_interval])) by (le))",
        "interval": "",
        "legendFormat": ".5",
        "refId": "C"
@@ -1227,7 +1227,7 @@
      "targets": [
       {
        "exemplar": true,
-       "expr": "avg(tempodb_blocklist_length{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}) by (tenant)",
+       "expr": "avg(tempodb_blocklist_length{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}) by (tenant)",
        "instant": false,
        "interval": "",
        "legendFormat": "{{tenant}}",
@@ -1422,13 +1422,13 @@
      "pluginVersion": "9.0.0-d373beebpre",
      "targets": [
       {
-       "expr": "sum(increase(tempodb_retention_deleted_total{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}[$__rate_interval]))",
+       "expr": "sum(increase(tempodb_retention_deleted_total{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}[$__rate_interval]))",
        "interval": "",
        "legendFormat": "deleted",
        "refId": "A"
       },
       {
-       "expr": "sum(increase(tempodb_retention_marked_for_deletion_total{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}[$__rate_interval]))",
+       "expr": "sum(increase(tempodb_retention_marked_for_deletion_total{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}[$__rate_interval]))",
        "interval": "",
        "legendFormat": "marked_for_deletion",
        "refId": "B"
@@ -5496,7 +5496,7 @@
      "pluginVersion": "9.0.0-d373beebpre",
      "targets": [
       {
-       "expr": "sum(rate(tempo_memcache_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}[$__rate_interval])) by (status_code, method)",
+       "expr": "sum(rate(tempo_memcache_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}[$__rate_interval])) by (status_code, method)",
        "interval": "",
        "legendFormat": "{{status_code}}-{{method}}",
        "refId": "A"
@@ -5590,19 +5590,19 @@
      "pluginVersion": "9.0.0-d373beebpre",
      "targets": [
       {
-       "expr": "histogram_quantile(.99, sum(rate(tempo_memcache_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}[$__rate_interval])) by (method, le))",
+       "expr": "histogram_quantile(.99, sum(rate(tempo_memcache_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}[$__rate_interval])) by (method, le))",
        "interval": "",
        "legendFormat": ".99-{{method}}",
        "refId": "A"
       },
       {
-       "expr": "histogram_quantile(.9, sum(rate(tempo_memcache_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}[$__rate_interval])) by (method, le))",
+       "expr": "histogram_quantile(.9, sum(rate(tempo_memcache_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}[$__rate_interval])) by (method, le))",
        "interval": "",
        "legendFormat": ".9-{{method}}",
        "refId": "B"
       },
       {
-       "expr": "histogram_quantile(.5, sum(rate(tempo_memcache_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}[$__rate_interval])) by (method, le))",
+       "expr": "histogram_quantile(.5, sum(rate(tempo_memcache_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}[$__rate_interval])) by (method, le))",
        "interval": "",
        "legendFormat": ".5-{{method}}",
        "refId": "C"
@@ -5714,7 +5714,7 @@
      "pluginVersion": "9.0.0-d373beebpre",
      "targets": [
       {
-       "expr": "sum(rate(tempodb_backend_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}[$__rate_interval])) by (status_code, operation)",
+       "expr": "sum(rate(tempodb_backend_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}[$__rate_interval])) by (status_code, operation)",
        "interval": "",
        "legendFormat": "{{status_code}}-{{operation}}",
        "refId": "A"
@@ -5808,17 +5808,17 @@
      "pluginVersion": "9.0.0-d373beebpre",
      "targets": [
       {
-       "expr": "histogram_quantile(.99, sum(rate(tempodb_backend_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}[$__rate_interval])) by (operation, le))",
+       "expr": "histogram_quantile(.99, sum(rate(tempodb_backend_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}[$__rate_interval])) by (operation, le))",
        "legendFormat": ".99-{{operation}}",
        "refId": "A"
       },
       {
-       "expr": "histogram_quantile(.9, sum(rate(tempodb_backend_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}[$__rate_interval])) by (operation, le))",
+       "expr": "histogram_quantile(.9, sum(rate(tempodb_backend_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}[$__rate_interval])) by (operation, le))",
        "legendFormat": ".9-{{operation}}",
        "refId": "B"
       },
       {
-       "expr": "histogram_quantile(.5, sum(rate(tempodb_backend_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}[$__rate_interval])) by (operation, le))",
+       "expr": "histogram_quantile(.5, sum(rate(tempodb_backend_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}[$__rate_interval])) by (operation, le))",
        "legendFormat": ".5-{{operation}}",
        "refId": "C"
       }
@@ -5934,7 +5934,7 @@
         "type": "prometheus",
         "uid": "P666011C0B63BDCA4"
        },
-       "expr": "gauge_memberlist_health_score{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}",
+       "expr": "gauge_memberlist_health_score{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}",
        "interval": "",
        "legendFormat": "{{instance}}",
        "refId": "A"
@@ -6028,7 +6028,7 @@
      "pluginVersion": "9.0.0-d373beebpre",
      "targets": [
       {
-       "expr": "tempo_memberlist_client_cluster_node_health_score{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"}",
+       "expr": "tempo_memberlist_client_cluster_node_health_score{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"}",
        "interval": "",
        "legendFormat": "{{instance}}",
        "refId": "A"
@@ -6122,13 +6122,13 @@
      "pluginVersion": "9.0.0-d373beebpre",
      "targets": [
       {
-       "expr": "min(tempo_memberlist_client_cluster_members_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"})",
+       "expr": "min(tempo_memberlist_client_cluster_members_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"})",
        "interval": "",
        "legendFormat": "min",
        "refId": "A"
       },
       {
-       "expr": "max(tempo_memberlist_client_cluster_members_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"})",
+       "expr": "max(tempo_memberlist_client_cluster_members_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"})",
        "interval": "",
        "legendFormat": "max",
        "refId": "B"
@@ -6227,7 +6227,7 @@
         "type": "prometheus",
         "uid": "P666011C0B63BDCA4"
        },
-       "expr": "min(tempo_memberlist_client_kv_store_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"})",
+       "expr": "min(tempo_memberlist_client_kv_store_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"})",
        "interval": "",
        "legendFormat": "min",
        "refId": "A"
@@ -6237,7 +6237,7 @@
         "type": "prometheus",
         "uid": "P666011C0B63BDCA4"
        },
-       "expr": "max(tempo_memberlist_client_kv_store_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace/$component\"})",
+       "expr": "max(tempo_memberlist_client_kv_store_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"$namespace//.*$component\"})",
        "interval": "",
        "legendFormat": "max",
        "refId": "B"
