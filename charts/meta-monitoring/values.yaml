@@ -71,13 +71,22 @@ loki:
     storage:
       type: "s3"
       s3:
-        endpoint: "meta-minio.meta.svc:9000"
-        access_key_id: rootuser
-        secret_access_key: rootpassword
         insecure: true
+        s3ForcePathStyle: true
       bucketNames:
         chunks: loki-chunks
         ruler: loki-ruler
+    structuredConfig:
+      common:
+        storage:
+          s3:
+            access_key_id: "{{ .Values.global.minio.rootUser }}"
+            endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
+            secret_access_key: "{{ .Values.global.minio.rootPassword }}"
+      compactor:
+        retention_enabled: true
+      limits_config:
+        retention_period: 24h
   monitoring:
     dashboards:
       enabled: false
