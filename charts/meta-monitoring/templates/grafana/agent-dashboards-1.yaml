@@ -1,0 +1,19 @@
+{{- if .Values.dashboards.traces.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agent-dashboards-1
+  namespace: {{ $.Release.Namespace }}
+data:
+  "agent-logs-pipeline.json": |
+    {{ $.Files.Get "src/dashboards/agent-logs-pipeline.json" | fromJson | toJson }}
+  "agent-operational.json": |
+    {{ $.Files.Get "src/dashboards/agent-operational.json" | fromJson | toJson }}
+  "agent-remote-write.json": |
+    {{ $.Files.Get "src/dashboards/agent-remote-write.json" | fromJson | toJson }}
+  "agent-tracing-pipeline.json": |
+    {{ $.Files.Get "src/dashboards/agent-tracing-pipeline.json" | fromJson | toJson }}
+  "agent.json": |
+    {{ $.Files.Get "src/dashboards/agent.json" | fromJson | toJson }}
+{{- end }}
