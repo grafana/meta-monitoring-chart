@@ -128,6 +128,8 @@ mimir-distributed:
           endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
           secret_access_key: "{{ .Values.global.minio.rootPassword }}"
           insecure: true
+      limits:
+        compactor_blocks_retention_period: 24h
 
 tempo-distributed:
   tempo:
@@ -141,6 +143,9 @@ tempo-distributed:
             access_key: "{{ .Values.global.minio.rootUser }}"
             secret_key: "{{ .Values.global.minio.rootPassword }}"
             insecure: true
+      compactor:
+        compaction:
+          block_retention: 24h
   traces:
     otlp:
       http:
