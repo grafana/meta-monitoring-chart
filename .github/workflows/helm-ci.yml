@@ -3,10 +3,10 @@ name: helm-ci
 on:
   pull_request:
     paths:
-      - "production/helm/**"
+      - "charts/meta-monitoring/**"
 
 env:
-  CT_CONFIGFILE: production/helm/ct.yaml
+  CT_CONFIGFILE: charts/meta-monitoring/ct.yaml
 
 jobs:
   call-lint:
