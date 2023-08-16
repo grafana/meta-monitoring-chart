@@ -15,25 +15,25 @@ local:
   traces:
     enabled: true
   minio:
-    enabled: true # This should be set to true if any of the previous is enabled
+    enabled: true  # This should be set to true if any of the previous is enabled
 
 # Set to true to write logs, metrics or traces to Grafana Cloud
 cloud:
   logs:
     enabled: false
-    endpoint: 
-    username: 
-    password: 
+    endpoint:
+    username:
+    password:
   metrics:
     enabled: false
-    endpoint: 
-    username: 
-    password: 
+    endpoint:
+    username:
+    password:
   traces:
     enabled: false
-    endpoint: 
-    username: 
-    password: 
+    endpoint:
+    username:
+    password:
 
 # Adding regexes here will add a stage.replace block for logs. For more information see
 # https://grafana.com/docs/agent/latest/flow/reference/components/loki.process/#stagereplace-block
