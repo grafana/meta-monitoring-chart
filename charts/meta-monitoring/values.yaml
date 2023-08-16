@@ -9,31 +9,31 @@ clusterName: "meta-monitoring"
 # Set to true for a local version of logs, metrics or traces
 local:
   logs:
-    enabled: false
+    enabled: true
   metrics:
-    enabled: false
+    enabled: true
   traces:
-    enabled: false
+    enabled: true
   minio:
-    enabled: false  # This should be set to true if any of the previous is enabled
+    enabled: true # This should be set to true if any of the previous is enabled
 
 # Set to true to write logs, metrics or traces to Grafana Cloud
 cloud:
   logs:
-    enabled: true
-    endpoint: CHANGEME
-    username: CHANGEME
-    password: CHANGEME
+    enabled: false
+    endpoint: 
+    username: 
+    password: 
   metrics:
-    enabled: true
-    endpoint: CHANGEME
-    username: CHANGEME
-    password: CHANGEME
+    enabled: false
+    endpoint: 
+    username: 
+    password: 
   traces:
-    enabled: true
-    endpoint: CHANGEME
-    username: CHANGEME
-    password: CHANGEME
+    enabled: false
+    endpoint: 
+    username: 
+    password: 
 
 # Adding regexes here will add a stage.replace block for logs. For more information see
 # https://grafana.com/docs/agent/latest/flow/reference/components/loki.process/#stagereplace-block
