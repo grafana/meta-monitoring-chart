@@ -77,19 +77,19 @@ jobs:
         uses: helm/kind-action@v1.8.0
         if: steps.list-changed.outputs.changed == 'true'
 
-      - name: Install prometheus operator
-        id: install-prometheus
-        if: steps.list-changed.outputs.changed == 'true'
-        run: |
-          kubectl create namespace prometheus
+      # - name: Install prometheus operator
+      #   id: install-prometheus
+      #   if: steps.list-changed.outputs.changed == 'true'
+      #   run: |
+      #     kubectl create namespace prometheus
 
-          helm install prometheus prometheus-community/kube-prometheus-stack \
-            --namespace prometheus \
-            --set grafana.enabled=false \
-            --set prometheus.prometheusSpec.serviceMonitorSelector.matchLabels.release=prometheus
+      #     helm install prometheus prometheus-community/kube-prometheus-stack \
+      #       --namespace prometheus \
+      #       --set grafana.enabled=false \
+      #       --set prometheus.prometheusSpec.serviceMonitorSelector.matchLabels.release=prometheus
 
-          kubectl --namespace prometheus get pods -l "release=prometheus"
-          kubectl --namespace prometheus get services -l "release=prometheus"
+      #     kubectl --namespace prometheus get pods -l "release=prometheus"
+      #     kubectl --namespace prometheus get services -l "release=prometheus"
 
       - name: Run chart-testing (install)
         run: |
