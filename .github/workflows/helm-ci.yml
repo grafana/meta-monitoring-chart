@@ -6,7 +6,7 @@ on:
       - "charts/meta-monitoring/**"
 
 env:
-  CT_CONFIGFILE: charts/meta-monitoring/src/ct.yaml
+  CT_CONFIGFILE: charts/meta-monitoring/ct.yaml
 
 jobs:
   call-lint:
