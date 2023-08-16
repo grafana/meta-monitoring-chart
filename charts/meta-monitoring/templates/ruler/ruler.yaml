@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: meta-mimir-ruler-for-dashboards
-  namespace: meta
+  namespace: {{ $.Release.Namespace }}
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -24,7 +24,7 @@ spec:
         app.kubernetes.io/component: ruler-for-dashboards
         app.kubernetes.io/instance: meta
         app.kubernetes.io/name: mimir
-      namespace: meta
+      namespace: {{ $.Release.Namespace }}
     spec:
       containers:
         - args:
