@@ -36,6 +36,8 @@ Both modes can be enabled at the same time.
 helm install -n meta --skip-crds -f values.yaml meta ./charts/meta-monitoring
 ```
 
+If the platform supports CRDs the `--skip-crds` option can be removed. However the CRDs are not used by this chart.
+
 For more instructions including how to update the chart go to the [installation](docs/installation.md) page.
 
 ## Supported features
