@@ -21,19 +21,19 @@ local:
 cloud:
   logs:
     enabled: true
-    endpoint:
-    username:
-    password:
+    endpoint: CHANGEME
+    username: CHANGEME
+    password: CHANGEME
   metrics:
     enabled: true
-    endpoint:
-    username:
-    password:
+    endpoint: CHANGEME
+    username: CHANGEME
+    password: CHANGEME
   traces:
     enabled: true
-    endpoint:
-    username:
-    password:
+    endpoint: CHANGEME
+    username: CHANGEME
+    password: CHANGEME
 
 # Adding regexes here will add a stage.replace block for logs. For more information see
 # https://grafana.com/docs/agent/latest/flow/reference/components/loki.process/#stagereplace-block
