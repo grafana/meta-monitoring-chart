@@ -2,7 +2,7 @@
 remote: origin
 target-branch: main
 chart-dirs:
-  - charts/meta-monitoring
+  - charts
 chart-repos:
   - grafana=https://grafana.github.io/helm-charts
   - minio=https://charts.min.io
