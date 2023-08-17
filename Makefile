@@ -6,5 +6,5 @@ help:
 
 .PHONY: helm-lint
 
-helm-lint: ## run helm linter
+helm-lint: ## Run helm linter
 	$(MAKE) -BC charts/meta-monitoring lint
