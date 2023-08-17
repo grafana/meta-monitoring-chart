@@ -14,6 +14,6 @@ data:
     {{ $.Files.Get "src/dashboards/agent-remote-write.json" | fromJson | toJson }}
   "agent-tracing-pipeline.json": |
     {{ $.Files.Get "src/dashboards/agent-tracing-pipeline.json" | fromJson | toJson }}
-  "agent.json": |
+  "agent-overview.json": |
     {{ $.Files.Get "src/dashboards/agent.json" | fromJson | toJson }}
 {{- end }}
