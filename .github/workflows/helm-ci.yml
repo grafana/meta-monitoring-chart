@@ -58,3 +58,8 @@ jobs:
         if: steps.list-changed.outputs.changed == 'true'
         with:
           config: tools/kind.config
+
+      - name: Run chart-testing (install)
+        run: |
+          changed=$(ct list-changed --config "${CT_CONFIGFILE}")
+          ct install --config "${CT_CONFIGFILE}"
