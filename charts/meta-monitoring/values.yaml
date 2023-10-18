@@ -90,7 +90,7 @@ loki:
       compactor:
         retention_enabled: true
       limits_config:
-        retention_period: 24h
+        retention_period: 30d
   monitoring:
     dashboards:
       enabled: false
@@ -142,7 +142,7 @@ mimir-distributed:
           secret_access_key: "{{ .Values.global.minio.rootPassword }}"
           insecure: true
       limits:
-        compactor_blocks_retention_period: 24h
+        compactor_blocks_retention_period: 30d
 
 tempo-distributed:
   tempo:
@@ -158,7 +158,7 @@ tempo-distributed:
             insecure: true
       compactor:
         compaction:
-          block_retention: 24h
+          block_retention: 30d
   traces:
     otlp:
       http:
