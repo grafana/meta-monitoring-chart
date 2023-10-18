@@ -50,6 +50,7 @@ jobs:
           if [[ -n "$changed" ]]; then
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
+
       - name: Run chart-testing (lint)
         run: ct lint --config "${CT_CONFIGFILE}" --check-version-increment=false
 
