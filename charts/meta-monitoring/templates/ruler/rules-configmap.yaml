@@ -1,3 +1,4 @@
+{{- if .Values.local.metrics.enabled }}
 {{- if or (or .Values.dashboards.logs.enabled .Values.dashboards.metrics.enabled) .Values.dashboards.traces.enabled }}
 ---
 apiVersion: v1
@@ -14,5 +15,6 @@ data:
 {{- end }}
 {{- if .Values.dashboards.traces.enabled }}
 {{ ($.Files.Glob "src/rules/tempo-rules.yaml").AsConfig | indent 2 }}
+{{- end }}
 {{- end }}
 {{- end }}

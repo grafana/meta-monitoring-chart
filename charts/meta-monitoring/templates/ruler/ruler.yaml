@@ -1,9 +1,10 @@
+{{- if .Values.local.metrics.enabled }}
 {{- if or (or .Values.dashboards.logs.enabled .Values.dashboards.metrics.enabled) .Values.dashboards.traces.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: meta-mimir-ruler-for-dashboards
-  namespace: meta
+  namespace: {{ $.Release.Namespace }}
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -24,7 +25,7 @@ spec:
         app.kubernetes.io/component: ruler-for-dashboards
         app.kubernetes.io/instance: meta
         app.kubernetes.io/name: mimir
-      namespace: meta
+      namespace: {{ $.Release.Namespace }}
     spec:
       containers:
         - args:
@@ -91,8 +92,6 @@ spec:
         runAsUser: 10001
         seccompProfile:
           type: RuntimeDefault
-      serviceAccount: meta-mimir
-      serviceAccountName: meta-mimir
       terminationGracePeriodSeconds: 180
       topologySpreadConstraints:
         - labelSelector:
@@ -123,4 +122,5 @@ spec:
             defaultMode: 420
             name: rules
           name: rules
+{{- end }}
 {{- end }}

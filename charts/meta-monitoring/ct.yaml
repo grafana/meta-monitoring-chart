@@ -1,0 +1,11 @@
+---
+remote: origin
+target-branch: main
+chart-dirs:
+  - charts
+chart-repos:
+  - grafana=https://grafana.github.io/helm-charts
+  - minio=https://charts.min.io
+helm-extra-args: --timeout 1200s
+check-version-increment: false
+validate-maintainers: false
