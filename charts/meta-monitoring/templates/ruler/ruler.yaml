@@ -1,3 +1,4 @@
+{{- if .Values.local.metrics.enabled }}
 {{- if or (or .Values.dashboards.logs.enabled .Values.dashboards.metrics.enabled) .Values.dashboards.traces.enabled }}
 apiVersion: apps/v1
 kind: Deployment
@@ -91,8 +92,6 @@ spec:
         runAsUser: 10001
         seccompProfile:
           type: RuntimeDefault
-      serviceAccount: meta-mimir
-      serviceAccountName: meta-mimir
       terminationGracePeriodSeconds: 180
       topologySpreadConstraints:
         - labelSelector:
@@ -123,4 +122,5 @@ spec:
             defaultMode: 420
             name: rules
           name: rules
+{{- end }}
 {{- end }}
