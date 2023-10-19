@@ -14,12 +14,12 @@ cloud:
     username: to_be_changed
     password: to_be_changed
   metrics:
-    enabled: false
+    enabled: true
     endpoint: to_be_changed
     username: to_be_changed
     password: to_be_changed
   traces:
-    enabled: false
+    enabled: true
     endpoint: to_be_changed
     username: to_be_changed
     password: to_be_changed
