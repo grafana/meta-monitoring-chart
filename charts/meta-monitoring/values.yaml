@@ -35,14 +35,23 @@ local:
   minio:
     enabled: false  # This should be set to true if any of the previous is enabled
 
-# Adding regexes here will add a stage.replace block for logs. For more information see
-# https://grafana.com/docs/agent/latest/flow/reference/components/loki.process/#stagereplace-block
 logs:
+  # Adding regexes here will add a stage.replace block for logs. For more information see
+  # https://grafana.com/docs/agent/latest/flow/reference/components/loki.process/#stagereplace-block
   piiRegexes:
   # This example replaces the word after password with *****
   # - expression: "password (\\\\S+)"
   #   source: ""         # Empty uses the log message
   #   replace: "*****""
+
+  # The lines matching these will be kept in Loki
+  retain:
+  # This shows the queries
+  - caller=metrics.go
+  # This shows any errors
+  - level=error
+  # This shows the ingest requests and is very noisy. Uncomment to include.
+  # - caller=push.go
 
 # Set enabled = true to add the default logs/metrics/traces dashboards to the local Grafana
 dashboards:
