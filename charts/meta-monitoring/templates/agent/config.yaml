@@ -45,16 +45,25 @@ data:
       forward_to = [ {{ include "agent.loki_process_targets" . }} ]
     }
 
-    {{- if not (empty .Values.logs.piiRegexes) }}
-    loki.process "PII" {
+    {{- if or (not (empty .Values.logs.retain)) (not (empty .Values.logs.piiRegexes)) }}
+    loki.process "filter" {
       forward_to = [ {{ include "agent.loki_write_targets" . }} ]
 
+      {{- if not (empty .Values.logs.retain) }}
+      stage.match {
+        selector = "{cluster=\"{{- .Values.clusterName -}}\"} !~ \"{{ join "|" .Values.logs.retain }}\""
+        action   = "drop"
+      }
+      {{- end }}
+
+      {{- if not (empty .Values.logs.piiRegexes) }}
       {{- range .Values.logs.piiRegexes }}
       stage.replace {
         expression = "{{ .expression }}"
         source = "{{ .source }}"
         replace = "{{ .replace }}"
       }
+      {{- end }}
       {{- end }}
     }
     {{- end }}

@@ -18,10 +18,10 @@
 {{- end }}
 
 {{- define "agent.loki_process_targets" -}}
-{{- if empty .Values.logs.piiRegexes }}
+{{- if and (empty .Values.logs.piiRegexes) (empty .Values.logs.retain) }}
 {{- include "agent.loki_write_targets" . }}
 {{- else }}
-{{- printf "loki.process.PII.receiver" }}
+{{- printf "loki.process.filter.receiver" }}
 {{- end }}
 {{- end }}
 
