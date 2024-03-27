@@ -121,7 +121,6 @@ data:
       targets    = discovery.relabel.all_nodes.output
       forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
 
-      scrape_interval = "15s"
       metrics_path = "/metrics/cadvisor"
       scheme = "https"
 
@@ -135,7 +134,6 @@ data:
       targets    = discovery.relabel.all_nodes.output
       forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
 
-      scrape_interval = "15s"
       metrics_path = "/metrics"
       scheme = "https"
 
@@ -152,7 +150,6 @@ data:
       forward_to = [prometheus.relabel.node_exporter.receiver]
 
       job_name = "node-exporter"
-      scrape_interval = "15s"
     }
 
     prometheus.relabel "node_exporter" {
