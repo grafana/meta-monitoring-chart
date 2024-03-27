@@ -30,7 +30,7 @@ dependencies:
   condition: local.logs.enabled
 - name: grafana-agent
   repository: https://grafana.github.io/helm-charts
-  version: "0.15.0"
+  version: "0.37.0"
 - name: mimir-distributed
   repository: https://grafana.github.io/helm-charts
   version: "4.4.1"

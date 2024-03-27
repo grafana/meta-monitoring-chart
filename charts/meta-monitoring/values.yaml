@@ -118,6 +118,8 @@ loki:
 
 grafana-agent:
   agent:
+    clustering:
+      enabled: true
     configMap:
       create: false
       name: "agent-configmap"
