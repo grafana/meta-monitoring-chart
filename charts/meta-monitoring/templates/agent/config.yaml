@@ -41,6 +41,9 @@ data:
 
     {{- if or .Values.local.logs.enabled .Values.cloud.logs.enabled }}
     loki.source.kubernetes "pods" {
+      clustering {
+        enabled = true
+      }
       targets    = discovery.relabel.rename_meta_labels.output
       forward_to = [ {{ include "agent.loki_process_targets" . }} ]
     }
@@ -73,12 +76,18 @@ data:
 
     {{- if or .Values.local.metrics.enabled .Values.cloud.metrics.enabled }}
     prometheus.scrape "pods" {
+      clustering {
+        enabled = true
+      }
       targets    = discovery.relabel.rename_meta_labels.output
       forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
     }
     {{- if .Values.kubeStateMetrics.enabled }}
 
     prometheus.scrape "kubeStateMetrics" {
+      clustering {
+        enabled = true
+      }
       targets    = [ { "__address__" = "{{ .Values.kubeStateMetrics.endpoint }}" } ]
       forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
     }
@@ -118,6 +127,9 @@ data:
     }
 
     prometheus.scrape "cadvisor" {
+      clustering {
+        enabled = true
+      }
       targets    = discovery.relabel.all_nodes.output
       forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
 
@@ -131,6 +143,9 @@ data:
     }
 
     prometheus.scrape "kubelet" {
+      clustering {
+        enabled = true
+      }
       targets    = discovery.relabel.all_nodes.output
       forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
 
@@ -143,10 +158,13 @@ data:
       }
     }
 
-    prometheus.exporter.unix {}
+    prometheus.exporter.unix "promexporter" {}
 
     prometheus.scrape "node_exporter" {
-      targets = prometheus.exporter.unix.targets
+      clustering {
+        enabled = true
+      }
+      targets = prometheus.exporter.unix.promexporter.targets
       forward_to = [prometheus.relabel.node_exporter.receiver]
 
       job_name = "node-exporter"

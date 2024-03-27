@@ -118,10 +118,26 @@ loki:
 
 grafana-agent:
   agent:
+    clustering:
+      enabled: true
     configMap:
       create: false
       name: "agent-configmap"
       key: 'config.river'
+    resources:
+      requests:
+        cpu: '1000m'
+        memory: '600Mi'
+      limits:
+        memory: '4Gi'
+  controller:
+    type: "statefulset"
+    autoscaling:
+      enabled: true
+      minReplicas: 3
+      maxReplicas: 30
+      targetMemoryUtilizationPercentage: 90
+      targetCPUUtilizationPercentage: 90
 
 mimir-distributed:
   minio:

@@ -4,7 +4,7 @@ dependencies:
   version: 5.8.0
 - name: grafana-agent
   repository: https://grafana.github.io/helm-charts
-  version: 0.15.0
+  version: 0.37.0
 - name: mimir-distributed
   repository: https://grafana.github.io/helm-charts
   version: 4.4.1
@@ -14,5 +14,5 @@ dependencies:
 - name: minio
   repository: https://charts.min.io
   version: 5.0.11
-digest: sha256:da0e744b5046eb7972e0bf82d1d0ba4786e9600af63b65f35b16118105248074
-generated: "2023-08-18T10:58:08.978123+01:00"
+digest: sha256:31eae0a46ac4af90db6054af2f3eb15f65affd18dd350cfc2d9e56ae8cb9a3a8
+generated: "2024-03-27T09:18:20.213047Z"
