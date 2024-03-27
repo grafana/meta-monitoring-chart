@@ -32,8 +32,9 @@ data:
         target_label = "job"
       }
       rule {
-        target_label = "cluster"
-        replacement = "{{- .Values.clusterName -}}"
+        source_labels = ["__meta_kubernetes_pod_container_port_name"]
+        regex="(?!http-metrics)"
+        action = "drop"
       }
     }
 
