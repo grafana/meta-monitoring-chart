@@ -8,7 +8,7 @@ data:
     discovery.kubernetes "pods" {
       role = "pod"
       namespaces {
-        own_namespace = false
+        own_namespace = true
         names = [ {{ include "agent.namespaces" . }} ]
       }
     }
