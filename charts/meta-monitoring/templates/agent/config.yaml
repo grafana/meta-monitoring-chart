@@ -31,11 +31,10 @@ data:
         replacement = "${1}/${2}-${3}"
         target_label = "job"
       }
-      // rule {
-      //   source_labels = ["__meta_kubernetes_pod_container_port_name"]
-      //   regex="http-metrics"
-      //   action = "keep"
-      // }
+      rule {
+        target_label = "cluster"
+        replacement = "{{- .Values.clusterName -}}"
+      }
     }
 
     // Logs
@@ -55,7 +54,7 @@ data:
 
       {{- if not (empty .Values.logs.retain) }}
       stage.match {
-        selector = "{cluster=\"{{- .Values.clusterName -}}\"} !~ \"{{ join "|" .Values.logs.retain }}\""
+        selector = "{cluster=\"{{- .Values.clusterName -}}\", namespace=\"{{- .Values.lokiNamespace -}}\"} !~ \"{{ join "|" .Values.logs.retain }}\""
         action   = "drop"
       }
       {{- end }}

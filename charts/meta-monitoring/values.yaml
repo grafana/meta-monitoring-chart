@@ -5,6 +5,7 @@ namespacesToMonitor:
 - tempo
 # The name of the cluster where this will be installed
 clusterName: "meta-monitoring"
+lokiNamespace: "loki"
 httpPort: 3100
 
 # Set to true to write logs, metrics or traces to Grafana Cloud
