@@ -31,11 +31,11 @@ data:
         replacement = "${1}/${2}-${3}"
         target_label = "job"
       }
-      rule {
-        source_labels = ["__meta_kubernetes_pod_container_port_name"]
-        regex="(?!http-metrics)"
-        action = "drop"
-      }
+      // rule {
+      //   source_labels = ["__meta_kubernetes_pod_container_port_name"]
+      //   regex="http-metrics"
+      //   action = "keep"
+      // }
     }
 
     // Logs
