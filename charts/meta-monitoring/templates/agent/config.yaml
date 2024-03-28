@@ -54,7 +54,7 @@ data:
 
       {{- if not (empty .Values.logs.retain) }}
       stage.match {
-        selector = "{cluster=\"{{- .Values.clusterName -}}\"} !~ \"{{ join "|" .Values.logs.retain }}\""
+        selector = "{cluster=\"{{- .Values.clusterName -}}\", namespace=\"{{- .Values.lokiNamespace -}}\"} !~ \"{{ join "|" .Values.logs.retain }}\""
         action   = "drop"
       }
       {{- end }}
