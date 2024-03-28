@@ -85,11 +85,21 @@ data:
       name = "metrics"
     }
 
+    discovery.relabel "only_http_metrics" {
+      targets = discovery.relabel.rename_meta_labels.output
+
+      rule {
+        source_labels = ["__meta_kubernetes_pod_container_port_name"]
+        action = "keep"
+        regex = "http-metrics"
+      }
+    }
+
     prometheus.scrape "pods" {
       clustering {
         enabled = true
       }
-      targets    = discovery.relabel.rename_meta_labels.output
+      targets    = discovery.relabel.only_http_metrics.output
       forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
     }
     {{- if .Values.kubeStateMetrics.enabled }}
