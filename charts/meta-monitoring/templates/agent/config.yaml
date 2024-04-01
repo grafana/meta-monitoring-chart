@@ -40,6 +40,11 @@ data:
     // Logs
 
     {{- if or .Values.local.logs.enabled .Values.cloud.logs.enabled }}
+    remote.kubernetes.secret "logs_credentials" {
+      namespace = "{{- .Values.metaMonitoringNamespace -}}"
+      name = "logs"
+    }
+
     loki.source.kubernetes "pods" {
       clustering {
         enabled = true
@@ -75,6 +80,11 @@ data:
     // Metrics
 
     {{- if or .Values.local.metrics.enabled .Values.cloud.metrics.enabled }}
+    remote.kubernetes.secret "metrics_credentials" {
+      namespace = "{{- .Values.metaMonitoringNamespace -}}"
+      name = "metrics"
+    }
+
     prometheus.scrape "pods" {
       clustering {
         enabled = true
@@ -210,6 +220,11 @@ data:
     // Traces
 
     {{- if or .Values.local.traces.enabled .Values.cloud.traces.enabled }}
+    remote.kubernetes.secret "traces_credentials" {
+      namespace = "{{- .Values.metaMonitoringNamespace -}}"
+      name = "traces"
+    }
+
     // Shamelessly copied from https://github.com/grafana/intro-to-mlt/blob/main/agent/config.river
     otelcol.receiver.otlp "otlp_receiver" {
       // We don't technically need this, but it shows how to change listen address and incoming port.
@@ -278,11 +293,10 @@ data:
     {{- if .Values.cloud.logs.enabled }}
     loki.write "cloud" {
       endpoint {
-        url = "{{- .Values.cloud.logs.endpoint -}}/loki/api/v1/push"
-
+        url = nonsensitive(remote.kubernetes.secret.logs_credentials.data["endpoint"])
         basic_auth {
-          username = "{{- .Values.cloud.logs.username -}}"
-          password = "{{- .Values.cloud.logs.password -}}"
+          username = nonsensitive(remote.kubernetes.secret.logs_credentials.data["username"])
+          password = remote.kubernetes.secret.logs_credentials.data["password"]
         }
       }
     }
@@ -291,11 +305,10 @@ data:
     {{- if .Values.cloud.metrics.enabled }}
     prometheus.remote_write "cloud" {
       endpoint {
-        url = "{{- .Values.cloud.metrics.endpoint -}}/api/prom/push"
-
+        url = nonsensitive(remote.kubernetes.secret.metrics_credentials.data["endpoint"])
         basic_auth {
-          username = "{{- .Values.cloud.metrics.username -}}"
-          password = "{{- .Values.cloud.metrics.password -}}"
+          username = nonsensitive(remote.kubernetes.secret.metrics_credentials.data["username"])
+          password = remote.kubernetes.secret.metrics_credentials.data["password"]
         }
       }
     }
@@ -304,13 +317,13 @@ data:
     {{- if .Values.cloud.traces.enabled }}
     otelcol.exporter.otlp "cloud" {
         client {
-            endpoint = "{{- .Values.cloud.traces.endpoint -}}"
+            endpoint = nonsensitive(remote.kubernetes.secret.traces_credentials.data["endpoint"])
             auth = otelcol.auth.basic.creds.handler
         }
     }
 
     otelcol.auth.basic "creds" {
-      username = "{{- .Values.cloud.traces.username -}}"
-      password = "{{- .Values.cloud.traces.password -}}"
+      username = nonsensitive(remote.kubernetes.secret.traces_credentials.data["username"])
+      password = remote.kubernetes.secret.traces_credentials.data["password"]
     }
     {{- end }}

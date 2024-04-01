@@ -5,26 +5,20 @@ namespacesToMonitor:
 - tempo
 # The name of the cluster where this will be installed
 clusterName: "meta-monitoring"
-metaMonitoringNamespace: "mmc"
+metaMonitoringNamespace: "meta"
 lokiNamespace: "loki"
 
 # Set to true to write logs, metrics or traces to Grafana Cloud
 cloud:
   logs:
     enabled: true
-    endpoint: to_be_changed
-    username: to_be_changed
-    password: to_be_changed
+    secret: ""
   metrics:
     enabled: true
-    endpoint: to_be_changed
-    username: to_be_changed
-    password: to_be_changed
+    secret: ""
   traces:
     enabled: true
-    endpoint: to_be_changed
-    username: to_be_changed
-    password: to_be_changed
+    secret: ""
 
 # Set to true for a local version of logs, metrics or traces
 local:
