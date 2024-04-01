@@ -45,11 +45,6 @@ data:
       name = "logs"
     }
 
-    remote.kubernetes.configmap "logs_endpoint" {
-      namespace = "{{- .Values.metaMonitoringNamespace -}}"
-      name = "logs-endpoint"
-    }
-
     loki.source.kubernetes "pods" {
       clustering {
         enabled = true
@@ -88,11 +83,6 @@ data:
     remote.kubernetes.secret "metrics_credentials" {
       namespace = "{{- .Values.metaMonitoringNamespace -}}"
       name = "metrics"
-    }
-
-    remote.kubernetes.configmap "metrics_endpoint" {
-      namespace = "{{- .Values.metaMonitoringNamespace -}}"
-      name = "metrics-endpoint"
     }
 
     prometheus.scrape "pods" {
@@ -235,11 +225,6 @@ data:
       name = "traces"
     }
 
-    remote.kubernetes.configmap "traces_endpoint" {
-      namespace = "{{- .Values.metaMonitoringNamespace -}}"
-      name = "traces-endpoint"
-    }
-
     // Shamelessly copied from https://github.com/grafana/intro-to-mlt/blob/main/agent/config.river
     otelcol.receiver.otlp "otlp_receiver" {
       // We don't technically need this, but it shows how to change listen address and incoming port.
@@ -308,7 +293,7 @@ data:
     {{- if .Values.cloud.logs.enabled }}
     loki.write "cloud" {
       endpoint {
-        url = remote.kubernetes.configmap.logs_endpoint.data["endpoint"]
+        url = nonsensitive(remote.kubernetes.secret.logs_credentials.data["endpoint"])
         basic_auth {
           username = nonsensitive(remote.kubernetes.secret.logs_credentials.data["username"])
           password = remote.kubernetes.secret.logs_credentials.data["password"]
@@ -320,7 +305,7 @@ data:
     {{- if .Values.cloud.metrics.enabled }}
     prometheus.remote_write "cloud" {
       endpoint {
-        url = remote.kubernetes.configmap.metrics_endpoint.data["endpoint"]
+        url = nonsensitive(remote.kubernetes.secret.metrics_credentials.data["endpoint"])
         basic_auth {
           username = nonsensitive(remote.kubernetes.secret.metrics_credentials.data["username"])
           password = remote.kubernetes.secret.metrics_credentials.data["password"]
@@ -332,7 +317,7 @@ data:
     {{- if .Values.cloud.traces.enabled }}
     otelcol.exporter.otlp "cloud" {
         client {
-            endpoint = remote.kubernetes.configmap.traces_endpoint.data["endpoint"]
+            endpoint = nonsensitive(remote.kubernetes.secret.traces_credentials.data["endpoint"])
             auth = otelcol.auth.basic.creds.handler
         }
     }

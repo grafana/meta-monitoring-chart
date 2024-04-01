@@ -13,15 +13,12 @@ cloud:
   logs:
     enabled: true
     secret: ""
-    endpointConfigmap: ""
   metrics:
     enabled: true
     secret: ""
-    endpointConfigmap: ""
   traces:
     enabled: true
     secret: ""
-    endpointConfigmap: ""
 
 # Set to true for a local version of logs, metrics or traces
 local:
