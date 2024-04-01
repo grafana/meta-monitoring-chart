@@ -3,20 +3,20 @@
 {{- end -}}
 
 {{- if eq .Values.cloud.logs.enabled true -}}
-  {{- if or (empty .Values.cloud.logs.endpoint) (or (empty .Values.cloud.logs.username) (empty .Values.cloud.logs.password)) -}}
-    {{- fail "if cloud.logs is enabled then the endpoint, username and password have to be filled in" -}}
+  {{- if or (empty .Values.cloud.logs.secret) (empty .Values.cloud.logs.endpointConfigmap) -}}
+    {{- fail "if cloud.logs is enabled then the secret and endpoint config map have to be filled in" -}}
   {{- end -}}
 {{- end -}}
 
 {{- if eq .Values.cloud.metrics.enabled true -}}
-  {{- if or (empty .Values.cloud.metrics.endpoint) (or (empty .Values.cloud.metrics.username) (empty .Values.cloud.metrics.password)) -}}
-    {{- fail "if cloud.metrics is enabled then the endpoint, username and password have to be filled in" -}}
+  {{- if or (empty .Values.cloud.metrics.secret) (empty .Values.cloud.logs.endpointConfigmap) -}}
+    {{- fail "if cloud.metrics is enabled then the secret and endpoint config map have to be filled in" -}}
   {{- end -}}
 {{- end -}}
 
 {{- if eq .Values.cloud.traces.enabled true -}}
-  {{- if or (empty .Values.cloud.traces.endpoint) (or (empty .Values.cloud.traces.username) (empty .Values.cloud.traces.password)) -}}
-    {{- fail "if cloud.traces is enabled then the endpoint, username and password have to be filled in" -}}
+  {{- if or (empty .Values.cloud.traces.secret) (empty .Values.cloud.logs.endpointConfigmap) -}}
+    {{- fail "if cloud.traces is enabled then the secret and endpoint config map have to be filled in" -}}
   {{- end -}}
 {{- end -}}
 

@@ -12,19 +12,16 @@ lokiNamespace: "loki"
 cloud:
   logs:
     enabled: true
-    endpoint: to_be_changed
-    username: to_be_changed
-    password: to_be_changed
+    secret: ""
+    endpointConfigmap: ""
   metrics:
     enabled: true
-    endpoint: to_be_changed
-    username: to_be_changed
-    password: to_be_changed
+    secret: ""
+    endpointConfigmap: ""
   traces:
     enabled: true
-    endpoint: to_be_changed
-    username: to_be_changed
-    password: to_be_changed
+    secret: ""
+    endpointConfigmap: ""
 
 # Set to true for a local version of logs, metrics or traces
 local:
