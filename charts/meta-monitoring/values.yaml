@@ -5,7 +5,7 @@ namespacesToMonitor:
 - tempo
 # The name of the cluster where this will be installed
 clusterName: "meta-monitoring"
-metaMonitoringNamespace: "mmc"
+metaMonitoringNamespace: "meta"
 lokiNamespace: "loki"
 
 # Set to true to write logs, metrics or traces to Grafana Cloud
