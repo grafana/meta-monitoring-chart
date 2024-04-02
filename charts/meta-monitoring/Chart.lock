@@ -1,7 +1,7 @@
 dependencies:
 - name: loki
   repository: https://grafana.github.io/helm-charts
-  version: 5.8.0
+  version: 5.47.2
 - name: grafana-agent
   repository: https://grafana.github.io/helm-charts
   version: 0.37.0
@@ -14,5 +14,5 @@ dependencies:
 - name: minio
   repository: https://charts.min.io
   version: 5.0.11
-digest: sha256:5933225a8c198a22353548f402c2508db8f19d8ef8a24cce338679039b94c226
-generated: "2024-04-02T11:20:59.213882+01:00"
+digest: sha256:d119d9a47dc0ea4701e9c96447db8154c61c7daec8f799138ec6271b2d6118fb
+generated: "2024-04-02T14:18:54.407765+01:00"
