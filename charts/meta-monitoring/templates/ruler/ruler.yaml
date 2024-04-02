@@ -3,7 +3,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: meta-mimir-ruler-for-dashboards
+  name: {{ $.Release.Namespace }}-mimir-ruler-for-dashboards
   namespace: {{ $.Release.Namespace }}
 spec:
   progressDeadlineSeconds: 600
@@ -108,11 +108,11 @@ spec:
             items:
               - key: mimir.yaml
                 path: mimir.yaml
-            name: meta-mimir-config
+            name: {{ $.Release.Namespace }}-mimir-config
           name: config
         - configMap:
             defaultMode: 420
-            name: meta-mimir-runtime
+            name: {{ $.Release.Namespace }}-mimir-runtime
           name: runtime-config
         - emptyDir: {}
           name: storage

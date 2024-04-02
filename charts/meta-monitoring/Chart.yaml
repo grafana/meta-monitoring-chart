@@ -33,7 +33,7 @@ dependencies:
   version: "0.37.0"
 - name: mimir-distributed
   repository: https://grafana.github.io/helm-charts
-  version: "4.4.1"
+  version: "5.2.0"
   condition: local.metrics.enabled
 - name: tempo-distributed
   repository: https://grafana.github.io/helm-charts
