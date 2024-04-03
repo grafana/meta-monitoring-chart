@@ -85,13 +85,40 @@ data:
       name = "metrics"
     }
 
+    discovery.kubernetes "metric_pods" {
+      role = "pod"
+      namespaces {
+        own_namespace = true
+        names = [ {{ include "agent.namespaces" . }} ]
+      }
+    }
+
     discovery.relabel "only_http_metrics" {
-      targets = discovery.relabel.rename_meta_labels.output
+      targets = discovery.kubernetes.metric_pods.targets
 
       rule {
-        source_labels = ["__meta_kubernetes_pod_container_port_name"]
-        action = "keep"
-        regex = "http-metrics"
+        source_labels = ["__meta_kubernetes_namespace"]
+        target_label  = "namespace"
+      }
+      rule {
+        source_labels = ["__meta_kubernetes_pod_name"]
+        target_label  = "pod"
+      }
+      rule {
+        source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_label_app_kubernetes_io_name", "__meta_kubernetes_pod_label_app_kubernetes_io_component"]
+        separator = "/"
+        regex = "(.*)/(.*)/(.*)"
+        replacement = "${1}/${2}-${3}"
+        target_label = "job"
+      }
+      rule {
+        target_label = "cluster"
+        replacement = "{{- .Values.clusterName -}}"
+      }
+      rule {
+        source_labels = ["__meta_kubernetes_pod_container_port_number"]
+        action = "drop"
+        regex = "9095"
       }
     }
 
