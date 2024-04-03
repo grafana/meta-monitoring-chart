@@ -37,9 +37,9 @@ data:
       }
     }
 
+    {{- if or .Values.local.logs.enabled .Values.cloud.logs.enabled }}
     // Logs
 
-    {{- if or .Values.local.logs.enabled .Values.cloud.logs.enabled }}
     remote.kubernetes.secret "logs_credentials" {
       namespace = "{{- .Values.metaMonitoringNamespace -}}"
       name = "logs"
@@ -77,19 +77,56 @@ data:
     {{- end }}
     {{- end }}
 
+    {{- if or .Values.local.metrics.enabled .Values.cloud.metrics.enabled }}
     // Metrics
 
-    {{- if or .Values.local.metrics.enabled .Values.cloud.metrics.enabled }}
     remote.kubernetes.secret "metrics_credentials" {
       namespace = "{{- .Values.metaMonitoringNamespace -}}"
       name = "metrics"
+    }
+
+    discovery.kubernetes "metric_pods" {
+      role = "pod"
+      namespaces {
+        own_namespace = true
+        names = [ {{ include "agent.namespaces" . }} ]
+      }
+    }
+
+    discovery.relabel "only_http_metrics" {
+      targets = discovery.kubernetes.metric_pods.targets
+
+      rule {
+        source_labels = ["__meta_kubernetes_namespace"]
+        target_label  = "namespace"
+      }
+      rule {
+        source_labels = ["__meta_kubernetes_pod_name"]
+        target_label  = "pod"
+      }
+      rule {
+        source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_label_app_kubernetes_io_name", "__meta_kubernetes_pod_label_app_kubernetes_io_component"]
+        separator = "/"
+        regex = "(.*)/(.*)/(.*)"
+        replacement = "${1}/${2}-${3}"
+        target_label = "job"
+      }
+      rule {
+        target_label = "cluster"
+        replacement = "{{- .Values.clusterName -}}"
+      }
+      rule {
+        source_labels = ["__meta_kubernetes_pod_container_port_number"]
+        action = "drop"
+        regex = "9095"
+      }
     }
 
     prometheus.scrape "pods" {
       clustering {
         enabled = true
       }
-      targets    = discovery.relabel.rename_meta_labels.output
+      targets    = discovery.relabel.only_http_metrics.output
       forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
     }
     {{- if .Values.kubeStateMetrics.enabled }}
@@ -217,9 +254,9 @@ data:
     }
     {{- end }}
 
+    {{- if or .Values.local.traces.enabled .Values.cloud.traces.enabled }}
     // Traces
 
-    {{- if or .Values.local.traces.enabled .Values.cloud.traces.enabled }}
     remote.kubernetes.secret "traces_credentials" {
       namespace = "{{- .Values.metaMonitoringNamespace -}}"
       name = "traces"
