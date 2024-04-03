@@ -80,15 +80,11 @@ data:
     {{- if or .Values.local.metrics.enabled .Values.cloud.metrics.enabled }}
     // Metrics
 
-<<<<<<< HEAD
-    {{- if or .Values.local.metrics.enabled .Values.cloud.metrics.enabled }}
     remote.kubernetes.secret "metrics_credentials" {
       namespace = "{{- .Values.metaMonitoringNamespace -}}"
       name = "metrics"
     }
 
-=======
->>>>>>> bb84e9f (cleanup comments)
     discovery.relabel "only_http_metrics" {
       targets = discovery.relabel.rename_meta_labels.output
 
@@ -234,15 +230,11 @@ data:
     {{- if or .Values.local.traces.enabled .Values.cloud.traces.enabled }}
     // Traces
 
-<<<<<<< HEAD
-    {{- if or .Values.local.traces.enabled .Values.cloud.traces.enabled }}
     remote.kubernetes.secret "traces_credentials" {
       namespace = "{{- .Values.metaMonitoringNamespace -}}"
       name = "traces"
     }
 
-=======
->>>>>>> bb84e9f (cleanup comments)
     // Shamelessly copied from https://github.com/grafana/intro-to-mlt/blob/main/agent/config.river
     otelcol.receiver.otlp "otlp_receiver" {
       // We don't technically need this, but it shows how to change listen address and incoming port.
