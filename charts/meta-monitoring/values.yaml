@@ -48,6 +48,80 @@ logs:
   - level=error
   # This shows the ingest requests and is very noisy. Uncomment to include.
   # - caller=push.go
+  # Log lines for delete requests
+  - delete request for user added
+  - Started processing delete request
+  - delete request for user marked as processed
+
+metrics:
+  # The list of metrics to retain for logging dashboards
+  retain:
+  - container_cpu_usage_seconds_total
+  - container_fs_writes_bytes_total
+  - container_memory_working_set_bytes
+  - container_network_receive_bytes_total
+  - container_network_transmit_bytes_total
+  - container_spec_cpu_period
+  - container_spec_cpu_quota
+  - container_spec_memory_limit_bytes
+  - cortex_ingester_flush_queue_length
+  - go_gc_duration_seconds
+  - go_goroutines
+  - go_memstats_heap_inuse_bytes
+  - kubelet_volume_stats_used_bytes
+  - kubelet_volume_stats_capacity_bytes
+  - kube_persistentvolumeclaim_labels
+  - kube_pod_container_resource_requests
+  - kube_pod_container_status_last_terminated_reason
+  - kube_pod_container_status_restarts_total
+  - loki_boltdb_shipper_compact_tables_operation_duration_seconds
+  - loki_boltdb_shipper_compact_tables_operation_last_successful_run_timestamp_seconds
+  - loki_boltdb_shipper_retention_marker_count_total
+  - loki_boltdb_shipper_retention_marker_table_processed_duration_seconds_bucket
+  - loki_boltdb_shipper_retention_marker_table_processed_duration_seconds_count
+  - loki_boltdb_shipper_retention_marker_table_processed_duration_seconds_sum
+  - loki_boltdb_shipper_retention_marker_table_processed_total
+  - loki_boltdb_shipper_request_duration_seconds_bucket
+  - loki_boltdb_shipper_request_duration_seconds_count
+  - loki_boltdb_shipper_retention_sweeper_chunk_deleted_duration_seconds_count
+  - loki_boltdb_shipper_retention_sweeper_chunk_deleted_duration_seconds_sum
+  - loki_boltdb_shipper_retention_sweeper_marker_files_current
+  - loki_boltdb_shipper_retention_sweeper_marker_file_processing_current_time
+  - loki_chunk_store_index_entries_per_chunk_count
+  - loki_chunk_store_index_entries_per_chunk_sum
+  - loki_compactor_delete_requests_processed_total
+  - loki_compactor_delete_requests_received_total
+  - loki_compactor_deleted_lines
+  - loki_compactor_oldest_pending_delete_request_age_seconds
+  - loki_compactor_pending_delete_requests_count
+  - loki_distributor_lines_received_total
+  - loki_ingester_chunk_age_seconds_bucket
+  - loki_ingester_chunk_age_seconds_count
+  - loki_ingester_chunk_age_seconds_sum
+  - loki_ingester_chunk_bounds_hours_bucket
+  - loki_ingester_chunk_bounds_hours_count
+  - loki_ingester_chunk_bounds_hours_sum
+  - loki_ingester_chunk_entries_bucket
+  - loki_ingester_chunk_entries_count
+  - loki_ingester_chunk_entries_sum
+  - loki_ingester_chunk_size_bytes_bucket
+  - loki_ingester_chunk_utilization_bucket
+  - loki_ingester_chunk_utilization_sum
+  - loki_ingester_chunks_flushed_total
+  - loki_ingester_memory_chunks
+  - loki_ingester_memory_streams
+  - loki_request_duration_seconds_count
+  - loki_ruler_wal_appender_ready
+  - loki_ruler_wal_disk_size
+  - loki_ruler_wal_prometheus_remote_storage_highest_timestamp_in_seconds
+  - loki_ruler_wal_prometheus_remote_storage_queue_highest_sent_timestamp_seconds
+  - loki_ruler_wal_prometheus_remote_storage_samples_pending
+  - loki_ruler_wal_prometheus_remote_storage_samples_total
+  - loki_ruler_wal_samples_appended_total
+  - loki_ruler_wal_storage_created_series_total
+  - node_disk_read_bytes_total
+  - node_disk_written_bytes_total
+  - promtail_custom_bad_words_total
 
 # Set enabled = true to add the default logs/metrics/traces dashboards to the local Grafana
 dashboards:

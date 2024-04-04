@@ -127,6 +127,16 @@ data:
         enabled = true
       }
       targets    = discovery.relabel.only_http_metrics.output
+      forward_to = [ prometheus.relabel.filter.receiver ]
+    }
+
+    prometheus.relabel "filter" {
+      rule {
+        source_labels = ["__name__"]
+        regex = "({{ join "|" .Values.metrics.retain }})"
+        action = "keep"
+      }
+
       forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
     }
     {{- if .Values.kubeStateMetrics.enabled }}
@@ -136,11 +146,11 @@ data:
         enabled = true
       }
       targets    = [ { "__address__" = "{{ .Values.kubeStateMetrics.endpoint }}" } ]
-      forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
+      forward_to = [ prometheus.relabel.filter.receiver ]
     }
     {{- end }}
 
-    // cAdvisor and Kubelete metrics
+    // cAdvisor and Kubelet metrics
     // Based on https://github.com/Chewie/loutretelecom-manifests/blob/main/manifests/addons/monitoring/config.river
     discovery.kubernetes "all_nodes" {
       role = "node"
@@ -178,7 +188,7 @@ data:
         enabled = true
       }
       targets    = discovery.relabel.all_nodes.output
-      forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
+      forward_to = [ prometheus.relabel.filter.receiver ]
 
       metrics_path = "/metrics/cadvisor"
       scheme = "https"
@@ -194,7 +204,7 @@ data:
         enabled = true
       }
       targets    = discovery.relabel.all_nodes.output
-      forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
+      forward_to = [ prometheus.relabel.filter.receiver ]
 
       metrics_path = "/metrics"
       scheme = "https"
@@ -218,7 +228,7 @@ data:
     }
 
     prometheus.relabel "node_exporter" {
-      forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
+      forward_to = [ prometheus.relabel.filter.receiver ]
 
       rule {
         replacement = env("HOSTNAME")
