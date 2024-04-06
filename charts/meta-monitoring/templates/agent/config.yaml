@@ -33,7 +33,7 @@ data:
       }
       rule {
         target_label = "cluster"
-        replacement = "{{- .Values.clusterName -}}"
+        replacement = "{{- .Values.clusterLabelValue -}}"
       }
     }
 
@@ -41,8 +41,8 @@ data:
     // Logs
 
     remote.kubernetes.secret "logs_credentials" {
-      namespace = "{{- .Values.metaMonitoringNamespace -}}"
-      name = "logs"
+      namespace = "{{- $.Release.Namespace -}}"
+      name = "{{- .Values.cloud.logs.secret -}}"
     }
 
     loki.source.kubernetes "pods" {
@@ -59,7 +59,7 @@ data:
 
       {{- if not (empty .Values.logs.retain) }}
       stage.match {
-        selector = "{cluster=\"{{- .Values.clusterName -}}\", namespace=~\"{{- .Values.lokiNamespace -}}|{{- .Values.metaMonitoringNamespace -}}\", pod=~\"loki.*\"} !~ \"{{ join "|" .Values.logs.retain }}\""
+        selector = "{cluster=\"{{- .Values.clusterLabelValue -}}\", namespace=~\"{{- join "|" .Values.namespacesToMonitor -}}|{{- $.Release.Namespace -}}\", pod=~\"loki.*\"} !~ \"{{ join "|" .Values.logs.retain }}\""
         action   = "drop"
       }
       {{- end }}
@@ -81,8 +81,8 @@ data:
     // Metrics
 
     remote.kubernetes.secret "metrics_credentials" {
-      namespace = "{{- .Values.metaMonitoringNamespace -}}"
-      name = "metrics"
+      namespace = "{{- $.Release.Namespace -}}"
+      name = "{{- .Values.cloud.metrics.secret -}}"
     }
 
     discovery.kubernetes "metric_pods" {
@@ -113,7 +113,7 @@ data:
       }
       rule {
         target_label = "cluster"
-        replacement = "{{- .Values.clusterName -}}"
+        replacement = "{{- .Values.clusterLabelValue -}}"
       }
       rule {
         source_labels = ["__meta_kubernetes_pod_container_port_number"]
@@ -179,7 +179,7 @@ data:
       }
       rule {
         target_label = "cluster"
-        replacement = "{{- .Values.clusterName -}}"
+        replacement = "{{- .Values.clusterLabelValue -}}"
       }
     }
 
@@ -259,7 +259,7 @@ data:
       }
       rule {
         target_label = "cluster"
-        replacement = "{{- .Values.clusterName -}}"
+        replacement = "{{- .Values.clusterLabelValue -}}"
       }
     }
     {{- end }}
@@ -268,8 +268,8 @@ data:
     // Traces
 
     remote.kubernetes.secret "traces_credentials" {
-      namespace = "{{- .Values.metaMonitoringNamespace -}}"
-      name = "traces"
+      namespace = "{{- $.Release.Namespace -}}"
+      name = "{{- .Values.cloud.traces.secret -}}"
     }
 
     // Shamelessly copied from https://github.com/grafana/intro-to-mlt/blob/main/agent/config.river

@@ -1,4 +1,4 @@
-{{- if or (or .Values.dashboards.logs.enabled .Values.dashboards.metrics.enabled) .Values.dashboards.traces.enabled }}
+{{- if and .Values.local.grafana.enabled (or .Values.dashboards.logs.enabled .Values.dashboards.metrics.enabled .Values.dashboards.traces.enabled) }}
 ---
 apiVersion: v1
 kind: ConfigMap

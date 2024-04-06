@@ -1,4 +1,4 @@
-{{- if .Values.dashboards.traces.enabled }}
+{{- if and .Values.local.grafana.enabled .Values.dashboards.traces.enabled }}
 ---
 apiVersion: v1
 kind: ConfigMap

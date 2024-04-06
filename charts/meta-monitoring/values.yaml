@@ -4,24 +4,24 @@ namespacesToMonitor:
 - mimir
 - tempo
 # The name of the cluster where this will be installed
-clusterName: "meta-monitoring"
-metaMonitoringNamespace: "meta"
-lokiNamespace: "loki"
+clusterLabelValue: "meta-monitoring"
 
 # Set to true to write logs, metrics or traces to Grafana Cloud
 cloud:
   logs:
     enabled: true
-    secret: ""
+    secret: "logs"
   metrics:
     enabled: true
-    secret: ""
+    secret: "metrics"
   traces:
     enabled: true
-    secret: ""
+    secret: "traces"
 
 # Set to true for a local version of logs, metrics or traces
 local:
+  grafana:
+    enabled: false
   logs:
     enabled: false
   metrics:
@@ -30,6 +30,31 @@ local:
     enabled: false
   minio:
     enabled: false  # This should be set to true if any of the previous is enabled
+
+grafana:
+  # Gateway ingress configuration
+  ingress:
+    # -- Specifies whether an ingress for the gateway should be created
+    enabled: true
+    # -- Ingress Class Name. MAY be required for Kubernetes versions >= 1.18
+    ingressClassName: ""
+    # -- Annotations for the gateway ingress
+    annotations: { }
+    # -- Labels for the gateway ingress
+    labels: { }
+    # -- Hosts configuration for the gateway ingress, passed through the `tpl` function to allow templating
+    hosts:
+      - host: monitoring.example.com
+        paths:
+          - path: /
+            # -- pathType (e.g. ImplementationSpecific, Prefix, .. etc.) might also be required by some Ingress Controllers
+            # pathType: Prefix
+    # -- TLS configuration for the gateway ingress. Hosts passed through the `tpl` function to allow templating
+    #tls:
+    #  - secretName: grafana-tls
+    #    hosts:
+    #      - monitoring.example.com
+
 
 logs:
   # Adding regexes here will add a stage.replace block for logs. For more information see

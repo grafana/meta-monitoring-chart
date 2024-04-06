@@ -1,4 +1,4 @@
-{{- if .Values.dashboards.logs.enabled }}
+{{- if and .Values.local.grafana.enabled .Values.dashboards.logs.enabled }}
 ---
 apiVersion: v1
 kind: ConfigMap

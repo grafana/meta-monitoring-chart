@@ -1,0 +1,57 @@
+{{- if and .Values.local.grafana.enabled .Values.grafana.ingress.enabled -}}
+{{- $ingressApiIsStable := eq (include "ingress.isStable" .) "true" -}}
+{{- $ingressSupportsIngressClassName := eq (include "ingress.supportsIngressClassName" .) "true" -}}
+{{- $ingressSupportsPathType := eq (include "ingress.supportsPathType" .) "true" -}}
+apiVersion: {{ include "ingress.apiVersion" . }}
+kind: Ingress
+metadata:
+  name: grafana
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app: grafana
+    {{- range $labelKey, $labelValue := .Values.grafana.ingress.labels }}
+    {{ $labelKey }}: {{ $labelValue | toYaml }}
+    {{- end }}
+  {{- with .Values.grafana.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if and $ingressSupportsIngressClassName .Values.grafana.ingress.ingressClassName }}
+  ingressClassName: {{ .Values.grafana.ingress.ingressClassName }}
+  {{- end -}}
+  {{- if .Values.grafana.ingress.tls }}
+  tls:
+    {{- range .Values.grafana.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ tpl . $ | quote }}
+        {{- end }}
+      {{- with .secretName }}
+      secretName: {{ . }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.grafana.ingress.hosts }}
+    - host: {{ tpl .host $ | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- if $ingressSupportsPathType }}
+            pathType: {{ .pathType }}
+            {{- end }}
+            backend:
+              {{- if $ingressApiIsStable }}
+              service:
+                name: grafana
+                port:
+                  number: 3000
+              {{- else }}
+              serviceName: grafana
+              servicePort: 3000
+              {{- end }}
+          {{- end }}
+    {{- end }}
+{{- end }}
