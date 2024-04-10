@@ -81,6 +81,9 @@ logs:
 metrics:
   # The list of metrics to retain for logging dashboards
   retain:
+  - agent_config_last_load_success_timestamp_seconds
+  - agent_config_last_load_successful
+  - agent_config_load_failures_total
   - container_cpu_usage_seconds_total
   - container_fs_writes_bytes_total
   - container_memory_working_set_bytes
@@ -145,6 +148,11 @@ metrics:
   - loki_ruler_wal_prometheus_remote_storage_samples_total
   - loki_ruler_wal_samples_appended_total
   - loki_ruler_wal_storage_created_series_total
+  - loki_write_batch_retries_total
+  - loki_write_dropped_bytes_total
+  - loki_write_dropped_entries_total
+  - loki_write_sent_bytes_total
+  - loki_write_sent_entries_total
   - node_disk_read_bytes_total
   - node_disk_written_bytes_total
   - promtail_custom_bad_words_total
