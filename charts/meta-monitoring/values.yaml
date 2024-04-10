@@ -115,6 +115,7 @@ metrics:
   - loki_boltdb_shipper_retention_sweeper_marker_files_current
   - loki_boltdb_shipper_retention_sweeper_marker_file_processing_current_time
   - loki_build_info
+  - loki_chunk_store_index_entries_per_chunk_bucket
   - loki_chunk_store_index_entries_per_chunk_count
   - loki_chunk_store_index_entries_per_chunk_sum
   - loki_compactor_delete_requests_processed_total
@@ -138,6 +139,7 @@ metrics:
   - loki_ingester_chunk_utilization_bucket
   - loki_ingester_chunk_utilization_sum
   - loki_ingester_chunks_flushed_total
+  - loki_ingester_flush_queue_length
   - loki_ingester_memory_chunks
   - loki_ingester_memory_streams
   - loki_request_duration_seconds_bucket
