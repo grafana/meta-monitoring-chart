@@ -90,6 +90,12 @@ metrics:
   - container_spec_cpu_quota
   - container_spec_memory_limit_bytes
   - cortex_ingester_flush_queue_length
+  - cortex_prometheus_rule_group_iterations_total
+  - cortex_prometheus_rule_evaluation_failures_total
+  - cortex_prometheus_rule_group_rules
+  - cortex_prometheus_rule_group_last_duration_seconds
+  - cortex_prometheus_rule_group_last_evaluation_timestamp_seconds
+  - cortex_prometheus_rule_group_iterations_missed_total
   - go_gc_duration_seconds
   - go_goroutines
   - go_memstats_heap_inuse_bytes
