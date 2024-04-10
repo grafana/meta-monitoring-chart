@@ -112,6 +112,7 @@ metrics:
   - loki_boltdb_shipper_retention_sweeper_chunk_deleted_duration_seconds_sum
   - loki_boltdb_shipper_retention_sweeper_marker_files_current
   - loki_boltdb_shipper_retention_sweeper_marker_file_processing_current_time
+  - loki_build_info
   - loki_chunk_store_index_entries_per_chunk_count
   - loki_chunk_store_index_entries_per_chunk_sum
   - loki_compactor_delete_requests_processed_total
