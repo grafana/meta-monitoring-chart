@@ -108,6 +108,8 @@ metrics:
   - loki_boltdb_shipper_retention_marker_table_processed_total
   - loki_boltdb_shipper_request_duration_seconds_bucket
   - loki_boltdb_shipper_request_duration_seconds_count
+  - loki_boltdb_shipper_request_duration_seconds_sum
+  - loki_boltdb_shipper_retention_sweeper_chunk_deleted_duration_seconds_bucket
   - loki_boltdb_shipper_retention_sweeper_chunk_deleted_duration_seconds_count
   - loki_boltdb_shipper_retention_sweeper_chunk_deleted_duration_seconds_sum
   - loki_boltdb_shipper_retention_sweeper_marker_files_current
@@ -120,7 +122,9 @@ metrics:
   - loki_compactor_deleted_lines
   - loki_compactor_oldest_pending_delete_request_age_seconds
   - loki_compactor_pending_delete_requests_count
+  - loki_distributor_bytes_received_total
   - loki_distributor_lines_received_total
+  - loki_distributor_structured_metadata_bytes_received_total
   - loki_ingester_chunk_age_seconds_bucket
   - loki_ingester_chunk_age_seconds_count
   - loki_ingester_chunk_age_seconds_sum
@@ -136,7 +140,9 @@ metrics:
   - loki_ingester_chunks_flushed_total
   - loki_ingester_memory_chunks
   - loki_ingester_memory_streams
+  - loki_request_duration_seconds_bucket
   - loki_request_duration_seconds_count
+  - loki_request_duration_seconds_sum
   - loki_ruler_wal_appender_ready
   - loki_ruler_wal_disk_size
   - loki_ruler_wal_prometheus_remote_storage_highest_timestamp_in_seconds
