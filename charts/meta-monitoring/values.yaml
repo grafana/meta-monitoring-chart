@@ -93,6 +93,12 @@ metrics:
   - container_spec_cpu_quota
   - container_spec_memory_limit_bytes
   - cortex_ingester_flush_queue_length
+  - cortex_prometheus_rule_group_iterations_total
+  - cortex_prometheus_rule_evaluation_failures_total
+  - cortex_prometheus_rule_group_rules
+  - cortex_prometheus_rule_group_last_duration_seconds
+  - cortex_prometheus_rule_group_last_evaluation_timestamp_seconds
+  - cortex_prometheus_rule_group_iterations_missed_total
   - go_gc_duration_seconds
   - go_goroutines
   - go_memstats_heap_inuse_bytes
@@ -111,11 +117,14 @@ metrics:
   - loki_boltdb_shipper_retention_marker_table_processed_total
   - loki_boltdb_shipper_request_duration_seconds_bucket
   - loki_boltdb_shipper_request_duration_seconds_count
+  - loki_boltdb_shipper_request_duration_seconds_sum
+  - loki_boltdb_shipper_retention_sweeper_chunk_deleted_duration_seconds_bucket
   - loki_boltdb_shipper_retention_sweeper_chunk_deleted_duration_seconds_count
   - loki_boltdb_shipper_retention_sweeper_chunk_deleted_duration_seconds_sum
   - loki_boltdb_shipper_retention_sweeper_marker_files_current
   - loki_boltdb_shipper_retention_sweeper_marker_file_processing_current_time
   - loki_build_info
+  - loki_chunk_store_index_entries_per_chunk_bucket
   - loki_chunk_store_index_entries_per_chunk_count
   - loki_chunk_store_index_entries_per_chunk_sum
   - loki_compactor_delete_requests_processed_total
@@ -123,7 +132,9 @@ metrics:
   - loki_compactor_deleted_lines
   - loki_compactor_oldest_pending_delete_request_age_seconds
   - loki_compactor_pending_delete_requests_count
+  - loki_distributor_bytes_received_total
   - loki_distributor_lines_received_total
+  - loki_distributor_structured_metadata_bytes_received_total
   - loki_ingester_chunk_age_seconds_bucket
   - loki_ingester_chunk_age_seconds_count
   - loki_ingester_chunk_age_seconds_sum
@@ -137,9 +148,12 @@ metrics:
   - loki_ingester_chunk_utilization_bucket
   - loki_ingester_chunk_utilization_sum
   - loki_ingester_chunks_flushed_total
+  - loki_ingester_flush_queue_length
   - loki_ingester_memory_chunks
   - loki_ingester_memory_streams
+  - loki_request_duration_seconds_bucket
   - loki_request_duration_seconds_count
+  - loki_request_duration_seconds_sum
   - loki_ruler_wal_appender_ready
   - loki_ruler_wal_disk_size
   - loki_ruler_wal_prometheus_remote_storage_highest_timestamp_in_seconds
