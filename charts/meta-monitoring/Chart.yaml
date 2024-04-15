@@ -28,9 +28,9 @@ dependencies:
   repository: https://grafana.github.io/helm-charts
   version: "5.47.2"
   condition: local.logs.enabled
-- name: grafana-agent
+- name: alloy
   repository: https://grafana.github.io/helm-charts
-  version: "0.37.0"
+  version: "0.1.1"
 - name: mimir-distributed
   repository: https://grafana.github.io/helm-charts
   version: "5.2.0"
