@@ -10,7 +10,7 @@ dependencies:
   version: 5.3.0
 - name: tempo-distributed
   repository: https://grafana.github.io/helm-charts
-  version: 1.9.1
+  version: 1.9.2
 - name: minio
   repository: https://charts.min.io
   version: 5.1.0
