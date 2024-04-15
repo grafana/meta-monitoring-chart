@@ -30,7 +30,7 @@ dependencies:
   condition: local.logs.enabled
 - name: alloy
   repository: https://grafana.github.io/helm-charts
-  version: "1.0.0"
+  version: "0.1.1"
 - name: mimir-distributed
   repository: https://grafana.github.io/helm-charts
   version: "5.2.0"
