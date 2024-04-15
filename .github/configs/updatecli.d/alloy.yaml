@@ -1,0 +1,30 @@
+ame: Bump dependency "alloy" for Helm chart "meta-monitoring"
+sources:
+    alloy:
+        name: Get latest "alloy" Helm chart version
+        kind: helmchart
+        spec:
+            name: alloy
+            url: https://grafana.github.io/helm-charts
+            versionfilter:
+                kind: semver
+                pattern: '*'
+conditions:
+    alloy:
+        name: Ensure Helm chart dependency "alloy" is specified
+        kind: yaml
+        spec:
+            file: charts/meta-monitoring/Chart.yaml
+            key: $.dependencies[1].name
+            value: alloy
+        disablesourceinput: true
+targets:
+    alloy:
+        name: Bump Helm chart dependency "alloy" for Helm chart "meta-monitoring"
+        kind: helmchart
+        spec:
+            file: Chart.yaml
+            key: $.dependencies[1].version
+            name: charts/meta-monitoring
+            versionincrement: none
+        sourceid: alloy
