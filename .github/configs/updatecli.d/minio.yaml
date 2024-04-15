@@ -1,0 +1,30 @@
+name: Bump dependency "minio" for Helm chart "meta-monitoring"
+sources:
+    minio:
+        name: Get latest "minio" Helm chart version
+        kind: helmchart
+        spec:
+            name: minio
+            url: https://charts.min.io
+            versionfilter:
+                kind: semver
+                pattern: '*'
+conditions:
+    minio:
+        name: Ensure Helm chart dependency "minio" is specified
+        kind: yaml
+        spec:
+            file: charts/meta-monitoring/Chart.yaml
+            key: $.dependencies[4].name
+            value: minio
+        disablesourceinput: true
+targets:
+    minio:
+        name: Bump Helm chart dependency "minio" for Helm chart "meta-monitoring"
+        kind: helmchart
+        spec:
+            file: Chart.yaml
+            key: $.dependencies[4].version
+            name: charts/meta-monitoring
+            versionincrement: none
+        sourceid: minio

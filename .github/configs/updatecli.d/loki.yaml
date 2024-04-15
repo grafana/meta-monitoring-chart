@@ -1,0 +1,30 @@
+name: Bump dependency "loki" for Helm chart "meta-monitoring"
+sources:
+    loki:
+        name: Get latest "loki" Helm chart version
+        kind: helmchart
+        spec:
+            name: loki
+            url: https://grafana.github.io/helm-charts
+            versionfilter:
+                kind: semver
+                pattern: '*'
+conditions:
+    loki:
+        name: Ensure Helm chart dependency "loki" is specified
+        kind: yaml
+        spec:
+            file: charts/meta-monitoring/Chart.yaml
+            key: $.dependencies[0].name
+            value: loki
+        disablesourceinput: true
+targets:
+    loki:
+        name: Bump Helm chart dependency "loki" for Helm chart "meta-monitoring"
+        kind: helmchart
+        spec:
+            file: Chart.yaml
+            key: $.dependencies[0].version
+            name: charts/meta-monitoring
+            versionincrement: none
+        sourceid: loki
