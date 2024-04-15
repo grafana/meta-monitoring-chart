@@ -17,7 +17,7 @@ env:
 
 jobs:
     updateGrafanaAlloy:
-        name: Update Grafana Alloy
+        name: Update Grafana Alloy subchart
         runs-on: "ubuntu-latest"
         steps:
             - name: Checkout
@@ -50,4 +50,36 @@ jobs:
                 commit-message: Update Grafana Alloy
                 labels: dependencies
                 branch: chore/update-grafana-alloy
+                delete-branch: true
+
+    updateMimirDistributed:
+        name: Update Mimir Distributed subchart
+        runs-on: "ubuntu-latest"
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Install Updatecli
+              uses: updatecli/updatecli-action@v2
+
+            - name: Run Updatecli
+              id: update-mimir-distributed
+              run: |
+                updatecli apply --config ${UPDATECLI_CONFIG_DIR}/mimir-distributed.yaml
+                if ! git diff --exit-code > /dev/null; then
+                  echo "changed=true" >> "${GITHUB_OUTPUT}"
+                fi
+
+            - name: Create pull request
+              if: steps.update-mimir-distributed.outputs.changed == 'true'
+              uses: peter-evans/create-pull-request@v5
+              with:
+                title: "[dependency] Update Mimir Distributed"
+                body: "Updates the Mimir Distributed subchart"
+                base: main
+                author: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
+                committer: "GitHub <noreply@github.com>"
+                commit-message: Update Mimir Distributed
+                labels: dependencies
+                branch: chore/update-mimir-distributed
                 delete-branch: true

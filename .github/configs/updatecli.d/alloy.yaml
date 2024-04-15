@@ -1,4 +1,4 @@
-ame: Bump dependency "alloy" for Helm chart "meta-monitoring"
+name: Bump dependency "alloy" for Helm chart "meta-monitoring"
 sources:
     alloy:
         name: Get latest "alloy" Helm chart version

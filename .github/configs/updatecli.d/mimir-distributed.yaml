@@ -1,0 +1,30 @@
+name: Bump dependency "mimir-distributed" for Helm chart "meta-monitoring"
+sources:
+    mimir-distributed:
+        name: Get latest "mimir-distributed" Helm chart version
+        kind: helmchart
+        spec:
+            name: mimir-distributed
+            url: https://grafana.github.io/helm-charts
+            versionfilter:
+                kind: semver
+                pattern: '*'
+conditions:
+    mimir-distributed:
+        name: Ensure Helm chart dependency "mimir-distributed" is specified
+        kind: yaml
+        spec:
+            file: charts/meta-monitoring/Chart.yaml
+            key: $.dependencies[2].name
+            value: mimir-distributed
+        disablesourceinput: true
+targets:
+    mimir-distributed:
+        name: Bump Helm chart dependency "mimir-distributed" for Helm chart "meta-monitoring"
+        kind: helmchart
+        spec:
+            file: Chart.yaml
+            key: $.dependencies[2].version
+            name: charts/meta-monitoring
+            versionincrement: none
+        sourceid: mimir-distributed
