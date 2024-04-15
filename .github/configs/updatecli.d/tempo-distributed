@@ -1,0 +1,30 @@
+name: Bump dependency "tempo-distributed" for Helm chart "meta-monitoring"
+sources:
+    tempo-distributed:
+        name: Get latest "tempo-distributed" Helm chart version
+        kind: helmchart
+        spec:
+            name: tempo-distributed
+            url: https://grafana.github.io/helm-charts
+            versionfilter:
+                kind: semver
+                pattern: '*'
+conditions:
+    tempo-distributed:
+        name: Ensure Helm chart dependency "tempo-distributed" is specified
+        kind: yaml
+        spec:
+            file: charts/meta-monitoring/Chart.yaml
+            key: $.dependencies[3].name
+            value: tempo-distributed
+        disablesourceinput: true
+targets:
+    tempo-distributed:
+        name: Bump Helm chart dependency "tempo-distributed" for Helm chart "meta-monitoring"
+        kind: helmchart
+        spec:
+            file: Chart.yaml
+            key: $.dependencies[3].version
+            name: charts/meta-monitoring
+            versionincrement: none
+        sourceid: tempo-distributed
