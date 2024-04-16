@@ -47,7 +47,6 @@ jobs:
                 labels: dependencies
                 branch: chore/update-loki
                 delete-branch: true
-                team-reviewers: loki-squad
 
     updateGrafanaAlloy:
         name: Update the Grafana Alloy subchart
@@ -80,7 +79,6 @@ jobs:
                 labels: dependencies
                 branch: chore/update-grafana-alloy
                 delete-branch: true
-                team-reviewers: loki-squad
 
     updateMimirDistributed:
         name: Update the Mimir Distributed subchart
@@ -113,7 +111,6 @@ jobs:
                 labels: dependencies
                 branch: chore/update-mimir-distributed
                 delete-branch: true
-                team-reviewers: loki-squad
 
     updateTempoDistributed:
         name: Update the Tempo Distributed subchart
@@ -146,7 +143,6 @@ jobs:
                 labels: dependencies
                 branch: chore/update-tempo-distributed
                 delete-branch: true
-                team-reviewers: loki-squad
 
     updateMinio:
         name: Update the Minio subchart
@@ -179,4 +175,3 @@ jobs:
                 labels: dependencies
                 branch: chore/update-minio
                 delete-branch: true
-                team-reviewers: loki-squad
