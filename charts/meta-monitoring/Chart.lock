@@ -14,5 +14,5 @@ dependencies:
 - name: minio
   repository: https://charts.min.io
   version: 5.1.0
-digest: sha256:a324bca0f816f3432ba8203e85b70c38354efb8e44f1bc137205559149a0929e
-generated: "2024-04-15T15:51:01.39458164Z"
+digest: sha256:b9521eea011cdf82856ee909f3f42f98722393678799094de2307e89c92bc045
+generated: "2024-04-16T00:16:49.572028889Z"
