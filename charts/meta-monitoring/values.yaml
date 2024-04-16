@@ -202,6 +202,15 @@ kubeStateMetrics:
 loki:
   loki:
     auth_enabled: false
+    schemaConfig:
+      configs:
+        - from: 2024-03-29
+          store: tsdb
+          object_store: s3
+          schema: v13
+          index:
+            prefix: index_
+            period: 24h
     storage:
       type: "s3"
       s3:
@@ -219,8 +228,13 @@ loki:
             secret_access_key: "{{ .Values.global.minio.rootPassword }}"
       compactor:
         retention_enabled: true
+        delete_request_store: s3
       limits_config:
         retention_period: 30d
+  lokiCanary:
+    enabled: false
+  test:
+    enabled: false
   monitoring:
     dashboards:
       enabled: false
