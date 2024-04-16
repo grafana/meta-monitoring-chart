@@ -17,7 +17,7 @@ env:
 
 jobs:
     updateLoki:
-        name: Update loki subchart
+        name: Update the Loki subchart
         runs-on: "ubuntu-latest"
         steps:
             - name: Checkout
@@ -38,8 +38,8 @@ jobs:
               if: steps.update-loki.outputs.changed == 'true'
               uses: peter-evans/create-pull-request@v5
               with:
-                title: "[dependency] Update loki"
-                body: "Updates the loki subchart"
+                title: "[dependency] Update the Loki subchart"
+                body: "Updates the Loki subchart"
                 base: main
                 author: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
                 committer: "GitHub <noreply@github.com>"
@@ -47,9 +47,10 @@ jobs:
                 labels: dependencies
                 branch: chore/update-loki
                 delete-branch: true
+                team-reviewers: loki-team
 
     updateGrafanaAlloy:
-        name: Update Grafana Alloy subchart
+        name: Update the Grafana Alloy subchart
         runs-on: "ubuntu-latest"
         steps:
             - name: Checkout
@@ -70,7 +71,7 @@ jobs:
               if: steps.update-grafana-alloy.outputs.changed == 'true'
               uses: peter-evans/create-pull-request@v5
               with:
-                title: "[dependency] Update Grafana Alloy"
+                title: "[dependency] Update the Grafana Alloy subchart"
                 body: "Updates the Grafana Alloy subchart"
                 base: main
                 author: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
@@ -79,9 +80,10 @@ jobs:
                 labels: dependencies
                 branch: chore/update-grafana-alloy
                 delete-branch: true
+                team-reviewers: loki-team
 
     updateMimirDistributed:
-        name: Update Mimir Distributed subchart
+        name: Update the Mimir Distributed subchart
         runs-on: "ubuntu-latest"
         steps:
             - name: Checkout
@@ -102,7 +104,7 @@ jobs:
               if: steps.update-mimir-distributed.outputs.changed == 'true'
               uses: peter-evans/create-pull-request@v5
               with:
-                title: "[dependency] Update Mimir Distributed"
+                title: "[dependency] Update the Mimir Distributed subchart"
                 body: "Updates the Mimir Distributed subchart"
                 base: main
                 author: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
@@ -111,9 +113,10 @@ jobs:
                 labels: dependencies
                 branch: chore/update-mimir-distributed
                 delete-branch: true
+                team-reviewers: loki-team
 
     updateTempoDistributed:
-        name: Update Tempo Distributed subchart
+        name: Update the Tempo Distributed subchart
         runs-on: "ubuntu-latest"
         steps:
             - name: Checkout
@@ -134,7 +137,7 @@ jobs:
               if: steps.update-tempo-distributed.outputs.changed == 'true'
               uses: peter-evans/create-pull-request@v5
               with:
-                title: "[dependency] Update tempo Distributed"
+                title: "[dependency] Update the Tempo Distributed subchart"
                 body: "Updates the tempo Distributed subchart"
                 base: main
                 author: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
@@ -143,10 +146,10 @@ jobs:
                 labels: dependencies
                 branch: chore/update-tempo-distributed
                 delete-branch: true
-
+                team-reviewers: loki-team
 
     updateMinio:
-        name: Update minio subchart
+        name: Update the Minio subchart
         runs-on: "ubuntu-latest"
         steps:
             - name: Checkout
@@ -167,8 +170,8 @@ jobs:
               if: steps.update-minio.outputs.changed == 'true'
               uses: peter-evans/create-pull-request@v5
               with:
-                title: "[dependency] Update minio"
-                body: "Updates the minio subchart"
+                title: "[dependency] Update the Minio subchart"
+                body: "Updates the Minio subchart"
                 base: main
                 author: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
                 committer: "GitHub <noreply@github.com>"
@@ -176,3 +179,4 @@ jobs:
                 labels: dependencies
                 branch: chore/update-minio
                 delete-branch: true
+                team-reviewers: loki-team
