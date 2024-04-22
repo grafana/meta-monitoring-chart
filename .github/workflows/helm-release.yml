@@ -66,11 +66,18 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.setup.outputs.changed == 'true'
     steps:
+    - id: get-secrets
+      uses: grafana/shared-workflows/actions/get-vault-secrets@main
+      with:
+        # Secrets placed in the ci/repo/grafana/<repo>/<path> path in Vault
+        repo_secrets: |
+          APP_ID=meta-monitoring-chart:app-id
+          PRIVATE_KEY=meta-monitoring-chart:private-key
     - uses: actions/create-github-app-token@v1
       id: app-token
       with:
-        app-id: ${{ secrets.APP_ID }}
-        private-key: ${{ secrets.PRIVATE_KEY }}
+        app-id: ${{ env.APP_ID }}
+        private-key: ${{ env.PRIVATE_KEY }}
     - name: Checkout
       uses: actions/checkout@v4
       with:
