@@ -65,6 +65,8 @@ jobs:
     needs: [setup]
     runs-on: ubuntu-latest
     if: needs.setup.outputs.changed == 'true'
+    permissions:
+      contents: write
     steps:
     - id: get-secrets
       uses: grafana/shared-workflows/actions/get-vault-secrets@main
