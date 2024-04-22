@@ -78,6 +78,7 @@ jobs:
       with:
         app-id: ${{ env.APP_ID }}
         private-key: ${{ env.PRIVATE_KEY }}
+        owner: ${{ github.repository_owner }}
     - name: Checkout
       uses: actions/checkout@v4
       with:
