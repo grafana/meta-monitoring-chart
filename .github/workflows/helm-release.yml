@@ -79,6 +79,7 @@ jobs:
         app-id: ${{ env.APP_ID }}
         private-key: ${{ env.PRIVATE_KEY }}
         owner: ${{ github.repository_owner }}
+        repositories: "grafana/helm-charts,grafana/meta-monitoring-chart"
     - name: Checkout
       uses: actions/checkout@v4
       with:
