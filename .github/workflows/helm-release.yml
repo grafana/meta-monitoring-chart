@@ -71,8 +71,8 @@ jobs:
       with:
         # Secrets placed in the ci/repo/grafana/<repo>/<path> path in Vault
         repo_secrets: |
-          APP_ID=meta-monitoring-chart:app-id
-          PRIVATE_KEY=meta-monitoring-chart:private-key
+          APP_ID=github-app:app-id
+          PRIVATE_KEY=github-app:private-key
     - uses: actions/create-github-app-token@v1
       id: app-token
       with:
