@@ -33,6 +33,12 @@
    helm repo add grafana https://grafana.github.io/helm-charts
    ```
 
+1. Fetch the latest charts from the grafana repo
+
+   ```
+   helm repo update grafana
+   ```
+
 
 1. Install this helm chart
 
