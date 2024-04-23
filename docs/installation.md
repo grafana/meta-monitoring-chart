@@ -27,16 +27,29 @@
 
 1. Create a values.yaml file based on the [default one](../charts/meta-monitoring/values.yaml). Fill in the names of the secrets created above as needed.
 
+1. Add the repo
+
+   ```
+   helm repo add grafana https://grafana.github.io/helm-charts
+   ```
+
+1. Fetch the latest charts from the grafana repo
+
+   ```
+   helm repo update grafana
+   ```
+
+
 1. Install this helm chart
 
    ```
-   helm install -n meta -f values.yaml meta ./charts/meta-monitoring
+   helm install -n meta -f values.yaml meta grafana/meta-monitoring
    ```
 
 1. Upgrade
 
    ```
-   helm upgrade --install -f values.yaml -n meta meta ./charts/meta-monitoring
+   helm upgrade --install -f values.yaml -n meta meta grafana/meta-monitoring
    ```
 
 1. Delete this chart:
