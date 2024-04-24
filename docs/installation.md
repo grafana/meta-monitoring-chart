@@ -1,5 +1,19 @@
 # Install this chart
 
+## Cloud mode (preferred)
+
+1. Use an existing Grafana Cloud account or setup a new one. Then create an access token:
+
+   1. In Grafana go to Administration -> Users and Access -> Cloud access policies.
+
+   1. Click `Create access policy`.
+
+   1. Fill in the `Display name` field and check the `Write` check box for metrics, logs and traces. Then click `Create`.
+
+   1. On the newly created access policy click `Add token`.
+
+   1. Fill in the `Token name` field and click `Create`. Make a copy of the token as it will be used later on.
+
 1. Create the meta namespace
 
    ```
@@ -11,21 +25,39 @@
    ```
    kubectl create secret generic logs -n meta \
     --from-literal=username=<logs username> \
-    --from-literal=password=<logs password>
+    --from-literal=password=<token>
     --from-literal=endpoint='https://logs-prod-us-central1.grafana.net/loki/api/v1/push'
 
    kubectl create secret generic metrics -n meta \
     --from-literal=username=<metrics username> \
-    --from-literal=password=<metrics password>
+    --from-literal=password=<token>
     --from-literal=endpoint='https://prometheus-us-central1.grafana.net/api/prom/push'
 
    kubectl create secret generic traces -n meta \
     --from-literal=username=<traces username> \
-    --from-literal=password=<traces password>
+    --from-literal=password=<token>
     --from-literal=endpoint='https://tempo-us-central1.grafana.net/tempo'
    ```
 
-1. Create a values.yaml file based on the [default one](../charts/meta-monitoring/values.yaml). Fill in the names of the secrets created above as needed.
+   The logs, metrics and traces usernames are the `User / Username / Instance IDs` of the Loki, Prometheus/Mimir and Tempo instances in Grafana Cloud. From `Home` in Grafana click on `Stacks`. Then go to the `Details` pages of Loki, Prometheus/Mimir and Tempo.
+
+1. Create a values.yaml file based on the [default one](../charts/meta-monitoring/values.yaml). Fill in the names of the secrets created above as needed. An example minimal values.yaml looks like this:
+
+   ```
+   namespacesToMonitor:
+   - loki
+
+   cloud:
+     logs:
+       enabled: true
+       secret: "logs"
+     metrics:
+       enabled: true
+       secret: "metrics"
+     traces:
+       enabled: true
+       secret: "traces"
+   ```
 
 1. Add the repo
 
@@ -56,4 +88,27 @@
 
    ```
    helm delete -n meta meta
+   ```
+
+## Local mode
+
+1. Create the meta namespace
+
+   ```
+   kubectl create namespace meta
+   ```
+
+1. Create a values.yaml file based on the [default one](../charts/meta-monitoring/values.yaml). An example minimal values.yaml looks like this:
+
+   ```
+   namespacesToMonitor:
+   - loki
+
+   cloud:
+     logs:
+       enabled: false
+     metrics:
+       enabled: false
+     traces:
+       enabled: false
    ```

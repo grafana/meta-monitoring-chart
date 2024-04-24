@@ -1,19 +1,8 @@
 # meta-monitoring-chart
 
-This is a meta-monitoring chart for GEL, GEM and GET. It should be installed in a
-separate namespace next to GEM, GEL or GET installations.
+This is a meta-monitoring chart for Loki.
 
 Note that this is pre-production software at the moment.
-
-## Preparation
-
-Create a values.yaml file based on the [default one](../charts/meta-monitoring/values.yaml).
-
-1. Add or remove the namespaces to monitor in the `namespacesToMonitor` setting
-
-1. Set the cluster name in the `clusterName` setting. This will be added as a label to all logs, metrics and traces.
-
-1. Create a `meta` namespace.
 
 ## Local and cloud modes
 
@@ -34,12 +23,6 @@ Both modes can be enabled at the same time.
 
 ## Installation
 
-```
-helm install -n meta --skip-crds -f values.yaml meta ./charts/meta-monitoring
-```
-
-If the platform supports CRDs the `--skip-crds` option can be removed. However the CRDs are not used by this chart.
-
 For more instructions including how to update the chart go to the [installation](docs/installation.md) page.
 
 ## Supported features
@@ -59,7 +42,6 @@ Most of these features are enabled by default. See the values.yaml file for how 
 
 ## Caveats
 
-- The [loki.source.kubernetes](https://grafana.com/docs/agent/latest/flow/reference/components/loki.source.kubernetes/) component of the Grafana Agent is used to scrape Kubernetes log files. This component is marked experimental at the moment.
 - This has not been tested on Openshift yet.
 - The underlying Loki, Mimir and Tempo are at the default size installed by the Helm chart. This might need changing when monitoring bigger Loki, Mimir or Tempo installations.
 - MinIO is used as storage at the moment with a limited retention. At the moment this chart cannot be used for monitoring over longer periods.
