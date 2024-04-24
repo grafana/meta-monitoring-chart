@@ -1,6 +1,6 @@
 # Install this chart
 
-## Cloud mode (preferred)
+## Preparation for Cloud mode (preferred)
 
 1. Use an existing Grafana Cloud account or setup a new one. Then create an access token:
 
@@ -59,6 +59,43 @@
        secret: "traces"
    ```
 
+## Preparation for Local mode
+
+1. Create the meta namespace
+
+   ```
+   kubectl create namespace meta
+   ```
+
+1. Create a values.yaml file based on the [default one](../charts/meta-monitoring/values.yaml). An example minimal values.yaml looks like this:
+
+   ```
+   namespacesToMonitor:
+   - loki
+
+   cloud:
+     logs:
+       enabled: false
+     metrics:
+       enabled: false
+     traces:
+       enabled: false
+
+   local:
+     grafana:
+       enabled:true
+     logs:
+       enabled: true
+     metrics:
+       enabled: true
+     traces:
+       enabled: true
+     minio:
+       enabled: true
+   ```
+
+## Installing the chart
+
 1. Add the repo
 
    ```
@@ -90,25 +127,3 @@
    helm delete -n meta meta
    ```
 
-## Local mode
-
-1. Create the meta namespace
-
-   ```
-   kubectl create namespace meta
-   ```
-
-1. Create a values.yaml file based on the [default one](../charts/meta-monitoring/values.yaml). An example minimal values.yaml looks like this:
-
-   ```
-   namespacesToMonitor:
-   - loki
-
-   cloud:
-     logs:
-       enabled: false
-     metrics:
-       enabled: false
-     traces:
-       enabled: false
-   ```
