@@ -126,4 +126,3 @@
    ```
    helm delete -n meta meta
    ```
-
