@@ -126,3 +126,41 @@
    ```
    helm delete -n meta meta
    ```
+
+## Installing the dashboards and rules on Grafana Cloud
+
+## Installing the dashboards on Grafana Cloud
+
+For each of the dashboard files in charts/meta-monitoring/src/dashboards do the following:
+
+1. Click on 'Dashboards' in Grafana
+
+1. Click on the 'New` button and select 'Import'
+
+1. Drop the dashboard file to the 'Upload dashboard JSON file' drop area
+
+1. Click 'Import'
+
+Only the files for the application monitored have to be copied. When monitoring Loki import dashboard files starting with 'loki-'.
+
+## Installing the rules on Grafana Cloud
+
+1. Select the rules files in charts/meta-monitoring/src/rules for the application to monitor. When monitoring Loki use loki-rules.yaml.
+
+1. Install mimirtool as per the [instructions](https://grafana.com/docs/mimir/latest/manage/tools/mimirtool/)
+
+1. Create an access policy with Read and Write permission for Rules. Also create a token and record the token.
+
+1. Get your cloud Prometheus endpoint and Instance ID from the `Prometheus` page in `Stacks`.
+
+1. Use them to load the rules using mimirtool as follows:
+
+   ```
+  mimirtool rules load --address=<your_cloud_prometheus_endpoint> --id=<your_instance_id> --key=<your_cloud_access_policy_token> *.yaml
+  ```
+
+1. To check the rules you have uploaded run:
+
+   ```
+  mimirtool rules print --address=<your_cloud_prometheus_endpoint> --id=<your_instance_id> --key=<your_cloud_access_policy_token>
+  ```

@@ -1,12 +1,11 @@
 # Specify the namespaces to monitor here
 namespacesToMonitor:
 - loki
-- mimir
-- tempo
 # The name of the cluster where this will be installed
 clusterLabelValue: "meta-monitoring"
 
 # Set to true to write logs, metrics or traces to Grafana Cloud
+# The secrets have to be created first
 cloud:
   logs:
     enabled: true
