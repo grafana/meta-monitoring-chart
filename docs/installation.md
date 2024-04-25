@@ -131,7 +131,9 @@
 
 ## Installing the dashboards on Grafana Cloud
 
-For each of the dashboard files in charts/meta-monitoring/src/dashboards do the following:
+Only the files for the application monitored have to be copied. When monitoring Loki import dashboard files starting with 'loki-'.
+
+For each of the dashboard files in charts/meta-monitoring/src/dashboards folder do the following:
 
 1. Click on 'Dashboards' in Grafana
 
@@ -140,8 +142,6 @@ For each of the dashboard files in charts/meta-monitoring/src/dashboards do the 
 1. Drop the dashboard file to the 'Upload dashboard JSON file' drop area
 
 1. Click 'Import'
-
-Only the files for the application monitored have to be copied. When monitoring Loki import dashboard files starting with 'loki-'.
 
 ## Installing the rules on Grafana Cloud
 
@@ -155,12 +155,12 @@ Only the files for the application monitored have to be copied. When monitoring 
 
 1. Use them to load the rules using mimirtool as follows:
 
-   ```
+  ```
   mimirtool rules load --address=<your_cloud_prometheus_endpoint> --id=<your_instance_id> --key=<your_cloud_access_policy_token> *.yaml
   ```
 
 1. To check the rules you have uploaded run:
 
-   ```
+  ```
   mimirtool rules print --address=<your_cloud_prometheus_endpoint> --id=<your_instance_id> --key=<your_cloud_access_policy_token>
   ```
