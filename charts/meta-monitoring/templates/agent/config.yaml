@@ -137,6 +137,13 @@ data:
         action = "keep"
       }
 
+      rule {
+        source_labels = ["namespace"]
+        regex = "{{ include "agent.all_namespaces" . }}""
+
+        action = "keep"
+      }
+
       forward_to = [ {{ include "agent.prometheus_write_targets" . }} ]
     }
     {{- if .Values.kubeStateMetrics.enabled }}
