@@ -18,5 +18,5 @@ mixin: ## Create our version of the mixin
 	@rm -rf $(MIXIN_OUT_PATH_META_MONITORING) && mkdir $(MIXIN_OUT_PATH_META_MONITORING)
 	@cd $(MIXIN_PATH) && jb install
 	@mixtool generate all --output-alerts $(MIXIN_OUT_PATH_META_MONITORING)/alerts.yaml --output-rules $(MIXIN_OUT_PATH_META_MONITORING)/rules.yaml --directory $(MIXIN_OUT_PATH_META_MONITORING)/dashboards ${MIXIN_PATH}/mixin-meta-monitoring.libsonnet
-# copy MIXIN_OUT_PATH_META_MONITORING dir to src
-
+	@cp $(MIXIN_OUT_PATH_META_MONITORING)/dashboards/* charts/meta-monitoring/src/dashboards
+	@cp $(MIXIN_OUT_PATH_META_MONITORING)/rules.yaml charts/meta-monitoring/src/rules/loki-rules.yaml

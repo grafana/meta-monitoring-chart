@@ -18,6 +18,3 @@ git sparse-checkout set production/loki-mixin
 
 echo "Copying production/loki-mixin to ${here}"
 cp -r production ${here}
-
-cd ${here}
-cp scripts/mixin-meta-monitoring.libsonnet production/loki-mixin/

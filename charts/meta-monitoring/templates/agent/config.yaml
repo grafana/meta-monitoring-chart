@@ -154,6 +154,10 @@ data:
     // Based on https://github.com/Chewie/loutretelecom-manifests/blob/main/manifests/addons/monitoring/config.river
     discovery.kubernetes "all_nodes" {
       role = "node"
+      namespaces {
+        own_namespace = true
+        names = [ {{ include "agent.namespaces" . }} ]
+      }
     }
 
     discovery.relabel "all_nodes" {
