@@ -6,6 +6,15 @@
 {{- join ", " $list }}
 {{- end }}
 
+{{- define "agent.all_namespaces" -}}
+{{- $list := list }}
+{{- range .Values.namespacesToMonitor }}
+{{- $list = append $list (printf "\"%s\"" .) }}
+{{- end }}
+{{- $list = append $list .Release.Namespace }}
+{{- join "|" $list }}
+{{- end }}
+
 {{- define "agent.loki_write_targets" -}}
 {{- $list := list }}
 {{- if .Values.local.logs.enabled }}
