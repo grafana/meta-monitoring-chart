@@ -9,7 +9,7 @@
 {{- define "agent.all_namespaces" -}}
 {{- $list := list }}
 {{- range .Values.namespacesToMonitor }}
-{{- $list = append $list (printf "\"%s\"" .) }}
+{{- $list = append $list (printf "%s" .) }}
 {{- end }}
 {{- $list = append $list .Release.Namespace }}
 {{- join "|" $list }}
