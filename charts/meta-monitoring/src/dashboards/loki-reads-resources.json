@@ -266,7 +266,7 @@
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/query-frontend\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/.*query-frontend\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
@@ -530,7 +530,7 @@
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/query-scheduler\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/.*query-scheduler\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
@@ -794,7 +794,7 @@
                   },
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/querier\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/.*querier\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
@@ -1037,19 +1037,19 @@
                   },
                   "targets": [
                      {
-                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\"}[$__rate_interval]))",
+                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\"}[$__rate_interval]))",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\", resource=\"cpu\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\", resource=\"cpu\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "request",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\"})",
+                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\"})",
                         "format": "time_series",
                         "legendFormat": "limit",
                         "legendLink": null
@@ -1138,19 +1138,19 @@
                   },
                   "targets": [
                      {
-                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\"})",
+                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\", resource=\"memory\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\", resource=\"memory\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "request",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\"} > 0)",
+                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "limit",
                         "legendLink": null
@@ -1200,7 +1200,7 @@
                   },
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
@@ -1250,7 +1250,7 @@
                   },
                   "targets": [
                      {
-                        "expr": "sum by(instance, pod, device) (rate(node_disk_written_bytes_total[$__rate_interval])) + ignoring(pod) group_right() (label_replace(count by(instance, pod, device) (container_fs_writes_bytes_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\", device!~\".*sda.*\"}), \"device\", \"$1\", \"device\", \"/dev/(.*)\") * 0)\n",
+                        "expr": "sum by(instance, pod, device) (rate(node_disk_written_bytes_total[$__rate_interval])) + ignoring(pod) group_right() (label_replace(count by(instance, pod, device) (container_fs_writes_bytes_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\", device!~\".*sda.*\"}), \"device\", \"$1\", \"device\", \"/dev/(.*)\") * 0)\n",
                         "format": "time_series",
                         "legendFormat": "{{pod}} - {{device}}",
                         "legendLink": null
@@ -1297,7 +1297,7 @@
                   },
                   "targets": [
                      {
-                        "expr": "sum by(instance, pod, device) (rate(node_disk_read_bytes_total[$__rate_interval])) + ignoring(pod) group_right() (label_replace(count by(instance, pod, device) (container_fs_writes_bytes_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\", device!~\".*sda.*\"}), \"device\", \"$1\", \"device\", \"/dev/(.*)\") * 0)\n",
+                        "expr": "sum by(instance, pod, device) (rate(node_disk_read_bytes_total[$__rate_interval])) + ignoring(pod) group_right() (label_replace(count by(instance, pod, device) (container_fs_writes_bytes_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\", device!~\".*sda.*\"}), \"device\", \"$1\", \"device\", \"/dev/(.*)\") * 0)\n",
                         "format": "time_series",
                         "legendFormat": "{{pod}} - {{device}}",
                         "legendLink": null
@@ -1344,7 +1344,7 @@
                   },
                   "targets": [
                      {
-                        "expr": "max by(persistentvolumeclaim) (kubelet_volume_stats_used_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\"} / kubelet_volume_stats_capacity_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\"}) and count by(persistentvolumeclaim) (kube_persistentvolumeclaim_labels{cluster=~\"$cluster\", namespace=~\"$namespace\",label_name=~\"(index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary).*\"})",
+                        "expr": "max by(persistentvolumeclaim) (kubelet_volume_stats_used_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\"} / kubelet_volume_stats_capacity_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\"}) and count by(persistentvolumeclaim) (kube_persistentvolumeclaim_labels{cluster=~\"$cluster\", namespace=~\"$namespace\",label_name=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary).*\"})",
                         "format": "time_series",
                         "legendFormat": "{{persistentvolumeclaim}}",
                         "legendLink": null
@@ -1606,7 +1606,7 @@
                   },
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/bloom-gateway\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/.*bloom-gateway\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
@@ -1849,19 +1849,19 @@
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\"}[$__rate_interval]))",
+                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(.*ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\"}[$__rate_interval]))",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\", resource=\"cpu\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(.*ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\", resource=\"cpu\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "request",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\"})",
+                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(.*ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(.*ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\"})",
                         "format": "time_series",
                         "legendFormat": "limit",
                         "legendLink": null
@@ -1950,19 +1950,19 @@
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\"})",
+                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(.*ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\", resource=\"memory\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(.*ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\", resource=\"memory\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "request",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\"} > 0)",
+                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(.*ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "limit",
                         "legendLink": null
@@ -2012,7 +2012,7 @@
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(ingester.+|(loki|enterprise-logs)-write|loki-single-binary)\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*ingester.*|(loki|enterprise-logs)-write|loki-single-binary)\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
