@@ -103,7 +103,9 @@ metrics:
   - go_memstats_heap_inuse_bytes
   - kubelet_volume_stats_used_bytes
   - kubelet_volume_stats_capacity_bytes
+  - kube_deployment_created
   - kube_persistentvolumeclaim_labels
+  - kube_pod_container_info
   - kube_pod_container_resource_requests
   - kube_pod_container_status_last_terminated_reason
   - kube_pod_container_status_restarts_total
@@ -136,6 +138,7 @@ metrics:
   - loki_distributor_bytes_received_total
   - loki_distributor_lines_received_total
   - loki_distributor_structured_metadata_bytes_received_total
+  - loki_index_request_duration_seconds_count
   - loki_ingester_chunk_age_seconds_bucket
   - loki_ingester_chunk_age_seconds_count
   - loki_ingester_chunk_age_seconds_sum
