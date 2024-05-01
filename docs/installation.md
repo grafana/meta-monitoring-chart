@@ -34,12 +34,12 @@
     --from-literal=endpoint='https://prometheus-us-central1.grafana.net/api/prom/push'
 
    kubectl create secret generic traces -n meta \
-    --from-literal=username=<traces username> \
+    --from-literal=username=<OTLP instance ID> \
     --from-literal=password=<token>
-    --from-literal=endpoint='https://tempo-us-central1.grafana.net/tempo'
+    --from-literal=endpoint='https://otlp-gateway-prod-us-east-0.grafana.net/otlp'
    ```
 
-   The logs, metrics and traces usernames are the `User / Username / Instance IDs` of the Loki, Prometheus/Mimir and Tempo instances in Grafana Cloud. From `Home` in Grafana click on `Stacks`. Then go to the `Details` pages of Loki, Prometheus/Mimir and Tempo.
+   The logs, metrics and traces usernames are the `User / Username / Instance IDs` of the Loki, Prometheus/Mimir and OpenTelemetry instances in Grafana Cloud. From `Home` in Grafana click on `Stacks`. Then go to the `Details` pages of Loki and Prometheus/Mimir. For OpenTelemetry go to the `Configure` page.
 
 1. Create a values.yaml file based on the [default one](../charts/meta-monitoring/values.yaml). Fill in the names of the secrets created above as needed. An example minimal values.yaml looks like this:
 
