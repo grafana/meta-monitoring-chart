@@ -9,7 +9,7 @@ data:
       role = "pod"
       namespaces {
         own_namespace = true
-        names = [ {{ include "agent.namespaces" . }} ]
+        names = [ {{ include "agent.all_namespaces" . }} ]
       }
     }
 
