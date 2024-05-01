@@ -34,12 +34,12 @@
     --from-literal=endpoint='https://prometheus-us-central1.grafana.net/api/prom/push'
 
    kubectl create secret generic traces -n meta \
-    --from-literal=username=<traces username> \
+    --from-literal=username=<OTLP instance ID> \
     --from-literal=password=<token>
-    --from-literal=endpoint='https://tempo-us-central1.grafana.net/tempo'
+    --from-literal=endpoint='https://otlp-gateway-prod-us-east-0.grafana.net/otlp'
    ```
 
-   The logs, metrics and traces usernames are the `User / Username / Instance IDs` of the Loki, Prometheus/Mimir and Tempo instances in Grafana Cloud. From `Home` in Grafana click on `Stacks`. Then go to the `Details` pages of Loki, Prometheus/Mimir and Tempo.
+   The logs, metrics and traces usernames are the `User / Username / Instance IDs` of the Loki, Prometheus/Mimir and OpenTelemetry instances in Grafana Cloud. From `Home` in Grafana click on `Stacks`. Then go to the `Details` pages of Loki and Prometheus/Mimir. For OpenTelemetry go to the `Configure` page.
 
 1. Create a values.yaml file based on the [default one](../charts/meta-monitoring/values.yaml). Fill in the names of the secrets created above as needed. An example minimal values.yaml looks like this:
 
@@ -164,3 +164,22 @@ For each of the dashboard files in charts/meta-monitoring/src/dashboards folder 
   ```
   mimirtool rules print --address=<your_cloud_prometheus_endpoint> --id=<your_instance_id> --key=<your_cloud_access_policy_token>
   ```
+
+## Configure Loki to send traces
+
+1. In the Loki config enable tracing:
+
+   ```
+   loki:
+     tracing:
+       enabled: true
+   ```
+
+1. Add the following environment variables to your Loki binaries. When using the Loki Helm chart these can be added using the `extraEnv` setting for the Loki components.
+
+   1. JAEGER_ENDPOINT: http address of the mmc-alloy service installed by the meta-monitoring chart, for example "http://mmc-alloy:14268/api/traces"
+   1. JAEGER_AGENT_TAGS: extra tags you would like to add to the spans, for example  'cluster="abc",namespace="def"'
+   1. JAEGER_SAMPLER_TYPE: the sampling strategy, for example to sample all use 'const' with a value of 1 for the next environment variable
+   1. JAEGER_SAMPLER_PARAM: 1
+
+1. If Loki is installed in a different namespace you can create an [ExternalName service](https://kubernetes.io/docs/concepts/services-networking/service/#externalname) in Kubernetes to point to the mmc-alloy service in the meta monitoring namespace

@@ -295,13 +295,23 @@ data:
       // In this case, the Agent is listening on all available bindable addresses on port 4317 (which is the
       // default OTLP gRPC port) for the OTLP protocol.
       grpc {
-          endpoint = "0.0.0.0:4317"
+        endpoint = "0.0.0.0:4317"
       }
 
       // We define where to send the output of all ingested traces. In this case, to the OpenTelemetry batch processor
       // named 'default'.
       output {
-          traces = [otelcol.processor.batch.default.input]
+        traces = [otelcol.processor.batch.default.input]
+      }
+    }
+
+    otelcol.receiver.jaeger "jaeger" {
+      protocols {
+        thrift_http {}
+      }
+
+      output {
+        traces = [otelcol.processor.batch.default.input]
       }
     }
 
@@ -335,25 +345,6 @@ data:
     }
     {{- end }}
 
-    {{- if or .Values.local.traces.enabled .Values.cloud.traces.enabled }}
-    // The OpenTelemetry exporter exports processed trace spans to another target that is listening for OTLP format traces.
-    // A unique label, 'local', is added to uniquely identify this exporter.
-    otelcol.exporter.otlp "local" {
-        // Define the client for exporting.
-        client {
-            // Send to the locally running Tempo instance, on port 4317 (OTLP gRPC).
-            endpoint = "meta-tempo-distributor:4317"
-            // Configure TLS settings for communicating with the endpoint.
-            tls {
-                // The connection is insecure.
-                insecure = true
-                // Do not verify TLS certificates when connecting.
-                insecure_skip_verify = true
-            }
-        }
-    }
-    {{- end }}
-
     {{- if .Values.cloud.logs.enabled }}
     loki.write "cloud" {
       endpoint {
@@ -379,7 +370,7 @@ data:
     {{- end }}
 
     {{- if .Values.cloud.traces.enabled }}
-    otelcol.exporter.otlp "cloud" {
+    otelcol.exporter.otlphttp "cloud" {
         client {
             endpoint = nonsensitive(remote.kubernetes.secret.traces_credentials.data["endpoint"])
             auth = otelcol.auth.basic.creds.handler
