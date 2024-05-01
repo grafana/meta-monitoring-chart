@@ -164,3 +164,22 @@ For each of the dashboard files in charts/meta-monitoring/src/dashboards folder 
   ```
   mimirtool rules print --address=<your_cloud_prometheus_endpoint> --id=<your_instance_id> --key=<your_cloud_access_policy_token>
   ```
+
+## Configure Loki to send traces
+
+1. In the Loki config enable tracing:
+
+   ```
+   loki:
+     tracing:
+       enabled: true
+   ```
+
+1. Add the following environment variables to your Loki binaries. When using the Loki Helm chart these can be added using the `extraEnv` setting for the Loki components.
+
+   1. JAEGER_ENDPOINT: http address of the mmc-alloy service installed by the meta-monitoring chart, for example "http://mmc-alloy:14268/api/traces"
+   1. JAEGER_AGENT_TAGS: extra tags you would like to add to the spans, for example  'cluster="abc",namespace="def"'
+   1. JAEGER_SAMPLER_TYPE: the sampling strategy, for example to sample all use 'const' with a value of 1 for the next environment variable
+   1. JAEGER_SAMPLER_PARAM: 1
+
+1. If Loki is installed in a different namespace you can create an [ExternalName service](https://kubernetes.io/docs/concepts/services-networking/service/#externalname) in Kubernetes to point to the mmc-alloy service in the meta monitoring namespace
