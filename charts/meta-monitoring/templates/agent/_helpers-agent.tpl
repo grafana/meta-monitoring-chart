@@ -51,7 +51,7 @@
 {{- $list = append $list ("otelcol.exporter.otlp.local.input") }}
 {{- end }}
 {{- if .Values.cloud.traces.enabled }}
-{{- $list = append $list ("otelcol.exporter.otlp.cloud.input") }}
+{{- $list = append $list ("otelcol.exporter.otlphttp.cloud.input") }}
 {{- end }}
 {{- join ", " $list }}
 {{- end }}

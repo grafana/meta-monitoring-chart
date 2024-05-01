@@ -267,6 +267,15 @@ alloy:
         memory: '600Mi'
       limits:
         memory: '4Gi'
+    extraPorts:
+    - name: "otel"
+      port: 4317
+      targetPort: 4317
+      protocol: "TCP"
+    - name: "thrifthttp"
+      port: 14268
+      targetPort: 14268
+      protocol: "TCP"
   controller:
     type: "statefulset"
     autoscaling:
