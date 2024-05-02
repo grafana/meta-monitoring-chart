@@ -61,6 +61,10 @@ data:
         # <bool> Allows users to edit data sources from the
         # Grafana UI.
         editable: true
+        # Extra config.
+        jsonData:
+          # Scrape interval
+          timeInterval: 1m
       {{- end }}
       {{- if .Values.local.traces.enabled }}
       - name: Tempo
