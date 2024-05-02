@@ -55,3 +55,25 @@
 {{- end }}
 {{- join ", " $list }}
 {{- end }}
+
+{{- define "agent.all_logs" -}}
+{{- $list := list }}
+{{- range .Values.logs.retain }}
+{{- $list = append $list . }}
+{{- end }}
+{{- range .Values.logs.extraLogs }}
+{{- $list = append $list . }}
+{{- end }}
+{{- join "|" $list }}
+{{- end }}
+
+{{- define "agent.all_metrics" -}}
+{{- $list := list }}
+{{- range .Values.metrics.retain }}
+{{- $list = append $list . }}
+{{- end }}
+{{- range .Values.metrics.extraMetrics }}
+{{- $list = append $list . }}
+{{- end }}
+{{- join "|" $list }}
+{{- end }}

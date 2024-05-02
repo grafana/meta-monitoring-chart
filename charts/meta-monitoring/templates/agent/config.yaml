@@ -59,9 +59,9 @@ data:
     loki.process "filter" {
       forward_to = [ {{ include "agent.loki_write_targets" . }} ]
 
-      {{- if not (empty .Values.logs.retain) }}
+      {{- if or (not (empty .Values.logs.retain)) (not (empty .Values.logs.extraLogs)) }}
       stage.match {
-        selector = "{cluster=\"{{- .Values.clusterLabelValue -}}\", namespace=~\"{{- join "|" .Values.namespacesToMonitor -}}|{{- $.Release.Namespace -}}\", pod=~\"loki.*\"} !~ \"{{ join "|" .Values.logs.retain }}\""
+        selector = "{cluster=\"{{- .Values.clusterLabelValue -}}\", namespace=~\"{{- join "|" .Values.namespacesToMonitor -}}|{{- $.Release.Namespace -}}\", pod=~\"loki.*\"} !~ \"{{ include "agent.all_logs" . }}\""
         action   = "drop"
       }
       {{- end }}
@@ -137,7 +137,7 @@ data:
     prometheus.relabel "filter" {
       rule {
         source_labels = ["__name__"]
-        regex = "({{ join "|" .Values.metrics.retain }})"
+        regex = "({{ include "agent.all_metrics" . }})"
         action = "keep"
       }
 
