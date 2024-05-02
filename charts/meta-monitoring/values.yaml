@@ -70,12 +70,14 @@ logs:
   - caller=metrics.go
   # This shows any errors
   - level=error
-  # This shows the ingest requests and is very noisy. Uncomment to include.
-  # - caller=push.go
   # Log lines for delete requests
   - delete request for user added
   - Started processing delete request
   - delete request for user marked as processed
+  # This shows the ingest requests and is very noisy. Uncomment to include.
+  # - caller=push.go
+  # Additional log lines to retain
+  extraLogs: []
 
 metrics:
   # The list of metrics to retain for logging dashboards
@@ -175,6 +177,8 @@ metrics:
   - node_disk_read_bytes_total
   - node_disk_written_bytes_total
   - promtail_custom_bad_words_total
+  # Additional metrics to retain
+  extraMetrics: []
 
 # Set enabled = true to add the default logs/metrics/traces dashboards to the local Grafana
 dashboards:
