@@ -28,58 +28,6 @@ data:
         orgId: 1
         type: file
 {{- end }}
-{{- if .Values.dashboards.metrics.enabled }}
-      - disableDeletion: true
-        editable: false
-        folder: Mimir
-        name: mimir-1
-        options:
-          path: /var/lib/grafana/dashboards/mimir-1
-        orgId: 1
-        type: file
-      - disableDeletion: true
-        editable: false
-        folder: Mimir
-        name: mimir-2
-        options:
-          path: /var/lib/grafana/dashboards/mimir-2
-        orgId: 1
-        type: file
-      - disableDeletion: true
-        editable: false
-        folder: Mimir
-        name: mimir-3
-        options:
-          path: /var/lib/grafana/dashboards/mimir-3
-        orgId: 1
-        type: file
-      - disableDeletion: true
-        editable: false
-        folder: Mimir
-        name: mimir-4
-        options:
-          path: /var/lib/grafana/dashboards/mimir-4
-        orgId: 1
-        type: file
-      - disableDeletion: true
-        editable: false
-        folder: Mimir
-        name: mimir-5
-        options:
-          path: /var/lib/grafana/dashboards/mimir-5
-        orgId: 1
-        type: file
-{{- end }}
-{{- if .Values.dashboards.traces.enabled }}
-      - disableDeletion: true
-        editable: false
-        folder: Tempo
-        name: tempo-1
-        options:
-          path: /var/lib/grafana/dashboards/tempo-1
-        orgId: 1
-        type: file
-{{- end }}
       - disableDeletion: true
         editable: false
         folder: Agent

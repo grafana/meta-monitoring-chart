@@ -19,7 +19,7 @@ In the cloud mode the logs, metrics and/or traces are sent to Grafana Cloud.
 
 To enable cloud mode set `cloud.<logs|metrics|traces>.enabled` to true. The `endpoint`, `username` and `password` settings for your Grafana Cloud logs, metrics and traces instances have to be filled in as well.
 
-Both modes can be enabled at the same time.
+Both modes can be enabled at the same time. Cloud mode is preferred.
 
 ## Installation
 
@@ -33,8 +33,6 @@ For more instructions including how to update the chart go to the [installation]
 - Specify PII regexes that are applied to logs before they are sent to Loki (cloud or local). The capture group in the regex is replaced with *****.
 - a Grafana instance is installed (when local mode is used) with the relevant datasources installed. The following dashboards are installed:
   - logs dashboards
-  - metrics dashboards
-  - traces dashboards
   - agent dashboards
 - Retention is set to 24 hours
 

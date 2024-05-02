@@ -75,22 +75,6 @@ spec:
             - mountPath: /var/lib/grafana/dashboards/loki-2
               name: loki-dashboards-2
             {{- end }}
-            {{- if .Values.dashboards.metrics.enabled }}
-            - mountPath: /var/lib/grafana/dashboards/mimir-1
-              name: mimir-dashboards-1
-            - mountPath: /var/lib/grafana/dashboards/mimir-2
-              name: mimir-dashboards-2
-            - mountPath: /var/lib/grafana/dashboards/mimir-3
-              name: mimir-dashboards-3
-            - mountPath: /var/lib/grafana/dashboards/mimir-4
-              name: mimir-dashboards-4
-            - mountPath: /var/lib/grafana/dashboards/mimir-5
-              name: mimir-dashboards-5
-            {{- end }}
-            {{- if .Values.dashboards.traces.enabled }}
-            - mountPath: /var/lib/grafana/dashboards/tempo-1
-              name: tempo-dashboards-1
-            {{- end }}
             - mountPath: /var/lib/grafana/dashboards/agent-1
               name: agent-dashboards-1
       volumes:
@@ -110,28 +94,6 @@ spec:
         - name: loki-dashboards-2
           configMap:
             name: loki-dashboards-2
-        {{- end }}
-        {{- if .Values.dashboards.metrics.enabled }}
-        - name: mimir-dashboards-1
-          configMap:
-            name: mimir-dashboards-1
-        - name: mimir-dashboards-2
-          configMap:
-            name: mimir-dashboards-2
-        - name: mimir-dashboards-3
-          configMap:
-            name: mimir-dashboards-3
-        - name: mimir-dashboards-4
-          configMap:
-            name: mimir-dashboards-4
-        - name: mimir-dashboards-5
-          configMap:
-            name: mimir-dashboards-5
-        {{- end }}
-        {{- if .Values.dashboards.traces.enabled }}
-        - name: tempo-dashboards-1
-          configMap:
-            name: tempo-dashboards-1
         {{- end }}
         - name: agent-dashboards-1
           configMap:
