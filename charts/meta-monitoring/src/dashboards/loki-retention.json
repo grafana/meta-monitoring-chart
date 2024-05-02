@@ -266,7 +266,7 @@
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/\"(.*compactor|(loki|enterprise-logs)-backend.*|loki-single-binary)\"\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*compactor|(loki|enterprise-logs)-backend.*|loki-single-binary)\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
