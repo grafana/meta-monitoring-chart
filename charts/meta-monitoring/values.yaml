@@ -317,7 +317,7 @@ mimir-distributed:
       alertmanager_storage:
         s3:
           bucket_name: mimir-ruler
-          access_key_id: ${rootUser2}
+          access_key_id: ${rootUser}
           endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
           secret_access_key: ${rootPassword}
           insecure: true
@@ -325,7 +325,7 @@ mimir-distributed:
         backend: s3
         s3:
           bucket_name: mimir-tsdb
-          access_key_id: ${rootUser3}
+          access_key_id: ${rootUser}
           endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
           secret_access_key: ${rootPassword}
           insecure: true
