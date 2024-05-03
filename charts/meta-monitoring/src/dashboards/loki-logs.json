@@ -38,6 +38,7 @@
             },
             "hiddenSeries": false,
             "id": 35,
+            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -129,6 +130,7 @@
             },
             "hiddenSeries": false,
             "id": 41,
+            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -216,6 +218,7 @@
             },
             "hiddenSeries": false,
             "id": 36,
+            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -307,6 +310,7 @@
             },
             "hiddenSeries": false,
             "id": 40,
+            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -398,6 +402,7 @@
             },
             "hiddenSeries": false,
             "id": 38,
+            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -489,6 +494,7 @@
             },
             "hiddenSeries": false,
             "id": 39,
+            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -575,6 +581,7 @@
             },
             "hiddenSeries": false,
             "id": 37,
+            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -667,6 +674,7 @@
             },
             "hiddenSeries": false,
             "id": 42,
+            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -759,6 +767,7 @@
             },
             "hiddenSeries": false,
             "id": 31,
+            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -857,6 +866,7 @@
                "y": 6
             },
             "id": 29,
+            "interval": "1m",
             "maxDataPoints": "",
             "options": {
                "showLabels": false,

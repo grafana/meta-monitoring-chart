@@ -90,6 +90,7 @@
                      ]
                   },
                   "id": 1,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -191,6 +192,7 @@
                      ]
                   },
                   "id": 2,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -253,6 +255,7 @@
                      "overrides": [ ]
                   },
                   "id": 3,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -317,6 +320,7 @@
                   },
                   "fill": 1,
                   "id": 4,
+                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -423,6 +427,7 @@
                      "overrides": [ ]
                   },
                   "id": 5,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -482,6 +487,7 @@
                      "overrides": [ ]
                   },
                   "id": 6,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -529,6 +535,7 @@
                      "overrides": [ ]
                   },
                   "id": 7,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -590,6 +597,7 @@
                   },
                   "fill": 1,
                   "id": 8,
+                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -696,6 +704,7 @@
                      "overrides": [ ]
                   },
                   "id": 9,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -743,6 +752,7 @@
                      "overrides": [ ]
                   },
                   "id": 10,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -802,6 +812,7 @@
                      "overrides": [ ]
                   },
                   "id": 11,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -849,6 +860,7 @@
                      "overrides": [ ]
                   },
                   "id": 12,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -896,6 +908,7 @@
                      "overrides": [ ]
                   },
                   "id": 13,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -956,6 +969,7 @@
                   },
                   "format": "short",
                   "id": 14,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -1004,6 +1018,7 @@
                      "overrides": [ ]
                   },
                   "id": 15,
+                  "interval": "1m",
                   "links": [ ],
                   "nullPointMode": "null as zero",
                   "options": {
@@ -1095,6 +1110,7 @@
                   },
                   "format": "short",
                   "id": 16,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -1143,6 +1159,7 @@
                      "overrides": [ ]
                   },
                   "id": 17,
+                  "interval": "1m",
                   "links": [ ],
                   "nullPointMode": "null as zero",
                   "options": {
@@ -1233,6 +1250,7 @@
                      "overrides": [ ]
                   },
                   "id": 18,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -1280,6 +1298,7 @@
                      "overrides": [ ]
                   },
                   "id": 19,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -1327,6 +1346,7 @@
                      "overrides": [ ]
                   },
                   "id": 20,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
