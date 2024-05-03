@@ -200,6 +200,7 @@
                   },
                   "fill": 10,
                   "id": 1,
+                  "interval": "1m",
                   "linewidth": 0,
                   "links": [ ],
                   "options": {
@@ -249,6 +250,7 @@
                      "overrides": [ ]
                   },
                   "id": 2,
+                  "interval": "1m",
                   "links": [ ],
                   "nullPointMode": "null as zero",
                   "options": {
@@ -345,6 +347,7 @@
                      "overrides": [ ]
                   },
                   "id": 3,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -392,6 +395,7 @@
                      "overrides": [ ]
                   },
                   "id": 4,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -619,6 +623,7 @@
                   },
                   "fill": 10,
                   "id": 5,
+                  "interval": "1m",
                   "linewidth": 0,
                   "links": [ ],
                   "options": {
@@ -668,6 +673,7 @@
                      "overrides": [ ]
                   },
                   "id": 6,
+                  "interval": "1m",
                   "links": [ ],
                   "nullPointMode": "null as zero",
                   "options": {
@@ -913,6 +919,7 @@
                   },
                   "fill": 10,
                   "id": 7,
+                  "interval": "1m",
                   "linewidth": 0,
                   "links": [ ],
                   "options": {
@@ -962,6 +969,7 @@
                      "overrides": [ ]
                   },
                   "id": 8,
+                  "interval": "1m",
                   "links": [ ],
                   "nullPointMode": "null as zero",
                   "options": {
@@ -1207,6 +1215,7 @@
                   },
                   "fill": 10,
                   "id": 9,
+                  "interval": "1m",
                   "linewidth": 0,
                   "links": [ ],
                   "options": {
@@ -1256,6 +1265,7 @@
                      "overrides": [ ]
                   },
                   "id": 10,
+                  "interval": "1m",
                   "links": [ ],
                   "nullPointMode": "null as zero",
                   "options": {
@@ -1495,6 +1505,7 @@
                   },
                   "fill": 10,
                   "id": 11,
+                  "interval": "1m",
                   "linewidth": 0,
                   "links": [ ],
                   "options": {
@@ -1544,6 +1555,7 @@
                      "overrides": [ ]
                   },
                   "id": 12,
+                  "interval": "1m",
                   "links": [ ],
                   "nullPointMode": "null as zero",
                   "options": {

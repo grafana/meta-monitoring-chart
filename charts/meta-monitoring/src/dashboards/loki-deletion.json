@@ -35,6 +35,7 @@
                   "fill": 1,
                   "format": "none",
                   "id": 1,
+                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -110,6 +111,7 @@
                   "fill": 1,
                   "format": "dtdurations",
                   "id": 2,
+                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -213,6 +215,7 @@
                      "overrides": [ ]
                   },
                   "id": 3,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -260,6 +263,7 @@
                      "overrides": [ ]
                   },
                   "id": 4,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -307,6 +311,7 @@
                      "overrides": [ ]
                   },
                   "id": 5,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -366,6 +371,7 @@
                      "overrides": [ ]
                   },
                   "id": 6,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -413,6 +419,7 @@
                      "overrides": [ ]
                   },
                   "id": 7,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -460,6 +467,7 @@
                      "overrides": [ ]
                   },
                   "id": 8,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -519,6 +527,7 @@
                      "overrides": [ ]
                   },
                   "id": 9,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -566,6 +575,7 @@
                      "overrides": [ ]
                   },
                   "id": 10,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -603,6 +613,7 @@
                {
                   "datasource": "$loki_datasource",
                   "id": 11,
+                  "interval": "1m",
                   "span": 6,
                   "targets": [
                      {
@@ -616,6 +627,7 @@
                {
                   "datasource": "$loki_datasource",
                   "id": 12,
+                  "interval": "1m",
                   "span": 6,
                   "targets": [
                      {

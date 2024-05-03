@@ -90,6 +90,7 @@
                      ]
                   },
                   "id": 1,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -191,6 +192,7 @@
                      ]
                   },
                   "id": 2,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -253,6 +255,7 @@
                      "overrides": [ ]
                   },
                   "id": 3,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -316,6 +319,7 @@
                   },
                   "gridPos": { },
                   "id": 4,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -405,6 +409,7 @@
                   },
                   "gridPos": { },
                   "id": 5,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -506,6 +511,7 @@
                   },
                   "gridPos": { },
                   "id": 6,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -568,6 +574,7 @@
                   },
                   "gridPos": { },
                   "id": 7,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -618,6 +625,7 @@
                   },
                   "gridPos": { },
                   "id": 8,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -665,6 +673,7 @@
                   },
                   "gridPos": { },
                   "id": 9,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -712,6 +721,7 @@
                   },
                   "gridPos": { },
                   "id": 10,
+                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
