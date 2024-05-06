@@ -386,7 +386,7 @@ tempo-distributed:
         enabled: true
 
 minio:
-  existingSecret: "mmc-minio"
+  existingSecret: "minio"
   buckets:
     - name: loki-chunks
       policy: none
