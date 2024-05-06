@@ -317,25 +317,22 @@ mimir-distributed:
       alertmanager_storage:
         s3:
           bucket_name: mimir-ruler
-          access_key_id: ${rootUser}
-          endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
-          secret_access_key: ${rootPassword}
-          insecure: true
       blocks_storage:
         backend: s3
         s3:
           bucket_name: mimir-tsdb
-          access_key_id: ${rootUser}
-          endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
-          secret_access_key: ${rootPassword}
-          insecure: true
       ruler_storage:
         s3:
           bucket_name: mimir-ruler
-          access_key_id: "${rootUser4}"
-          endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
-          secret_access_key: ${rootPassword}
-          insecure: true
+      common:
+        storage:
+          backend: s3
+          s3:
+            bucket_name: mimir-ruler
+            access_key_id: "${rootUser}"
+            endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
+            secret_access_key: "${rootPassword}"
+            insecure: true
       limits:
         compactor_blocks_retention_period: 30d
 
@@ -351,9 +348,6 @@ tempo-distributed:
             access_key: "${rootUser}"
             secret_key: "${rootPassword}"
             insecure: true
-      compactor:
-        compaction:
-          block_retention: 30d
   distributor:
     extraArgs:
     - "-config.expand-env=true"
