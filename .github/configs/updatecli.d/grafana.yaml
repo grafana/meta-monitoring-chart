@@ -6,7 +6,7 @@ sources:
         spec:
             owner: grafana
             repository: grafana
-            token: "{{ requiredEnv .github.token }}"
+            token: '{{ requiredEnv "UPDATECLI_GITHUB_TOKEN" }}'
             versionfilter:
                 kind: latest
 conditions:
