@@ -48,7 +48,7 @@
 {{- define "agent.tempo_write_targets" -}}
 {{- $list := list }}
 {{- if .Values.local.traces.enabled }}
-{{- $list = append $list ("otelcol.exporter.otlp.local.input") }}
+{{- $list = append $list ("otelcol.exporter.otlphttp.local.input") }}
 {{- end }}
 {{- if .Values.cloud.traces.enabled }}
 {{- $list = append $list ("otelcol.exporter.otlphttp.cloud.input") }}
