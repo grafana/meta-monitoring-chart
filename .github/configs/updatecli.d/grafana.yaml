@@ -9,6 +9,8 @@ sources:
             token: '{{ requiredEnv "UPDATECLI_GITHUB_TOKEN" }}'
             versionfilter:
                 kind: latest
+        transformers:
+          - trimPrefix: "v"
 conditions:
     grafanaImagePublished:
         name: Ensure the latest Grafana is published on DockerHub
