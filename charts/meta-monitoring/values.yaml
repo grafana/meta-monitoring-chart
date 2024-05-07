@@ -3,7 +3,6 @@ namespacesToMonitor:
 - loki
 # The name of the cluster where this will be installed
 clusterLabelValue: "meta-monitoring"
-
 # Set to true to write logs, metrics or traces to Grafana Cloud
 # The secrets have to be created first
 cloud:
@@ -16,7 +15,6 @@ cloud:
   traces:
     enabled: true
     secret: "traces"
-
 # Set to true for a local version of logs, metrics or traces
 local:
   grafana:
@@ -28,9 +26,9 @@ local:
   traces:
     enabled: false
   minio:
-    enabled: false  # This should be set to true if any of the previous is enabled
-
+    enabled: false # This should be set to true if any of the previous is enabled
 grafana:
+  image: 10.4.2
   # Gateway ingress configuration
   ingress:
     # -- Specifies whether an ingress for the gateway should be created
@@ -38,9 +36,9 @@ grafana:
     # -- Ingress Class Name. MAY be required for Kubernetes versions >= 1.18
     ingressClassName: ""
     # -- Annotations for the gateway ingress
-    annotations: { }
+    annotations: {}
     # -- Labels for the gateway ingress
-    labels: { }
+    labels: {}
     # -- Hosts configuration for the gateway ingress, passed through the `tpl` function to allow templating
     hosts:
       - host: monitoring.example.com
@@ -53,18 +51,14 @@ grafana:
     #  - secretName: grafana-tls
     #    hosts:
     #      - monitoring.example.com
-
-
 logs:
   # Adding regexes here will add a stage.replace block for logs. For more information see
   # https://grafana.com/docs/agent/latest/flow/reference/components/loki.process/#stagereplace-block
-  piiRegexes:
-  # This example replaces the word after password with *****
-  # - expression: "password (\\\\S+)"
-  #   source: ""         # Empty uses the log message
-  #   replace: "*****""
-
-  # The lines matching these will be kept in Loki
+  piiRegexes: null # This example replaces the word after password with *****
+# - expression: "password (\\\\S+)"
+#   source: ""         # Empty uses the log message
+#   replace: "*****""
+# The lines matching these will be kept in Loki
   retain:
   # This shows the queries
   - caller=metrics.go
@@ -78,7 +72,6 @@ logs:
   # - caller=push.go
   # Additional log lines to retain
   extraLogs: []
-
 metrics:
   # The list of metrics to retain for logging dashboards
   retain:
@@ -179,7 +172,6 @@ metrics:
   - promtail_custom_bad_words_total
   # Additional metrics to retain
   extraMetrics: []
-
 # Set enabled = true to add the default logs/metrics/traces dashboards to the local Grafana
 dashboards:
   logs:
@@ -188,12 +180,10 @@ dashboards:
     enabled: true
   traces:
     enabled: true
-
 global:
   minio:
     rootUser: "rootuser"
     rootPassword: "rootpassword"
-
 kubeStateMetrics:
   # Scrape https://github.com/kubernetes/kube-state-metrics by default
   enabled: true
@@ -201,10 +191,8 @@ kubeStateMetrics:
   # https://artifacthub.io/packages/helm/prometheus-community/kube-state-metrics/
   # is used. Change this if kube-state-metrics is installed somewhere else.
   endpoint: kube-state-metrics.kube-state-metrics.svc.cluster.local:8080
-
 # The following are configuration for the dependencies.
 # These should usually not be changed.
-
 loki:
   loki:
     auth_enabled: false
@@ -256,7 +244,6 @@ loki:
       enabled: false
   test:
     enabled: false
-
 alloy:
   alloy:
     clustering:
@@ -288,7 +275,6 @@ alloy:
       maxReplicas: 30
       targetMemoryUtilizationPercentage: 90
       targetCPUUtilizationPercentage: 90
-
 mimir-distributed:
   minio:
     enabled: false
@@ -318,7 +304,6 @@ mimir-distributed:
           insecure: true
       limits:
         compactor_blocks_retention_period: 30d
-
 tempo-distributed:
   tempo:
     structuredConfig:
@@ -340,7 +325,6 @@ tempo-distributed:
         enabled: true
       grpc:
         enabled: true
-
 minio:
   rootUser: rootuser
   rootPassword: rootpassword
