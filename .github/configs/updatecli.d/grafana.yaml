@@ -6,6 +6,7 @@ sources:
         spec:
             owner: grafana
             repository: grafana
+            token: "{{ requiredEnv .github.token }}"
             versionfilter:
                 kind: latest
 conditions:
