@@ -10,7 +10,7 @@ sources:
             versionfilter:
                 kind: latest
         transformers:
-          - trimPrefix: "v"
+          - trimprefix: "v"
 conditions:
     grafanaImagePublished:
         name: Ensure the latest Grafana is published on DockerHub
