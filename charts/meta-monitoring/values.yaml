@@ -180,7 +180,7 @@ metrics:
   # Additional metrics to retain
   extraMetrics: []
 
-# Set enabled = true to add the default logs/metrics/traces dashboards to the local Grafana
+# Set enabled = true to add the default logs dashboards to the local Grafana
 dashboards:
   logs:
     enabled: true
@@ -188,11 +188,6 @@ dashboards:
     enabled: true
   traces:
     enabled: true
-
-global:
-  minio:
-    rootUser: "rootuser"
-    rootPassword: "rootpassword"
 
 kubeStateMetrics:
   # Scrape https://github.com/kubernetes/kube-state-metrics by default
@@ -259,19 +254,19 @@ loki:
     - "-config.expand-env=true"
     extraEnvFrom:
     - secretRef:
-        name: "mmc-minio"
+        name: "minio"
   read:
     extraArgs:
     - "-config.expand-env=true"
     extraEnvFrom:
     - secretRef:
-        name: "mmc-minio"
+        name: "minio"
   backend:
     extraArgs:
     - "-config.expand-env=true"
     extraEnvFrom:
     - secretRef:
-        name: "mmc-minio"
+        name: "minio"
 
 alloy:
   alloy:
@@ -311,7 +306,7 @@ mimir-distributed:
   global:
     extraEnvFrom:
     - secretRef:
-        name: "mmc-minio"
+        name: "minio"
   mimir:
     structuredConfig:
       alertmanager_storage:
@@ -353,31 +348,31 @@ tempo-distributed:
     - "-config.expand-env=true"
     extraEnvFrom:
     - secretRef:
-        name: "mmc-minio"
+        name: "minio"
   ingester:
     extraArgs:
     - "-config.expand-env=true"
     extraEnvFrom:
     - secretRef:
-        name: "mmc-minio"
+        name: "minio"
   compactor:
     extraArgs:
     - "-config.expand-env=true"
     extraEnvFrom:
     - secretRef:
-        name: "mmc-minio"
+        name: "minio"
   querier:
     extraArgs:
     - "-config.expand-env=true"
     extraEnvFrom:
     - secretRef:
-        name: "mmc-minio"
+        name: "minio"
   queryFrontend:
     extraArgs:
     - "-config.expand-env=true"
     extraEnvFrom:
     - secretRef:
-        name: "mmc-minio"
+        name: "minio"
   traces:
     otlp:
       http:
