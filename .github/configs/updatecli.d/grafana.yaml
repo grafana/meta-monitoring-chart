@@ -24,7 +24,7 @@ targets:
         kind: helmchart
         spec:
             file: values.yaml
-            key: grafana.image
+            key: $.grafana.image
             name: charts/meta-monitoring
             versionincrement: none
         sourceid: latestGrafanaRelease
