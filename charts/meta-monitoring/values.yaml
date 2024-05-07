@@ -31,6 +31,7 @@ local:
     enabled: false  # This should be set to true if any of the previous is enabled
 
 grafana:
+  image: grafana/grafana:10.0.0
   # Gateway ingress configuration
   ingress:
     # -- Specifies whether an ingress for the gateway should be created

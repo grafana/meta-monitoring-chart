@@ -1,0 +1,28 @@
+name: Bump dependency "loki" for Helm chart "meta-monitoring"
+sources:
+    latestGrafanaRelease:
+        name: Get latest grafana release on Github
+        kind: githubrelease
+        spec:
+            owner: grafana
+            repository: grafana
+            name: loki
+            versionfilter:
+                kind: latest
+conditions:
+    grafanaImagePublished:
+        name: Ensure the latest Grafana is published on DockerHub
+        kind: dockerimage
+        source-id: latestGrafanaRelease
+        spec:
+            image: "grafana/grafana"
+targets:
+    grafana:
+        name: Update Grafana version in values.yaml
+        kind: helmchart
+        spec:
+            file: values.yaml
+            key: grafana.image
+            name: charts/meta-monitoring
+            versionincrement: none
+        sourceid: loki
