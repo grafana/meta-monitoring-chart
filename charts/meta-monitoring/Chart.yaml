@@ -33,7 +33,7 @@ dependencies:
   condition: local.metrics.enabled
 - name: tempo-distributed
   repository: https://grafana.github.io/helm-charts
-  version: 1.9.5
+  version: 1.9.7
   condition: local.traces.enabled
 - name: minio
   repository: https://charts.min.io
