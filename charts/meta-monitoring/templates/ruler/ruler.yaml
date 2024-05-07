@@ -51,7 +51,7 @@ spec:
               protocol: TCP
           envFrom:
           - secretRef:
-             name: mmc-minio
+             name: minio
           readinessProbe:
             failureThreshold: 3
             httpGet:

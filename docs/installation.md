@@ -67,7 +67,7 @@
    kubectl create namespace meta
    ```
 
-1. Create a secret with the user and password for the local Minio:
+1. Create a secret named `minio` with the user and password for the local Minio:
 
    ```
    kubectl create secret generic minio -n meta \
