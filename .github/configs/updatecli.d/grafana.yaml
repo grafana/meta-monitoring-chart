@@ -1,4 +1,4 @@
-name: Bump dependency "loki" for Helm chart "meta-monitoring"
+name: Bump grafana version specified in the values.yaml
 sources:
     latestGrafanaRelease:
         name: Get latest grafana release on Github
@@ -6,7 +6,6 @@ sources:
         spec:
             owner: grafana
             repository: grafana
-            name: loki
             versionfilter:
                 kind: latest
 conditions:
@@ -25,4 +24,4 @@ targets:
             key: grafana.image
             name: charts/meta-monitoring
             versionincrement: none
-        sourceid: loki
+        sourceid: latestGrafanaRelease
