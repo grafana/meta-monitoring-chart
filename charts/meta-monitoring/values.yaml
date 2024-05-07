@@ -229,9 +229,9 @@ loki:
       common:
         storage:
           s3:
-            access_key_id: "{{ .Values.global.minio.rootUser }}"
+            access_key_id: "${rootUser}"
             endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
-            secret_access_key: "{{ .Values.global.minio.rootPassword }}"
+            secret_access_key: "${rootPassword}"
       compactor:
         retention_enabled: true
         delete_request_store: s3
@@ -254,8 +254,24 @@ loki:
         installOperator: false
     lokiCanary:
       enabled: false
-  test:
-    enabled: false
+  write:
+    extraArgs:
+    - "-config.expand-env=true"
+    extraEnvFrom:
+    - secretRef:
+        name: "mmc-minio"
+  read:
+    extraArgs:
+    - "-config.expand-env=true"
+    extraEnvFrom:
+    - secretRef:
+        name: "mmc-minio"
+  backend:
+    extraArgs:
+    - "-config.expand-env=true"
+    extraEnvFrom:
+    - secretRef:
+        name: "mmc-minio"
 
 alloy:
   alloy:
@@ -292,30 +308,31 @@ alloy:
 mimir-distributed:
   minio:
     enabled: false
+  global:
+    extraEnvFrom:
+    - secretRef:
+        name: "mmc-minio"
   mimir:
     structuredConfig:
       alertmanager_storage:
         s3:
           bucket_name: mimir-ruler
-          access_key_id: "{{ .Values.global.minio.rootUser }}"
-          endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
-          secret_access_key: "{{ .Values.global.minio.rootPassword }}"
-          insecure: true
       blocks_storage:
         backend: s3
         s3:
           bucket_name: mimir-tsdb
-          access_key_id: "{{ .Values.global.minio.rootUser }}"
-          endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
-          secret_access_key: "{{ .Values.global.minio.rootPassword }}"
-          insecure: true
       ruler_storage:
         s3:
           bucket_name: mimir-ruler
-          access_key_id: "{{ .Values.global.minio.rootUser }}"
-          endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
-          secret_access_key: "{{ .Values.global.minio.rootPassword }}"
-          insecure: true
+      common:
+        storage:
+          backend: s3
+          s3:
+            bucket_name: mimir-ruler
+            access_key_id: "${rootUser}"
+            endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
+            secret_access_key: "${rootPassword}"
+            insecure: true
       limits:
         compactor_blocks_retention_period: 30d
 
@@ -328,12 +345,39 @@ tempo-distributed:
           s3:
             bucket: tempo
             endpoint: "{{ .Release.Name }}-minio.{{ .Release.Namespace }}.svc:9000"
-            access_key: "{{ .Values.global.minio.rootUser }}"
-            secret_key: "{{ .Values.global.minio.rootPassword }}"
+            access_key: "${rootUser}"
+            secret_key: "${rootPassword}"
             insecure: true
-      compactor:
-        compaction:
-          block_retention: 30d
+  distributor:
+    extraArgs:
+    - "-config.expand-env=true"
+    extraEnvFrom:
+    - secretRef:
+        name: "mmc-minio"
+  ingester:
+    extraArgs:
+    - "-config.expand-env=true"
+    extraEnvFrom:
+    - secretRef:
+        name: "mmc-minio"
+  compactor:
+    extraArgs:
+    - "-config.expand-env=true"
+    extraEnvFrom:
+    - secretRef:
+        name: "mmc-minio"
+  querier:
+    extraArgs:
+    - "-config.expand-env=true"
+    extraEnvFrom:
+    - secretRef:
+        name: "mmc-minio"
+  queryFrontend:
+    extraArgs:
+    - "-config.expand-env=true"
+    extraEnvFrom:
+    - secretRef:
+        name: "mmc-minio"
   traces:
     otlp:
       http:
@@ -342,8 +386,7 @@ tempo-distributed:
         enabled: true
 
 minio:
-  rootUser: rootuser
-  rootPassword: rootpassword
+  existingSecret: "minio"
   buckets:
     - name: loki-chunks
       policy: none
