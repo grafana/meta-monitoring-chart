@@ -16,7 +16,7 @@ env:
     UPDATECLI_GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
 jobs:
-    updateLoki:
+    updateVersions:
         name: Update the Loki subchart
         runs-on: "ubuntu-latest"
         steps:
@@ -26,7 +26,7 @@ jobs:
             - name: Install Updatecli
               uses: updatecli/updatecli-action@v2
 
-            - name: Run Updatecli
+            - name: Run Updatecli for Loki
               id: update-loki
               run: |
                 updatecli apply --config ${UPDATECLI_CONFIG_DIR}/loki.yaml
@@ -34,31 +34,7 @@ jobs:
                   echo "changed=true" >> "${GITHUB_OUTPUT}"
                 fi
 
-            - name: Create pull request
-              if: steps.update-loki.outputs.changed == 'true'
-              uses: peter-evans/create-pull-request@v5
-              with:
-                title: "[dependency] Update the Loki subchart"
-                body: "Updates the Loki subchart"
-                base: main
-                author: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
-                committer: "GitHub <noreply@github.com>"
-                commit-message: Update loki
-                labels: dependencies
-                branch: chore/update-loki
-                delete-branch: true
-
-    updateGrafanaAlloy:
-        name: Update the Grafana Alloy subchart
-        runs-on: "ubuntu-latest"
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-
-            - name: Install Updatecli
-              uses: updatecli/updatecli-action@v2
-
-            - name: Run Updatecli
+            - name: Run Updatecli for Alloy
               id: update-grafana-alloy
               run: |
                 updatecli apply --config ${UPDATECLI_CONFIG_DIR}/alloy.yaml
@@ -66,112 +42,40 @@ jobs:
                   echo "changed=true" >> "${GITHUB_OUTPUT}"
                 fi
 
-            - name: Create pull request
-              if: steps.update-grafana-alloy.outputs.changed == 'true'
-              uses: peter-evans/create-pull-request@v5
-              with:
-                title: "[dependency] Update the Grafana Alloy subchart"
-                body: "Updates the Grafana Alloy subchart"
-                base: main
-                author: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
-                committer: "GitHub <noreply@github.com>"
-                commit-message: Update Grafana Alloy
-                labels: dependencies
-                branch: chore/update-grafana-alloy
-                delete-branch: true
-
-    updateMimirDistributed:
-        name: Update the Mimir Distributed subchart
-        runs-on: "ubuntu-latest"
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-
-            - name: Install Updatecli
-              uses: updatecli/updatecli-action@v2
-
-            - name: Run Updatecli
+            - name: Run Updatecli for Mimir
               id: update-mimir-distributed
               run: |
-                updatecli apply --config ${UPDATECLI_CONFIG_DIR}/mimir-distributed.yaml
-                if ! git diff --exit-code > /dev/null; then
-                  echo "changed=true" >> "${GITHUB_OUTPUT}"
-                fi
+                  updatecli apply --config ${UPDATECLI_CONFIG_DIR}/mimir-distributed.yaml
+                  if ! git diff --exit-code > /dev/null; then
+                    echo "changed=true" >> "${GITHUB_OUTPUT}"
+                  fi
 
-            - name: Create pull request
-              if: steps.update-mimir-distributed.outputs.changed == 'true'
-              uses: peter-evans/create-pull-request@v5
-              with:
-                title: "[dependency] Update the Mimir Distributed subchart"
-                body: "Updates the Mimir Distributed subchart"
-                base: main
-                author: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
-                committer: "GitHub <noreply@github.com>"
-                commit-message: Update Mimir Distributed
-                labels: dependencies
-                branch: chore/update-mimir-distributed
-                delete-branch: true
-
-    updateTempoDistributed:
-        name: Update the Tempo Distributed subchart
-        runs-on: "ubuntu-latest"
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-
-            - name: Install Updatecli
-              uses: updatecli/updatecli-action@v2
-
-            - name: Run Updatecli
+            - name: Run Updatecli for Tempo
               id: update-tempo-distributed
               run: |
-                updatecli apply --config ${UPDATECLI_CONFIG_DIR}/tempo-distributed.yaml
-                if ! git diff --exit-code > /dev/null; then
-                  echo "changed=true" >> "${GITHUB_OUTPUT}"
-                fi
+                    updatecli apply --config ${UPDATECLI_CONFIG_DIR}/tempo-distributed.yaml
+                    if ! git diff --exit-code > /dev/null; then
+                      echo "changed=true" >> "${GITHUB_OUTPUT}"
+                    fi
 
-            - name: Create pull request
-              if: steps.update-tempo-distributed.outputs.changed == 'true'
-              uses: peter-evans/create-pull-request@v5
-              with:
-                title: "[dependency] Update the Tempo Distributed subchart"
-                body: "Updates the tempo Distributed subchart"
-                base: main
-                author: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
-                committer: "GitHub <noreply@github.com>"
-                commit-message: Update Tempo Distributed
-                labels: dependencies
-                branch: chore/update-tempo-distributed
-                delete-branch: true
-
-    updateMinio:
-        name: Update the Minio subchart
-        runs-on: "ubuntu-latest"
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-
-            - name: Install Updatecli
-              uses: updatecli/updatecli-action@v2
-
-            - name: Run Updatecli
+            - name: Run Updatecli for Minio
               id: update-minio
               run: |
-                updatecli apply --config ${UPDATECLI_CONFIG_DIR}/minio.yaml
-                if ! git diff --exit-code > /dev/null; then
-                  echo "changed=true" >> "${GITHUB_OUTPUT}"
-                fi
+                      updatecli apply --config ${UPDATECLI_CONFIG_DIR}/minio.yaml
+                      if ! git diff --exit-code > /dev/null; then
+                        echo "changed=true" >> "${GITHUB_OUTPUT}"
+                      fi
 
             - name: Create pull request
-              if: steps.update-minio.outputs.changed == 'true'
+              if: steps.update-loki.outputs.changed == 'true' || steps.update-grafana-alloy.outputs.changed == 'true' || steps.update-mimir-distributed.outputs.changed == 'true' || steps.update-tempo-distributed.outputs.changed == 'true' || steps.update-minio.outputs.changed == 'true'
               uses: peter-evans/create-pull-request@v5
               with:
-                title: "[dependency] Update the Minio subchart"
-                body: "Updates the Minio subchart"
+                title: "[dependency] Update the subcharts"
+                body: "Updates the subcharts"
                 base: main
                 author: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
                 committer: "GitHub <noreply@github.com>"
-                commit-message: Update minio
+                commit-message: Update dependencies
                 labels: dependencies
-                branch: chore/update-minio
+                branch: chore/update-dependencies
                 delete-branch: true
