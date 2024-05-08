@@ -17,7 +17,7 @@ env:
 
 jobs:
     updateVersions:
-        name: Update the Loki subchart
+        name: Update the subcharts
         runs-on: "ubuntu-latest"
         steps:
             - name: Checkout
@@ -45,26 +45,26 @@ jobs:
             - name: Run Updatecli for Mimir
               id: update-mimir-distributed
               run: |
-                  updatecli apply --config ${UPDATECLI_CONFIG_DIR}/mimir-distributed.yaml
-                  if ! git diff --exit-code > /dev/null; then
-                    echo "changed=true" >> "${GITHUB_OUTPUT}"
-                  fi
+                updatecli apply --config ${UPDATECLI_CONFIG_DIR}/mimir-distributed.yaml
+                if ! git diff --exit-code > /dev/null; then
+                  echo "changed=true" >> "${GITHUB_OUTPUT}"
+                fi
 
             - name: Run Updatecli for Tempo
               id: update-tempo-distributed
               run: |
-                    updatecli apply --config ${UPDATECLI_CONFIG_DIR}/tempo-distributed.yaml
-                    if ! git diff --exit-code > /dev/null; then
-                      echo "changed=true" >> "${GITHUB_OUTPUT}"
-                    fi
+                updatecli apply --config ${UPDATECLI_CONFIG_DIR}/tempo-distributed.yaml
+                if ! git diff --exit-code > /dev/null; then
+                  echo "changed=true" >> "${GITHUB_OUTPUT}"
+                fi
 
             - name: Run Updatecli for Minio
               id: update-minio
               run: |
-                      updatecli apply --config ${UPDATECLI_CONFIG_DIR}/minio.yaml
-                      if ! git diff --exit-code > /dev/null; then
-                        echo "changed=true" >> "${GITHUB_OUTPUT}"
-                      fi
+                updatecli apply --config ${UPDATECLI_CONFIG_DIR}/minio.yaml
+                if ! git diff --exit-code > /dev/null; then
+                  echo "changed=true" >> "${GITHUB_OUTPUT}"
+                fi
 
             - name: Create pull request
               if: steps.update-loki.outputs.changed == 'true' || steps.update-grafana-alloy.outputs.changed == 'true' || steps.update-mimir-distributed.outputs.changed == 'true' || steps.update-tempo-distributed.outputs.changed == 'true' || steps.update-minio.outputs.changed == 'true'
