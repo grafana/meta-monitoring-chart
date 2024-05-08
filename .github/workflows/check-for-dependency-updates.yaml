@@ -175,3 +175,35 @@ jobs:
                 labels: dependencies
                 branch: chore/update-minio
                 delete-branch: true
+
+    updateGrafana:
+        name: Update the Grafana version
+        runs-on: "ubuntu-latest"
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Install Updatecli
+              uses: updatecli/updatecli-action@v2
+
+            - name: Run Updatecli
+              id: update-grafana
+              run: |
+                updatecli apply --config ${UPDATECLI_CONFIG_DIR}/grafana.yaml
+                if ! git diff --exit-code > /dev/null; then
+                  echo "changed=true" >> "${GITHUB_OUTPUT}"
+                fi
+
+            - name: Create pull request
+              if: steps.update-grafana.outputs.changed == 'true'
+              uses: peter-evans/create-pull-request@v5
+              with:
+                title: "[dependency] Update the Grafana version"
+                body: "Updates the Grafana version"
+                base: main
+                author: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
+                committer: "GitHub <noreply@github.com>"
+                commit-message: Update Grafana version
+                labels: dependencies
+                branch: chore/update-minio
+                delete-branch: true

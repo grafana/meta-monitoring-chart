@@ -1,0 +1,30 @@
+name: Bump grafana version specified in the values.yaml
+sources:
+    latestGrafanaRelease:
+        name: Get latest grafana release on Github
+        kind: githubrelease
+        spec:
+            owner: grafana
+            repository: grafana
+            token: '{{ requiredEnv "UPDATECLI_GITHUB_TOKEN" }}'
+            versionfilter:
+                kind: latest
+        transformers:
+          - trimprefix: "v"
+conditions:
+    grafanaImagePublished:
+        name: Ensure the latest Grafana is published on DockerHub
+        kind: dockerimage
+        source-id: latestGrafanaRelease
+        spec:
+            image: "grafana/grafana"
+targets:
+    grafana:
+        name: Update Grafana version in values.yaml
+        kind: helmchart
+        spec:
+            file: values.yaml
+            key: $.grafana.version
+            name: charts/meta-monitoring
+            versionincrement: none
+        sourceid: latestGrafanaRelease
