@@ -176,10 +176,6 @@ metrics:
 dashboards:
   logs:
     enabled: true
-  metrics:
-    enabled: true
-  traces:
-    enabled: true
 kubeStateMetrics:
   # Scrape https://github.com/kubernetes/kube-state-metrics by default
   enabled: true
