@@ -49,6 +49,9 @@ spec:
             - containerPort: 7946
               name: memberlist
               protocol: TCP
+          envFrom:
+          - secretRef:
+             name: minio
           readinessProbe:
             failureThreshold: 3
             httpGet:

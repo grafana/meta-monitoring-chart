@@ -25,17 +25,17 @@
    ```
    kubectl create secret generic logs -n meta \
     --from-literal=username=<logs username> \
-    --from-literal=password=<token>
+    --from-literal=password=<token> \
     --from-literal=endpoint='https://logs-prod-us-central1.grafana.net/loki/api/v1/push'
 
    kubectl create secret generic metrics -n meta \
     --from-literal=username=<metrics username> \
-    --from-literal=password=<token>
+    --from-literal=password=<token> \
     --from-literal=endpoint='https://prometheus-us-central1.grafana.net/api/prom/push'
 
    kubectl create secret generic traces -n meta \
     --from-literal=username=<OTLP instance ID> \
-    --from-literal=password=<token>
+    --from-literal=password=<token> \
     --from-literal=endpoint='https://otlp-gateway-prod-us-east-0.grafana.net/otlp'
    ```
 
@@ -65,6 +65,14 @@
 
    ```
    kubectl create namespace meta
+   ```
+
+1. Create a secret named `minio` with the user and password for the local Minio:
+
+   ```
+   kubectl create secret generic minio -n meta \
+    --from-literal=rootPassword=<password> \
+    --from-literal=rootUser=<user>
    ```
 
 1. Create a values.yaml file based on the [default one](../charts/meta-monitoring/values.yaml). An example minimal values.yaml looks like this:

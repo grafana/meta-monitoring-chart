@@ -294,9 +294,7 @@ data:
       // We don't technically need this, but it shows how to change listen address and incoming port.
       // In this case, the Agent is listening on all available bindable addresses on port 4317 (which is the
       // default OTLP gRPC port) for the OTLP protocol.
-      grpc {
-        endpoint = "0.0.0.0:4317"
-      }
+      grpc {}
 
       // We define where to send the output of all ingested traces. In this case, to the OpenTelemetry batch processor
       // named 'default'.
@@ -342,6 +340,14 @@ data:
       endpoint {
         url = "http://{{- .Release.Name -}}-mimir-nginx.{{- .Release.Namespace -}}.svc:80/api/v1/push"
       }
+    }
+    {{- end }}
+
+    {{- if .Values.local.traces.enabled }}
+    otelcol.exporter.otlphttp "local" {
+        client {
+            endpoint = "http://{{- .Release.Name -}}-tempo-distributor.svc:4318"
+        }
     }
     {{- end }}
 
