@@ -65,7 +65,7 @@ spec:
               name: grafana-pv
             - mountPath: /etc/grafana/provisioning/datasources
               name: datasources-provisioning
-            {{- if or (or .Values.dashboards.logs.enabled .Values.dashboards.metrics.enabled) .Values.dashboards.traces.enabled }}
+            {{- if .Values.dashboards.logs.enabled }}
             - mountPath: /etc/grafana/provisioning/dashboards
               name: dashboards-provisioning
             {{- end }}

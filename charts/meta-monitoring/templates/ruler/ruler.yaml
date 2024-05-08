@@ -1,5 +1,5 @@
 {{- if .Values.local.grafana.enabled }}
-{{- if and .Values.local.grafana.enabled (or .Values.dashboards.logs.enabled .Values.dashboards.metrics.enabled .Values.dashboards.traces.enabled) }}
+{{- if and .Values.local.grafana.enabled .Values.dashboards.logs.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:

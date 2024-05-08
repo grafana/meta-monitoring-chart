@@ -1,5 +1,5 @@
 {{- if .Values.local.metrics.enabled }}
-{{- if and .Values.local.grafana.enabled (or .Values.dashboards.logs.enabled .Values.dashboards.metrics.enabled .Values.dashboards.traces.enabled) }}
+{{- if and .Values.local.grafana.enabled .Values.dashboards.logs.enabled }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -9,12 +9,6 @@ metadata:
 data:
 {{- if .Values.dashboards.logs.enabled }}
 {{ ($.Files.Glob "src/rules/loki-rules.yaml").AsConfig | indent 2 }}
-{{- end }}
-{{- if .Values.dashboards.metrics.enabled }}
-{{ ($.Files.Glob "src/rules/mimir-rules.yaml").AsConfig | indent 2 }}
-{{- end }}
-{{- if .Values.dashboards.traces.enabled }}
-{{ ($.Files.Glob "src/rules/tempo-rules.yaml").AsConfig | indent 2 }}
 {{- end }}
 {{- end }}
 {{- end }}
