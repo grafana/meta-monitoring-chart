@@ -1,16 +1,4 @@
 {{- if .Values.local.grafana.enabled }}
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: grafana-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -98,19 +86,4 @@ spec:
         - name: agent-dashboards-1
           configMap:
             name: agent-dashboards-1
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: grafana
-spec:
-  ports:
-    - port: 3000
-      protocol: TCP
-      targetPort: http-grafana
-  selector:
-    app: grafana
-  sessionAffinity: None
-  type: ClusterIP  # Make this configurable
 {{- end }}
