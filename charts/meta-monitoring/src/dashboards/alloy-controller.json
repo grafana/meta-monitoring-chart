@@ -1,0 +1,970 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        },
+        {
+          "datasource": "$loki_datasource",
+          "enable": true,
+          "expr": "{cluster=\"$cluster\", container=\"kube-diff-logger\"} | json | namespace_extracted=\"alloy\" | name_extracted=~\"alloy.*\"",
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "instant": false,
+          "name": "Deployments",
+          "titleFormat": "{{cluster}}/{{namespace}}"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 1,
+    "id": 28,
+    "links": [
+      {
+        "icon": "doc",
+        "targetBlank": true,
+        "title": "Documentation",
+        "tooltip": "Component controller documentation",
+        "type": "link",
+        "url": "https://grafana.com/docs/alloy/latest/concepts/component_controller/"
+      },
+      {
+        "asDropdown": true,
+        "icon": "external link",
+        "includeVars": true,
+        "keepTime": true,
+        "tags": [
+          "alloy-mixin"
+        ],
+        "targetBlank": false,
+        "title": "Dashboards",
+        "type": "dashboards"
+      }
+    ],
+    "panels": [
+      {
+        "datasource": "${datasource}",
+        "description": "The number of Alloy instances whose metrics are being sent and reported.\n",
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "instances"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 10,
+          "x": 0,
+          "y": 0
+        },
+        "id": 1,
+        "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "datasource": "${datasource}",
+            "expr": "count(alloy_component_controller_evaluating{cluster=\"$cluster\", namespace=\"$namespace\"})",
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "Running instances",
+        "type": "stat"
+      },
+      {
+        "datasource": "${datasource}",
+        "description": "Breakdown of components by health across all running instances.\n\n* Healthy: components have been evaluated completely and are reporting themselves as healthy.\n* Unhealthy: Components either could not be evaluated or are reporting themselves as unhealthy.\n* Unknown: A component has been created but has not yet been started.\n* Exited: A component has exited. It will not return to the running state.\n\nMore information on a component's health state can be retrieved using\nthe Alloy UI.\n\nNote that components may be in a degraded state even if they report\nthemselves as healthy. Use component-specific dashboards and alerts\nto observe detailed information about the behavior of a component.\n",
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [],
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Unhealthy"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 1
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Unknown"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "blue",
+                        "value": 1
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Exited"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "orange",
+                        "value": 1
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 14,
+          "x": 10,
+          "y": 0
+        },
+        "id": 4,
+        "options": {
+          "displayMode": "gradient",
+          "maxVizHeight": 300,
+          "minVizHeight": 16,
+          "minVizWidth": 8,
+          "namePlacement": "auto",
+          "orientation": "vertical",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": true,
+          "sizing": "auto",
+          "valueMode": "color"
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "datasource": "${datasource}",
+            "expr": "sum(alloy_component_controller_running_components{cluster=\"$cluster\", namespace=\"$namespace\", health_type=\"healthy\"}) or vector(0)",
+            "instant": true,
+            "legendFormat": "Healthy",
+            "range": false,
+            "refId": "A"
+          },
+          {
+            "datasource": "${datasource}",
+            "expr": "sum(alloy_component_controller_running_components{cluster=\"$cluster\", namespace=\"$namespace\", health_type=\"unhealthy\"}) or vector(0)",
+            "instant": true,
+            "legendFormat": "Unhealthy",
+            "range": false,
+            "refId": "B"
+          },
+          {
+            "datasource": "${datasource}",
+            "expr": "sum(alloy_component_controller_running_components{cluster=\"$cluster\", namespace=\"$namespace\", health_type=\"unknown\"}) or vector(0)",
+            "instant": true,
+            "legendFormat": "Unknown",
+            "range": false,
+            "refId": "C"
+          },
+          {
+            "datasource": "${datasource}",
+            "expr": "sum(alloy_component_controller_running_components{cluster=\"$cluster\", namespace=\"$namespace\", health_type=\"exited\"}) or vector(0)",
+            "instant": true,
+            "legendFormat": "Exited",
+            "range": false,
+            "refId": "D"
+          }
+        ],
+        "title": "Components by health",
+        "type": "bargauge"
+      },
+      {
+        "datasource": "${datasource}",
+        "description": "The number of running components across all running instances.\n",
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "components"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 10,
+          "x": 0,
+          "y": 4
+        },
+        "id": 2,
+        "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "datasource": "${datasource}",
+            "expr": "sum(alloy_component_controller_running_components{cluster=\"$cluster\", namespace=\"$namespace\"})",
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "Running components",
+        "type": "stat"
+      },
+      {
+        "datasource": "${datasource}",
+        "description": "The percentage of components which are in a healthy state.\n",
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [],
+            "max": 1,
+            "min": 0,
+            "noValue": "No components",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 10,
+          "x": 0,
+          "y": 8
+        },
+        "id": 3,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "text": {
+            "valueSize": 80
+          },
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "datasource": "${datasource}",
+            "expr": "sum(alloy_component_controller_running_components{cluster=\"$cluster\", namespace=\"$namespace\",health_type=\"healthy\"}) /\nsum(alloy_component_controller_running_components{cluster=\"$cluster\", namespace=\"$namespace\"})\n",
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "Overall component health",
+        "type": "stat"
+      },
+      {
+        "datasource": "${datasource}",
+        "description": "The frequency at which components get updated.\n",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "points",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 3,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "ops"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 8,
+          "x": 0,
+          "y": 12
+        },
+        "id": 5,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": "${datasource}",
+            "expr": "sum by (instance) (rate(alloy_component_evaluation_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))",
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "Component evaluation rate",
+        "type": "timeseries"
+      },
+      {
+        "datasource": "${datasource}",
+        "description": "The percentiles for how long it takes to complete component evaluations.\n\nComponent evaluations must complete for components to have the latest\narguments. The longer the evaluations take, the slower it will be to\nreconcile the state of components.\n\nIf evaluation is taking too long, consider sharding your components to\ndeal with smaller amounts of data and reuse data as much as possible.\n",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "s"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 8,
+          "x": 8,
+          "y": 12
+        },
+        "id": 6,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": "${datasource}",
+            "expr": "histogram_quantile(0.99, sum(rate(alloy_component_evaluation_seconds{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])))\nor\nhistogram_quantile(0.99, sum by (le) (rate(alloy_component_evaluation_seconds_bucket{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])))\n",
+            "instant": false,
+            "legendFormat": "99th percentile",
+            "range": true,
+            "refId": "A"
+          },
+          {
+            "datasource": "${datasource}",
+            "expr": "histogram_quantile(0.50, sum(rate(alloy_component_evaluation_seconds{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])))\nor\nhistogram_quantile(0.50, sum by (le) (rate(alloy_component_evaluation_seconds_bucket{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])))\n",
+            "instant": false,
+            "legendFormat": "50th percentile",
+            "range": true,
+            "refId": "B"
+          },
+          {
+            "datasource": "${datasource}",
+            "expr": "(\n  histogram_sum(sum(rate(alloy_component_evaluation_seconds{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))) /\n  histogram_count(sum(rate(alloy_component_evaluation_seconds{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])))\n)\nor\n(\n  sum(rate(alloy_component_evaluation_seconds_sum{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])) /\n  sum(rate(alloy_component_evaluation_seconds_count{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n)\n",
+            "instant": false,
+            "legendFormat": "Average",
+            "range": true,
+            "refId": "C"
+          }
+        ],
+        "title": "Component evaluation time",
+        "type": "timeseries"
+      },
+      {
+        "datasource": "${datasource}",
+        "description": "The percentage of time spent evaluating 'slow' components - components that took longer than 1 minute to evaluate.\n\nIdeally, no component should take more than 1 minute to evaluate. The components displayed in this chart\nmay be a sign of a problem with the pipeline.\n",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 8,
+          "x": 16,
+          "y": 12
+        },
+        "id": 7,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": "${datasource}",
+            "expr": "sum by (component_path, component_id) (rate(alloy_component_evaluation_slow_seconds{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))\n/ scalar(sum(rate(alloy_component_evaluation_seconds_sum{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])))\n",
+            "instant": false,
+            "legendFormat": "{{component path}} {{component_id}}",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "Slow components evaluation times",
+        "type": "timeseries"
+      },
+      {
+        "datasource": "${datasource}",
+        "description": "Detailed histogram view of how long component evaluations take.\n\nThe goal is to design your config so that evaluations take as little\ntime as possible; under 100ms is a good goal.\n",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "scaleDistribution": {
+                "type": "linear"
+              }
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 8,
+          "x": 0,
+          "y": 22
+        },
+        "id": 8,
+        "maxDataPoints": 30,
+        "options": {
+          "calculate": false,
+          "cellGap": 0,
+          "color": {
+            "exponent": 0.5,
+            "fill": "dark-orange",
+            "mode": "scheme",
+            "reverse": false,
+            "scale": "exponential",
+            "scheme": "Spectral",
+            "steps": 64
+          },
+          "exemplars": {
+            "color": "rgba(255,0,255,0.7)"
+          },
+          "filterValues": {
+            "le": 0.1
+          },
+          "legend": {
+            "show": true
+          },
+          "rowsFrame": {
+            "layout": "auto"
+          },
+          "tooltip": {
+            "mode": "single",
+            "showColorScale": false,
+            "yHistogram": true
+          },
+          "yAxis": {
+            "axisPlacement": "left",
+            "reverse": false,
+            "unit": "s"
+          }
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "datasource": "${datasource}",
+            "expr": "sum(increase(alloy_component_evaluation_seconds{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))\nor ignoring (le)\nsum by (le) (increase(alloy_component_evaluation_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))\n",
+            "format": "heatmap",
+            "instant": false,
+            "legendFormat": "{{le}}",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "Component evaluation histogram",
+        "type": "heatmap"
+      },
+      {
+        "datasource": "${datasource}",
+        "description": "Detailed histogram of how long components wait to be evaluated after their dependency is updated.\n\nThe goal is to design your config so that most of the time components do not\nqueue for long; under 10ms is a good goal.\n",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "scaleDistribution": {
+                "type": "linear"
+              }
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 8,
+          "x": 8,
+          "y": 22
+        },
+        "id": 9,
+        "maxDataPoints": 30,
+        "options": {
+          "calculate": false,
+          "cellGap": 0,
+          "color": {
+            "exponent": 0.5,
+            "fill": "dark-orange",
+            "mode": "scheme",
+            "reverse": false,
+            "scale": "exponential",
+            "scheme": "Spectral",
+            "steps": 64
+          },
+          "exemplars": {
+            "color": "rgba(255,0,255,0.7)"
+          },
+          "filterValues": {
+            "le": 0.1
+          },
+          "legend": {
+            "show": true
+          },
+          "rowsFrame": {
+            "layout": "auto"
+          },
+          "tooltip": {
+            "mode": "single",
+            "showColorScale": false,
+            "yHistogram": true
+          },
+          "yAxis": {
+            "axisPlacement": "left",
+            "reverse": false,
+            "unit": "s"
+          }
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "datasource": "${datasource}",
+            "expr": "sum(increase(alloy_component_dependencies_wait_seconds{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))\nor ignoring (le)\nsum by (le) (increase(alloy_component_dependencies_wait_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))\n",
+            "format": "heatmap",
+            "instant": false,
+            "legendFormat": "{{le}}",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "Component dependency wait histogram",
+        "type": "heatmap"
+      }
+    ],
+    "refresh": "10s",
+    "schemaVersion": 39,
+    "tags": [
+      "alloy-mixin"
+    ],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "Mimir",
+            "value": "mimir_ds"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "Data Source",
+          "multi": false,
+          "name": "datasource",
+          "options": [],
+          "query": "prometheus",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 2,
+          "type": "datasource"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "Loki",
+            "value": "loki_ds"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "Loki Data Source",
+          "multi": false,
+          "name": "loki_datasource",
+          "options": [],
+          "query": "loki",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 2,
+          "type": "datasource"
+        },
+        {
+          "current": {
+            "isNone": true,
+            "selected": false,
+            "text": "None",
+            "value": ""
+          },
+          "datasource": {
+            "uid": "${datasource}"
+          },
+          "definition": "",
+          "hide": 0,
+          "includeAll": false,
+          "label": "cluster",
+          "multi": false,
+          "name": "cluster",
+          "options": [],
+          "query": {
+            "query": "label_values(alloy_component_controller_running_components, cluster)\n",
+            "refId": "cluster"
+          },
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 2,
+          "type": "query"
+        },
+        {
+          "current": {
+            "isNone": true,
+            "selected": false,
+            "text": "None",
+            "value": ""
+          },
+          "datasource": {
+            "uid": "${datasource}"
+          },
+          "definition": "",
+          "hide": 0,
+          "includeAll": false,
+          "label": "namespace",
+          "multi": false,
+          "name": "namespace",
+          "options": [],
+          "query": {
+            "query": "label_values(alloy_component_controller_running_components{cluster=\"$cluster\"}, namespace)\n",
+            "refId": "namespace"
+          },
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 2,
+          "type": "query"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "time_options": [
+        "5m",
+        "15m",
+        "1h",
+        "6h",
+        "12h",
+        "24h",
+        "2d",
+        "7d",
+        "30d",
+        "90d"
+      ]
+    },
+    "timezone": "",
+    "title": "Alloy / Controller",
+    "uid": "bf9f456aad7108b2c808dbd9973e386f",
+    "version": 0,
+    "weekStart": ""
+  }

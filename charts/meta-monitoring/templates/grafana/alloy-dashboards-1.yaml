@@ -1,0 +1,21 @@
+{{- if and .Values.local.grafana.enabled .Values.dashboards.logs.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alloy-dashboards-1
+  namespace: {{ $.Release.Namespace }}
+data:
+  "alloy-cluster-node.json": |
+    {{ $.Files.Get "src/dashboards/alloy-cluster-node.json" | fromJson | toJson }}
+  "alloy-cluster-overview.json": |
+    {{ $.Files.Get "src/dashboards/alloy-cluster-overview.json" | fromJson | toJson }}
+  "alloy-controller.json": |
+    {{ $.Files.Get "src/dashboards/alloy-controller.json" | fromJson | toJson }}
+  "alloy-opentelemetry.json": |
+    {{ $.Files.Get "src/dashboards/alloy-opentelemetry.json" | fromJson | toJson }}
+  "alloy-prometheus.json": |
+    {{ $.Files.Get "src/dashboards/alloy-prometheus.json" | fromJson | toJson }}
+  "alloy-resources.json": |
+    {{ $.Files.Get "src/dashboards/alloy-resources.json" | fromJson | toJson }}
+{{- end }}
