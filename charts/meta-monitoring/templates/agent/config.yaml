@@ -93,7 +93,7 @@ data:
       role = "pod"
       namespaces {
         own_namespace = true
-        names = [ {{ include "agent.namespaces" . }} ]
+        names = [ {{ include "agent.all_namespaces" . }} ]
       }
     }
 
@@ -143,7 +143,7 @@ data:
 
       rule {
         source_labels = ["namespace"]
-        regex = "{{ include "agent.all_namespaces" . }}"
+        regex = "{{ include "agent.all_namespaces_bar" . }}"
 
         action = "keep"
       }

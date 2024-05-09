@@ -12,8 +12,6 @@ data:
     {{ $.Files.Get "src/dashboards/loki-deletion.json" | fromJson | toJson }}
   "loki-logs.json": |
     {{ $.Files.Get "src/dashboards/loki-logs.json" | fromJson | toJson }}
-  "loki-mixin-recording-rules.json": |
-    {{ $.Files.Get "src/dashboards/loki-mixin-recording-rules.json" | fromJson | toJson }}
   "loki-operational.json": |
     {{ $.Files.Get "src/dashboards/loki-operational.json" | fromJson | toJson }}
 {{- end }}

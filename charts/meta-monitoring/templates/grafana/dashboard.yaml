@@ -30,10 +30,10 @@ data:
 {{- end }}
       - disableDeletion: true
         editable: false
-        folder: Agent
-        name: agent-1
+        folder: Alloy
+        name: alloy-1
         options:
-          path: /var/lib/grafana/dashboards/agent-1
+          path: /var/lib/grafana/dashboards/alloy-1
         orgId: 1
         type: file
 {{- end }}

@@ -63,8 +63,8 @@ spec:
             - mountPath: /var/lib/grafana/dashboards/loki-2
               name: loki-dashboards-2
             {{- end }}
-            - mountPath: /var/lib/grafana/dashboards/agent-1
-              name: agent-dashboards-1
+            - mountPath: /var/lib/grafana/dashboards/alloy-1
+              name: alloy-dashboards-1
       volumes:
         - name: grafana-pv
           persistentVolumeClaim:
@@ -83,7 +83,7 @@ spec:
           configMap:
             name: loki-dashboards-2
         {{- end }}
-        - name: agent-dashboards-1
+        - name: alloy-dashboards-1
           configMap:
-            name: agent-dashboards-1
+            name: alloy-dashboards-1
 {{- end }}
