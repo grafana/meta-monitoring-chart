@@ -187,7 +187,7 @@ For each of the dashboard files in charts/meta-monitoring/src/dashboards folder 
 
    1. JAEGER_ENDPOINT: http address of the mmc-alloy service installed by the meta-monitoring chart, for example "http://mmc-alloy:14268/api/traces"
    1. JAEGER_AGENT_TAGS: extra tags you would like to add to the spans, for example  'cluster="abc",namespace="def"'
-   1. JAEGER_SAMPLER_TYPE: the sampling strategy, for example to sample all use 'const' with a value of 1 for the next environment variable
-   1. JAEGER_SAMPLER_PARAM: 1
+   1. JAEGER_SAMPLER_TYPE: the sampling strategy, we suggest setting this to `ratelimiting` so at most 1 trace is accepted per second. See these [docs](https://www.jaegertracing.io/docs/1.57/sampling/) for more options.
+   1. JAEGER_SAMPLER_PARAM: 1.0
 
 1. If Loki is installed in a different namespace you can create an [ExternalName service](https://kubernetes.io/docs/concepts/services-networking/service/#externalname) in Kubernetes to point to the mmc-alloy service in the meta monitoring namespace
