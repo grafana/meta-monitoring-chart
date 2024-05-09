@@ -41,11 +41,16 @@ grafana:
     labels: {}
     # -- Hosts configuration for the gateway ingress, passed through the `tpl` function to allow templating
     hosts:
-      - host: monitoring.example.com
+      - host: ""
         paths:
           - path: /
             # -- pathType (e.g. ImplementationSpecific, Prefix, .. etc.) might also be required by some Ingress Controllers
-            # pathType: Prefix
+            pathType: Prefix
+            # backend:
+            #   service:
+            #     name: TODO
+            #     port:
+            #       number: TODO
     # -- TLS configuration for the gateway ingress. Hosts passed through the `tpl` function to allow templating
     #tls:
     #  - secretName: grafana-tls
