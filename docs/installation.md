@@ -191,3 +191,7 @@ For each of the dashboard files in charts/meta-monitoring/src/dashboards folder 
    1. JAEGER_SAMPLER_PARAM: 1
 
 1. If Loki is installed in a different namespace you can create an [ExternalName service](https://kubernetes.io/docs/concepts/services-networking/service/#externalname) in Kubernetes to point to the mmc-alloy service in the meta monitoring namespace
+
+## Configure external access using an Ingress in local mode
+
+When using local mode by default a Kubernetes [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) object is created to access the Grafana instance. This will need to be adapted to your cloud provider by updating the `grafana.ingress` section of the `values.yaml` file provided to Helm. Check the documentation of your cloud provider for available options.
