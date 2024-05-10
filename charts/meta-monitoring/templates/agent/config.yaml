@@ -346,7 +346,7 @@ data:
     {{- if .Values.local.traces.enabled }}
     otelcol.exporter.otlphttp "local" {
         client {
-            endpoint = "http://{{- .Release.Name -}}-tempo-distributor.svc:4318"
+            endpoint = "http://{{- .Release.Name -}}-tempo-distributor.{{- .Release.Namespace -}}.svc:4318"
         }
     }
     {{- end }}
