@@ -136,6 +136,11 @@ data:
 
     prometheus.relabel "filter" {
       rule {
+        target_label = "cluster"
+        replacement = "{{- .Values.clusterLabelValue -}}"
+      }
+
+      rule {
         source_labels = ["__name__"]
         regex = "({{ include "agent.all_metrics" . }})"
         action = "keep"
