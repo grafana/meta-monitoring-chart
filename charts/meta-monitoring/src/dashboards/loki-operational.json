@@ -3388,7 +3388,7 @@
                   "reverseYBuckets": false,
                   "targets": [
                      {
-                        "expr": "sum by (le) (rate(loki_ingester_chunk_utilization_bucket{cluster=\"$cluster\", job=~\"($namespace)/(ingester|(loki|enterprise-logs)-write|loki-single-binary)\"}[$__rate_interval]))",
+                        "expr": "sum by (le) (rate(loki_ingester_chunk_utilization_bucket{cluster=\"$cluster\", job=~\"($namespace)/(.*ingester|(loki|enterprise-logs)-write|loki-single-binary)\"}[$__rate_interval]))",
                         "format": "heatmap",
                         "instant": false,
                         "interval": "",
