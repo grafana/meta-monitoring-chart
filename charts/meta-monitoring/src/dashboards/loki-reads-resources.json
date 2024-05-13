@@ -104,19 +104,19 @@
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend\"}[$__rate_interval]))",
+                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"}[$__rate_interval]))",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend\", resource=\"cpu\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", resource=\"cpu\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "request",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend\"})",
+                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"})",
                         "format": "time_series",
                         "legendFormat": "limit",
                         "legendLink": null
@@ -206,19 +206,19 @@
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend\"})",
+                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend\", resource=\"memory\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", resource=\"memory\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "request",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend\"} > 0)",
+                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "limit",
                         "legendLink": null
@@ -269,7 +269,7 @@
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/.*query-frontend\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*query-frontend|loki-read|loki-single-binary)\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
@@ -371,19 +371,19 @@
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler\"}[$__rate_interval]))",
+                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler|loki\", pod=~\"query-scheduler|loki-read-.*|$namespace-[0-9]*\"}[$__rate_interval]))",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler\", resource=\"cpu\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler|loki\", pod=~\"query-scheduler|loki-read-.*|$namespace-[0-9]*\", resource=\"cpu\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "request",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler\"})",
+                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler|loki\", pod=~\"query-scheduler|loki-read-.*|$namespace-[0-9]*\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler|loki\", pod=~\"query-scheduler|loki-read-.*|$namespace-[0-9]*\"})",
                         "format": "time_series",
                         "legendFormat": "limit",
                         "legendLink": null
@@ -473,19 +473,19 @@
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler\"})",
+                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler|loki\", pod=~\"query-scheduler|loki-read-.*|$namespace-[0-9]*\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler\", resource=\"memory\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler|loki\", pod=~\"query-scheduler|loki-read-.*|$namespace-[0-9]*\", resource=\"memory\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "request",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler\"} > 0)",
+                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler|loki\", pod=~\"query-scheduler|loki-read-.*|$namespace-[0-9]*\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "limit",
                         "legendLink": null
@@ -536,7 +536,7 @@
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/.*query-scheduler\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*query-scheduler|loki-read|loki-single-binary)\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
@@ -638,19 +638,19 @@
                   },
                   "targets": [
                      {
-                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier\"}[$__rate_interval]))",
+                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"}[$__rate_interval]))",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier\", resource=\"cpu\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", resource=\"cpu\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "request",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier\"})",
+                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"})",
                         "format": "time_series",
                         "legendFormat": "limit",
                         "legendLink": null
@@ -740,19 +740,19 @@
                   },
                   "targets": [
                      {
-                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier\"})",
+                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier\", resource=\"memory\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", resource=\"memory\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "request",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier\"} > 0)",
+                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "limit",
                         "legendLink": null
@@ -803,7 +803,7 @@
                   },
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/.*querier\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*querier|loki-read|loki-single-binary)\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
@@ -854,7 +854,7 @@
                   },
                   "targets": [
                      {
-                        "expr": "sum by(instance, pod, device) (rate(node_disk_written_bytes_total[$__rate_interval])) + ignoring(pod) group_right() (label_replace(count by(instance, pod, device) (container_fs_writes_bytes_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=\"querier\", device!~\".*sda.*\"}), \"device\", \"$1\", \"device\", \"/dev/(.*)\") * 0)\n",
+                        "expr": "sum by(instance, pod, device) (rate(node_disk_written_bytes_total[$__rate_interval])) + ignoring(pod) group_right() (label_replace(count by(instance, pod, device) (container_fs_writes_bytes_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", device!~\".*sda.*\"}), \"device\", \"$1\", \"device\", \"/dev/(.*)\") * 0)\n",
                         "format": "time_series",
                         "legendFormat": "{{pod}} - {{device}}",
                         "legendLink": null
@@ -902,7 +902,7 @@
                   },
                   "targets": [
                      {
-                        "expr": "sum by(instance, pod, device) (rate(node_disk_read_bytes_total[$__rate_interval])) + ignoring(pod) group_right() (label_replace(count by(instance, pod, device) (container_fs_writes_bytes_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=\"querier\", device!~\".*sda.*\"}), \"device\", \"$1\", \"device\", \"/dev/(.*)\") * 0)\n",
+                        "expr": "sum by(instance, pod, device) (rate(node_disk_read_bytes_total[$__rate_interval])) + ignoring(pod) group_right() (label_replace(count by(instance, pod, device) (container_fs_writes_bytes_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", device!~\".*sda.*\"}), \"device\", \"$1\", \"device\", \"/dev/(.*)\") * 0)\n",
                         "format": "time_series",
                         "legendFormat": "{{pod}} - {{device}}",
                         "legendLink": null
@@ -1462,19 +1462,19 @@
                   },
                   "targets": [
                      {
-                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway\"}[$__rate_interval]))",
+                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"}[$__rate_interval]))",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway\", resource=\"cpu\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", resource=\"cpu\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "request",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway\"})",
+                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"})",
                         "format": "time_series",
                         "legendFormat": "limit",
                         "legendLink": null
@@ -1564,19 +1564,19 @@
                   },
                   "targets": [
                      {
-                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway\"})",
+                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway\", resource=\"memory\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", resource=\"memory\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "request",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway\"} > 0)",
+                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "limit",
                         "legendLink": null
@@ -1627,7 +1627,7 @@
                   },
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/.*bloom-gateway\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*bloom-gateway|loki-read|loki-single-binary)\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
@@ -1678,7 +1678,7 @@
                   },
                   "targets": [
                      {
-                        "expr": "sum by(instance, pod, device) (rate(node_disk_written_bytes_total[$__rate_interval])) + ignoring(pod) group_right() (label_replace(count by(instance, pod, device) (container_fs_writes_bytes_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=\"bloom-gateway\", device!~\".*sda.*\"}), \"device\", \"$1\", \"device\", \"/dev/(.*)\") * 0)\n",
+                        "expr": "sum by(instance, pod, device) (rate(node_disk_written_bytes_total[$__rate_interval])) + ignoring(pod) group_right() (label_replace(count by(instance, pod, device) (container_fs_writes_bytes_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", device!~\".*sda.*\"}), \"device\", \"$1\", \"device\", \"/dev/(.*)\") * 0)\n",
                         "format": "time_series",
                         "legendFormat": "{{pod}} - {{device}}",
                         "legendLink": null
@@ -1726,7 +1726,7 @@
                   },
                   "targets": [
                      {
-                        "expr": "sum by(instance, pod, device) (rate(node_disk_read_bytes_total[$__rate_interval])) + ignoring(pod) group_right() (label_replace(count by(instance, pod, device) (container_fs_writes_bytes_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=\"bloom-gateway\", device!~\".*sda.*\"}), \"device\", \"$1\", \"device\", \"/dev/(.*)\") * 0)\n",
+                        "expr": "sum by(instance, pod, device) (rate(node_disk_read_bytes_total[$__rate_interval])) + ignoring(pod) group_right() (label_replace(count by(instance, pod, device) (container_fs_writes_bytes_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", device!~\".*sda.*\"}), \"device\", \"$1\", \"device\", \"/dev/(.*)\") * 0)\n",
                         "format": "time_series",
                         "legendFormat": "{{pod}} - {{device}}",
                         "legendLink": null
@@ -2189,19 +2189,19 @@
                   },
                   "targets": [
                      {
-                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler\"}[$__rate_interval]))",
+                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler|loki\", pod=~\"ruler|loki-backend-.*|$namespace-[0-9]*\"}[$__rate_interval]))",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler\", resource=\"cpu\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler|loki\", pod=~\"ruler|loki-backend-.*|$namespace-[0-9]*\", resource=\"cpu\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "request",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler\"})",
+                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler|loki\", pod=~\"ruler|loki-backend-.*|$namespace-[0-9]*\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler|loki\", pod=~\"ruler|loki-backend-.*|$namespace-[0-9]*\"})",
                         "format": "time_series",
                         "legendFormat": "limit",
                         "legendLink": null
@@ -2291,19 +2291,19 @@
                   },
                   "targets": [
                      {
-                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler\"})",
+                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler|loki\", pod=~\"ruler|loki-backend-.*|$namespace-[0-9]*\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler\", resource=\"memory\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler|loki\", pod=~\"ruler|loki-backend-.*|$namespace-[0-9]*\", resource=\"memory\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "request",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler\"} > 0)",
+                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler|loki\", pod=~\"ruler|loki-backend-.*|$namespace-[0-9]*\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "limit",
                         "legendLink": null
@@ -2354,7 +2354,7 @@
                   },
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/ruler\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*ruler|loki-backend|loki-single-binary)\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
