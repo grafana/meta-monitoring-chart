@@ -149,6 +149,7 @@ metrics:
   - kube_pod_container_resource_requests
   - kube_pod_container_status_last_terminated_reason
   - kube_pod_container_status_restarts_total
+  - loki_azure_blob_request_duration_seconds_bucket
   - loki_boltdb_shipper_compact_tables_operation_duration_seconds
   - loki_boltdb_shipper_compact_tables_operation_last_successful_run_timestamp_seconds
   - loki_boltdb_shipper_retention_marker_count_total
@@ -174,11 +175,14 @@ metrics:
   - loki_compactor_deleted_lines
   - loki_compactor_oldest_pending_delete_request_age_seconds
   - loki_compactor_pending_delete_requests_count
+  - loki_consul_request_duration_seconds_bucket
   - loki_discarded_samples_total
   - loki_discarded_bytes_total
   - loki_distributor_bytes_received_total
   - loki_distributor_lines_received_total
   - loki_distributor_structured_metadata_bytes_received_total
+  - loki_gcs_request_duration_seconds_bucket
+  - loki_gcs_request_duration_seconds_count
   - loki_index_request_duration_seconds_count
   - loki_ingester_chunk_age_seconds_bucket
   - loki_ingester_chunk_age_seconds_count
@@ -209,6 +213,8 @@ metrics:
   - loki_ruler_wal_prometheus_remote_storage_samples_total
   - loki_ruler_wal_samples_appended_total
   - loki_ruler_wal_storage_created_series_total
+  - loki_s3_request_duration_seconds_bucket
+  - loki_s3_request_duration_seconds_count
   - loki_write_batch_retries_total
   - loki_write_dropped_bytes_total
   - loki_write_dropped_entries_total
