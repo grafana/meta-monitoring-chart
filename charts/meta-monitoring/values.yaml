@@ -183,6 +183,7 @@ metrics:
   - loki_distributor_structured_metadata_bytes_received_total
   - loki_gcs_request_duration_seconds_bucket
   - loki_gcs_request_duration_seconds_count
+  - loki_index_request_duration_seconds_bucket
   - loki_index_request_duration_seconds_count
   - loki_ingester_chunk_age_seconds_bucket
   - loki_ingester_chunk_age_seconds_count
