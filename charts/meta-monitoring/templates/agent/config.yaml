@@ -330,7 +330,7 @@ data:
     {{- if .Values.local.logs.enabled }}
     loki.write "local" {
       endpoint {
-        url = "http://{{- .Release.Namespace -}}-loki-gateway.{{- .Release.Namespace -}}.svc.cluster.local:80/loki/api/v1/push"
+        url = "http://loki-write.{{- .Release.Namespace -}}.svc.cluster.local:3100/loki/api/v1/push"
       }
     }
     {{- end }}
