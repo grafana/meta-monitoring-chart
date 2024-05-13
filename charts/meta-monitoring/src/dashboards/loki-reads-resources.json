@@ -536,7 +536,7 @@
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*query-scheduler|loki-write|loki-single-binary)\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*query-scheduler|loki-read|loki-single-binary)\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
@@ -803,7 +803,7 @@
                   },
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*querier|loki-write|loki-single-binary)\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*querier|loki-read|loki-single-binary)\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
