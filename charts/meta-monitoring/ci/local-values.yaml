@@ -12,6 +12,7 @@ local:
     enabled: true
   minio:
     enabled: true
+    createSecret: true
 
 cloud:
   logs:

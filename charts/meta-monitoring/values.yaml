@@ -27,6 +27,7 @@ local:
     enabled: false
   minio:
     enabled: false  # This should be set to true if any of the previous is enabled
+    createSecret: false  # This is used for testing, do not use in production
 grafana:
   version: 10.4.2
   # Gateway ingress configuration
