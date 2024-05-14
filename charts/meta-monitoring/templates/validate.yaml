@@ -41,3 +41,4 @@
 {{- if empty .Values.metrics.retain -}}
   {{- fail "All metrics will be collected, please specify some in metrics.retain" -}}
 {{- end -}}
+
