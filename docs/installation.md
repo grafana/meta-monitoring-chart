@@ -4,7 +4,7 @@
 
 1. Use an existing Grafana Cloud account or setup a new one. Then create an access token:
 
-   1. In Grafana go to Administration -> Users and Access -> Cloud access policies.
+   1. In a Grafana instance on Grafana Cloud go to Administration -> Users and Access -> Cloud access policies.
 
    1. Click `Create access policy`.
 
@@ -39,7 +39,7 @@
     --from-literal=endpoint='https://otlp-gateway-prod-us-east-0.grafana.net/otlp'
    ```
 
-   The logs, metrics and traces usernames are the `User / Username / Instance IDs` of the Loki, Prometheus/Mimir and OpenTelemetry instances in Grafana Cloud. From `Home` in Grafana click on `Stacks`. Then go to the `Details` pages of Loki and Prometheus/Mimir. For OpenTelemetry go to the `Configure` page.
+   The logs, metrics and traces usernames are the `User / Username / Instance IDs` of the Loki, Prometheus/Mimir and OpenTelemetry instances in Grafana Cloud. From `Home` in Grafana click on `Stacks`. Then go to the `Details` pages of Loki and Prometheus/Mimir. For OpenTelemetry go to the `Configure` page. The endpoints will also have to be changed to match your settings.
 
 1. Create a values.yaml file based on the [default one](../charts/meta-monitoring/values.yaml). Fill in the names of the secrets created above as needed. An example minimal values.yaml looks like this:
 
@@ -102,7 +102,7 @@
        enabled: true
    ```
 
-## Installing the chart
+## Installing, updating and deleting the chart
 
 1. Add the repo
 
@@ -175,7 +175,7 @@ For each of the dashboard files in charts/meta-monitoring/src/dashboards folder 
 
 ## Configure Loki to send traces
 
-1. In the Loki config enable tracing:
+1. In the Loki that is being monitored enable tracing in the config:
 
    ```
    loki:
