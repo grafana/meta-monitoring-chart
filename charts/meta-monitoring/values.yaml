@@ -2,7 +2,7 @@
 namespacesToMonitor:
 - loki
 # The name of the cluster where this will be installed
-clusterLabelValue: "meta-monitoring"
+clusterLabelValue: "meta"
 # Set to true to write logs, metrics or traces to Grafana Cloud
 # The secrets have to be created first
 cloud:
