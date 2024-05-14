@@ -195,3 +195,7 @@ For each of the dashboard files in charts/meta-monitoring/src/dashboards folder 
 ## Configure external access using an Ingress in local mode
 
 When using local mode by default a Kubernetes [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) object is created to access the Grafana instance. This will need to be adapted to your cloud provider by updating the `grafana.ingress` section of the `values.yaml` file provided to Helm. Check the documentation of your cloud provider for available options.
+
+## Kube-state-metrics
+
+Metrics about Kubernetes objects are scraped from [kube-state-metrics](https://github.com/kubernetes/kube-state-metrics). This needs to be installed in the cluster. The `kubeStateMetrics.endpoint` entry in values.yaml should be set to it's address (without the `/metrics` part in the URL).
