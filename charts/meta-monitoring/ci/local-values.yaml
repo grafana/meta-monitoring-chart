@@ -31,4 +31,3 @@ grafana:
         paths:
           - path: /
             pathType: Prefix
-
