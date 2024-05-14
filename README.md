@@ -1,8 +1,6 @@
 # meta-monitoring-chart
 
-This is a meta-monitoring chart for Loki.
-
-Note that this is pre-production software at the moment.
+This is a meta-monitoring chart for Loki, specifically Loki installed via the Loki helm chart.
 
 ## Local and cloud modes
 
@@ -11,19 +9,15 @@ to small Loki, Mimir and Tempo installations running in the meta-monitoring name
 
 ![local mode](docs/images/Meta%20monitoring%20local.png)
 
-To enable local mode set `local.<logs|metrics|traces>.enabled` to true.
-
 In the cloud mode the logs, metrics and/or traces are sent to Grafana Cloud.
 
 ![cloud mode](docs/images/Meta%20monitoring%20cloud.png)
-
-To enable cloud mode set `cloud.<logs|metrics|traces>.enabled` to true. The `endpoint`, `username` and `password` settings for your Grafana Cloud logs, metrics and traces instances have to be filled in as well.
 
 Both modes can be enabled at the same time. Cloud mode is preferred.
 
 ## Installation
 
-For more instructions including how to update the chart go to the [installation](docs/installation.md) page.
+For more instructions including how to install the chart go to the [installation](docs/installation.md) page.
 
 ## Supported features
 
@@ -33,8 +27,7 @@ For more instructions including how to update the chart go to the [installation]
 - Specify PII regexes that are applied to logs before they are sent to Loki (cloud or local). The capture group in the regex is replaced with *****.
 - a Grafana instance is installed (when local mode is used) with the relevant datasources installed. The following dashboards are installed:
   - logs dashboards
-  - agent dashboards
-- Retention is set to 24 hours
+  - Alloy dashboards
 
 Most of these features are enabled by default. See the values.yaml file for how to enable/disable them.
 
@@ -42,8 +35,7 @@ Most of these features are enabled by default. See the values.yaml file for how 
 
 - This has not been tested on Openshift yet.
 - The underlying Loki, Mimir and Tempo are at the default size installed by the Helm chart. This might need changing when monitoring bigger Loki, Mimir or Tempo installations.
-- MinIO is used as storage at the moment with a limited retention. At the moment this chart cannot be used for monitoring over longer periods.
-- Agent self monitoring is not done at the moment.
+- MinIO is used as storage for the local mode at the moment with a limited retention. At the moment this chart cannot be used for monitoring over longer periods.
 
 ## Developer help topics
 
