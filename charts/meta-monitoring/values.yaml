@@ -28,7 +28,7 @@ local:
   minio:
     enabled: false # This should be set to true if any of the previous is enabled
 grafana:
-  version: 10.4.2
+  version: 9.5.19
   # Gateway ingress configuration
   ingress:
     # -- Specifies whether an ingress for the gateway should be created
@@ -60,10 +60,10 @@ logs:
   # Adding regexes here will add a stage.replace block for logs. For more information see
   # https://grafana.com/docs/agent/latest/flow/reference/components/loki.process/#stagereplace-block
   piiRegexes: null # This example replaces the word after password with *****
-# - expression: "password (\\\\S+)"
-#   source: ""         # Empty uses the log message
-#   replace: "*****""
-# The lines matching these will be kept in Loki
+  # - expression: "password (\\\\S+)"
+  #   source: ""         # Empty uses the log message
+  #   replace: "*****""
+  # The lines matching these will be kept in Loki
   retain:
   # This shows the queries
   - caller=metrics.go
