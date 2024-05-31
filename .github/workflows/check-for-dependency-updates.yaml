@@ -79,6 +79,7 @@ jobs:
                 labels: dependencies
                 branch: chore/update-dependencies
                 delete-branch: true
+                reviewers: loki-squad
 
     updateGrafana:
         name: Update the Grafana version
@@ -111,3 +112,4 @@ jobs:
                 labels: dependencies
                 branch: chore/update-minio
                 delete-branch: true
+                reviewers: loki-squad
