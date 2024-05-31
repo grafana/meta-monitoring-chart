@@ -51,7 +51,11 @@ spec:
               protocol: TCP
           envFrom:
           - secretRef:
+{{- if .Values.local.minio.enabled }}
+             name: {{ $.Release.Namespace }}-minio
+{{- else }}
              name: minio
+{{- end }}
           readinessProbe:
             failureThreshold: 3
             httpGet:
