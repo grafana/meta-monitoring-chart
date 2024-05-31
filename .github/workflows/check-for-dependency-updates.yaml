@@ -66,6 +66,14 @@ jobs:
                   echo "changed=true" >> "${GITHUB_OUTPUT}"
                 fi
 
+            - id: get-secrets
+              uses: grafana/shared-workflows/actions/get-vault-secrets@main
+              with:
+                # Secrets placed in the ci/repo/grafana/<repo>/<path> path in Vault
+                repo_secrets: |
+                  APP_ID=github-app:app-id
+                  PRIVATE_KEY=github-app:private-key
+
             - uses: actions/create-github-app-token@v1
               id: app-token
               with:
@@ -105,6 +113,14 @@ jobs:
                 if ! git diff --exit-code > /dev/null; then
                   echo "changed=true" >> "${GITHUB_OUTPUT}"
                 fi
+
+            - id: get-secrets
+              uses: grafana/shared-workflows/actions/get-vault-secrets@main
+              with:
+                # Secrets placed in the ci/repo/grafana/<repo>/<path> path in Vault
+                repo_secrets: |
+                  APP_ID=github-app:app-id
+                  PRIVATE_KEY=github-app:private-key
 
             - uses: actions/create-github-app-token@v1
               id: app-token
