@@ -22,18 +22,18 @@ appVersion: "0.0.1"
 dependencies:
 - name: loki
   repository: https://grafana.github.io/helm-charts
-  version: 6.5.2
+  version: 6.6.2
   condition: local.logs.enabled
 - name: alloy
   repository: https://grafana.github.io/helm-charts
-  version: 0.3.0
+  version: 0.3.2
 - name: mimir-distributed
   repository: https://grafana.github.io/helm-charts
   version: 5.3.0
   condition: local.metrics.enabled
 - name: tempo-distributed
   repository: https://grafana.github.io/helm-charts
-  version: 1.9.9
+  version: 1.9.11
   condition: local.traces.enabled
 - name: minio
   repository: https://charts.min.io
