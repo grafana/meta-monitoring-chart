@@ -91,7 +91,7 @@
 
    local:
      grafana:
-       enabled:true
+       enabled: true
      logs:
        enabled: true
      metrics:
