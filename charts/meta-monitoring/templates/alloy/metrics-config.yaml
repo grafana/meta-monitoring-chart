@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alloy-metrics-config
+  namespace: {{ .Release.Namespace }}
+data:
+  config.alloy: |
+    {{- if .Values.alloy.metrics.mimir.enabled }}
+
+    remote.kubernetes.configmap "mimir" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "mimir-metrics"
+    }
+
+    import.string "mimir" {
+      content = remote.kubernetes.configmap.mimir.data.mimir
+    }
+
+    mimir.kubernetes "targets" {
+      namespaces = ["{{- .Values.alloy.metrics.mimir.namespace -}}"]
+    }
+
+    mimir.scrape "metrics" {
+      targets = mimir.kubernetes.targets.output
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }
+    {{- end }}
+
+    {{- if .Values.alloy.metrics.loki.enabled }}
+    remote.kubernetes.configmap "loki" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "loki-metrics"
+    }
+
+    import.string "loki" {
+      content = remote.kubernetes.configmap.loki.data.loki
+    }
+
+    loki.kubernetes "targets" {
+        namespaces = ["{{- .Values.alloy.metrics.loki.namespace -}}"]
+        port_name = "http-metrics"
+    }
+
+    loki.scrape "metrics" {
+      targets = loki.kubernetes.targets.output
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }    
+    {{- end }}
+
+
+    {{- if .Values.cloud.metrics.enabled }}
+    prometheus.remote_write "cloud" {
+      endpoint {
+        url = nonsensitive(remote.kubernetes.secret.metrics_credentials.data["endpoint"])
+        basic_auth {
+          username = nonsensitive(remote.kubernetes.secret.metrics_credentials.data["username"])
+          password = remote.kubernetes.secret.metrics_credentials.data["password"]
+        }
+      }
+    }
+    {{- end }}
+
+
+    {{- if .Values.local.metrics.enabled }}
+    prometheus.remote_write "local" {
+      endpoint {
+        url = "http://{{- .Release.Name -}}-mimir-nginx.{{- .Release.Namespace -}}.svc:80/api/v1/push"
+      }
+    }
+    {{- end }}
+
+
+    remote.kubernetes.secret "metrics_credentials" {
+      namespace = "{{- $.Release.Namespace -}}"
+      name = "{{- .Values.cloud.metrics.secret -}}"
+    }

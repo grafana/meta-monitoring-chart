@@ -8,12 +8,37 @@ clusterLabelValue: "meta"
 
 alloy:
   metrics:
+    # Set to true to deploy alloy-metrics
     enabled: true
+    mimir:
+      enabled: true
+      namespace: gem
+    loki:
+      enabled: true
+      namespace: gel
+    tempo:
+      enabled: true
+      namespace: get
+    grafana:
+      enabled: true
+      namespace: ge
+    node_exporter:
+      enabled: true
+    kube_state_metrics:
+      enabled: true
+    alloy:
+      enabled: true
+      namespace: alloy
+    self:
+      enabled: true
   logs:
+    # Set to true to deploy alloy-logs
     enabled: false
   events:
+    # Set to true to deploy alloy-events
     enabled: false
   traces:
+    # Set to true to deploy alloy-traces
     enabled: false
 
 cloud:
@@ -26,6 +51,7 @@ cloud:
   traces:
     enabled: true
     secret: "traces"
+
 # Set to true for a local version of logs, metrics or traces
 local:
   grafana:
@@ -38,6 +64,7 @@ local:
     enabled: false
   minio:
     enabled: false # This should be set to true if any of the previous is enabled
+
 grafana:
   version: 10.4.2
   # Gateway ingress configuration
@@ -375,8 +402,8 @@ alloy-metrics:
       enabled: true
     configMap:
       create: false
-      name: "agent-configmap"
-      key: 'config.river'
+      name: "alloy-metrics-config"
+      key: 'config.alloy'
     resources:
       requests:
         cpu: '1000m'
