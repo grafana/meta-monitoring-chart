@@ -220,7 +220,7 @@ data:
         // but we can still convert to lower or upper case
         stage.template {
           source = "level"
-          template = "{{ " + argument.transform.value + " .Value }}"
+          template = "\{\{ " + argument.transform.value + " .Value \}\}"
         }
 
         // set the extracted level to be a label

@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: node_exporter-metrics
+  name: node-exporter-metrics
   namespace: {{ .Release.Namespace }}
 data:
   node_exporter: |

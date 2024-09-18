@@ -33,18 +33,18 @@ data:
       content = remote.kubernetes.configmap.utils.data.utils
     }
   
-    log_annotations.pods "targets" {
-        namespaces = [{{- include "alloy.logs.namespaces" }}]
+    annotations.pods "targets" {
+        namespaces = [{{- include "alloy.logs.namespaces" . }}]
         annotation = "{{- .Values.alloy.logs.annotation }}"
     }
 
-    k8s_logs.from_worker "default" {
-        targets = log_annotations.pods.targets.output
+    logs.from_worker "default" {
+        targets = annotations.pods.targets.output
         forward_to = [loki.process.default.receiver]
     }
 
     loki.process "default" {
-      forward_to = [loki.write.grafana_cloud.receiver]
+      forward_to = [{{ include "agent.loki_write_targets" . }},]
       stage.label_drop {
         values = [
             "filename", 

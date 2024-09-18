@@ -32,7 +32,7 @@ alloy: # Not sure of the use of 'Alloy' here, but for testing purposes I'm going
       enabled: true
   logs:
     # Set to true to deploy alloy-logs
-    enabled: false
+    enabled: true
     namespacesToMonitor:
       - gem
       - gel
@@ -434,8 +434,8 @@ alloy-logs:
       enabled: false
     configMap:
       create: false
-      name: "agent-configmap"
-      key: 'config.river'
+      name: "alloy-logs-config"
+      key: 'config.alloy'
     resources:
       requests:
         cpu: '1000m'
