@@ -33,6 +33,13 @@ alloy: # Not sure of the use of 'Alloy' here, but for testing purposes I'm going
   logs:
     # Set to true to deploy alloy-logs
     enabled: false
+    namespacesToMonitor:
+      - gem
+      - gel
+      - get
+      - ge
+      - alloy
+    annotation: "logs.agent.grafana.com"
   events:
     # Set to true to deploy alloy-events
     enabled: false
