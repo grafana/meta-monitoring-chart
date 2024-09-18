@@ -27,6 +27,19 @@ dependencies:
 - name: alloy
   repository: https://grafana.github.io/helm-charts
   version: 0.3.2
+  alias: alloy-metrics
+- name: alloy
+  repository: https://grafana.github.io/helm-charts
+  version: 0.3.2
+  alias: alloy-logs
+- name: alloy
+  repository: https://grafana.github.io/helm-charts
+  version: 0.3.2
+  alias: alloy-events
+- name: alloy
+  repository: https://grafana.github.io/helm-charts
+  version: 0.3.2
+  alias: alloy-traces
 - name: mimir-distributed
   repository: https://grafana.github.io/helm-charts
   version: 5.3.0

@@ -357,7 +357,8 @@ loki:
     extraEnvFrom:
     - secretRef:
         name: "minio"
-alloy:
+
+alloy-metrics:
   alloy:
     clustering:
       enabled: true
@@ -371,15 +372,6 @@ alloy:
         memory: '600Mi'
       limits:
         memory: '4Gi'
-    extraPorts:
-    - name: "otel"
-      port: 4317
-      targetPort: 4317
-      protocol: "TCP"
-    - name: "thrifthttp"
-      port: 14268
-      targetPort: 14268
-      protocol: "TCP"
   controller:
     type: "statefulset"
     autoscaling:
@@ -388,6 +380,70 @@ alloy:
       maxReplicas: 30
       targetMemoryUtilizationPercentage: 90
       targetCPUUtilizationPercentage: 90
+
+alloy-logs:
+  alloy:
+    clustering:
+      enabled: false
+    configMap:
+      create: false
+      name: "agent-configmap"
+      key: 'config.river'
+    resources:
+      requests:
+        cpu: '1000m'
+        memory: '600Mi'
+      limits:
+        memory: '4Gi'
+  controller:
+    type: "daemonset"
+  
+alloy-traces:
+  alloy:
+    clustering:
+      enabled: true
+    configMap:
+      create: false
+      name: "agent-configmap"
+      key: 'config.river'
+    resources:
+      requests:
+        cpu: '1000m'
+        memory: '600Mi'
+      limits:
+        memory: '4Gi'
+  controller:
+    type: "statefulset"
+    autoscaling:
+      enabled: true
+      minReplicas: 3
+      maxReplicas: 10
+      targetMemoryUtilizationPercentage: 90
+      targetCPUUtilizationPercentage: 90
+
+alloy-events:
+  alloy:
+    clustering:
+      enabled: true
+    configMap:
+      create: false
+      name: "agent-configmap"
+      key: 'config.river'
+    resources:
+      requests:
+        cpu: '1000m'
+        memory: '600Mi'
+      limits:
+        memory: '4Gi'
+  controller:
+    type: "statefulset"
+    autoscaling:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 5
+      targetMemoryUtilizationPercentage: 90
+      targetCPUUtilizationPercentage: 90
+
 mimir-distributed:
   minio:
     enabled: false
