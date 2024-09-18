@@ -41,11 +41,56 @@ data:
 
     loki.kubernetes "targets" {
         namespaces = ["{{- .Values.alloy.metrics.loki.namespace -}}"]
-        port_name = "http-metrics"
     }
 
     loki.scrape "metrics" {
       targets = loki.kubernetes.targets.output
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }    
+    {{- end }}
+
+    {{- if .Values.alloy.metrics.tempo.enabled }}
+    remote.kubernetes.configmap "tempo" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "tempo-metrics"
+    }
+
+    import.string "tempo" {
+      content = remote.kubernetes.configmap.tempo.data.tempo
+    }
+
+    tempo.kubernetes "targets" {
+        namespaces = ["{{- .Values.alloy.metrics.tempo.namespace -}}"]
+    }
+
+    tempo.scrape "metrics" {
+      targets = tempo.kubernetes.targets.output
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }    
+    {{- end }}
+
+    {{- if .Values.alloy.metrics.grafana.enabled }}
+    remote.kubernetes.configmap "grafana" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "grafana-metrics"
+    }
+
+    import.string "grafana" {
+      content = remote.kubernetes.configmap.grafana.data.grafana
+    }
+
+    grafana.kubernetes "targets" {
+        namespaces = ["{{- .Values.alloy.metrics.grafana.namespace -}}"]
+    }
+
+    grafana.scrape "metrics" {
+      targets = grafana.kubernetes.targets.output
       clustering = true
       forward_to = [
         {{ include "agent.prometheus_write_targets" . }},
