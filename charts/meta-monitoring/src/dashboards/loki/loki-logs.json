@@ -38,7 +38,6 @@
             },
             "hiddenSeries": false,
             "id": 35,
-            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -130,7 +129,6 @@
             },
             "hiddenSeries": false,
             "id": 41,
-            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -218,7 +216,6 @@
             },
             "hiddenSeries": false,
             "id": 36,
-            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -310,7 +307,6 @@
             },
             "hiddenSeries": false,
             "id": 40,
-            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -402,7 +398,6 @@
             },
             "hiddenSeries": false,
             "id": 38,
-            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -494,7 +489,6 @@
             },
             "hiddenSeries": false,
             "id": 39,
-            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -581,7 +575,6 @@
             },
             "hiddenSeries": false,
             "id": 37,
-            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -674,7 +667,6 @@
             },
             "hiddenSeries": false,
             "id": 42,
-            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -767,7 +759,6 @@
             },
             "hiddenSeries": false,
             "id": 31,
-            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -810,7 +801,7 @@
             "steppedLine": false,
             "targets": [
                {
-                  "expr": "sum(rate({cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$deployment.*\", pod=~\"$pod\", container=~\"$container\" } |logfmt| level=\"$level\" |= \"$filter\" | __error__=\"\" [$__interval])) by (level)",
+                  "expr": "sum(rate({cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$deployment.*\", pod=~\"$pod\", container=~\"$container\" } |logfmt| level=\"$level\" |= \"$filter\" | __error__=\"\" [$__auto])) by (level)",
                   "intervalFactor": 3,
                   "legendFormat": "{{level}}",
                   "refId": "A"
@@ -866,7 +857,6 @@
                "y": 6
             },
             "id": 29,
-            "interval": "1m",
             "maxDataPoints": "",
             "options": {
                "showLabels": false,

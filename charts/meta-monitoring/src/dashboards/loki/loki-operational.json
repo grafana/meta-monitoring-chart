@@ -32,7 +32,6 @@
                "y": 0
             },
             "id": 17,
-            "interval": "1m",
             "panels": [ ],
             "targets": [ ],
             "title": "Main",
@@ -62,7 +61,6 @@
             },
             "hiddenSeries": false,
             "id": 6,
-            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -89,7 +87,7 @@
             "steppedLine": false,
             "targets": [
                {
-                  "expr": "sum by (status) (\nlabel_replace(\n  label_replace(\n        rate(loki_request_duration_seconds_count{cluster=\"$cluster\", job=~\"($namespace)/(.*query-frontend|(loki|enterprise-logs)-read|loki-single-binary)\", route=~\"api_prom_query|api_prom_label|api_prom_label_name_values|loki_api_v1_query|loki_api_v1_query_range|loki_api_v1_label|loki_api_v1_label_name_values\"}[$__rate_interval]),\n  \"status\", \"${1}xx\", \"status_code\", \"([0-9])..\"),\n\"status\", \"${1}\", \"status_code\", \"([a-z]+)\")\n)",
+                  "expr": "sum by (status) (\nlabel_replace(\n  label_replace(\n        rate(loki_request_duration_seconds_count{cluster=\"$cluster\", job=~\"($namespace)/query-frontend\", route=~\"api_prom_query|api_prom_label|api_prom_label_name_values|loki_api_v1_query|loki_api_v1_query_range|loki_api_v1_label|loki_api_v1_label_name_values\"}[$__rate_interval]),\n  \"status\", \"${1}xx\", \"status_code\", \"([0-9])..\"),\n\"status\", \"${1}\", \"status_code\", \"([a-z]+)\")\n)",
                   "legendFormat": "{{status}}",
                   "refId": "A"
                }
@@ -159,7 +157,6 @@
             },
             "hiddenSeries": false,
             "id": 7,
-            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -186,7 +183,7 @@
             "steppedLine": false,
             "targets": [
                {
-                  "expr": "sum by (status) (\nlabel_replace(\n  label_replace(\n          rate(loki_request_duration_seconds_count{cluster=\"$cluster\", job=~\"($namespace)/(.*distributor|(loki|enterprise-logs)-write|loki-single-binary)\", route=~\"api_prom_push|loki_api_v1_push\"}[$__rate_interval]),\n   \"status\", \"${1}xx\", \"status_code\", \"([0-9])..\"),\n\"status\", \"${1}\", \"status_code\", \"([a-z]+)\"))",
+                  "expr": "sum by (status) (\nlabel_replace(\n  label_replace(\n          rate(loki_request_duration_seconds_count{cluster=\"$cluster\", job=~\"($namespace)/distributor\", route=~\"api_prom_push|loki_api_v1_push\"}[$__rate_interval]),\n   \"status\", \"${1}xx\", \"status_code\", \"([0-9])..\"),\n\"status\", \"${1}\", \"status_code\", \"([a-z]+)\"))",
                   "legendFormat": "{{status}}",
                   "refId": "A"
                }
@@ -240,6 +237,103 @@
             "datasource": "$datasource",
             "fieldConfig": {
                "defaults": {
+                  "custom": { },
+                  "unit": "ops"
+               },
+               "overrides": [ ]
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+               "h": 5,
+               "w": 4,
+               "x": 8,
+               "y": 1
+            },
+            "hiddenSeries": false,
+            "id": 11,
+            "legend": {
+               "avg": false,
+               "current": false,
+               "hideEmpty": false,
+               "hideZero": false,
+               "max": false,
+               "min": false,
+               "show": false,
+               "total": false,
+               "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+               "dataLinks": [ ]
+            },
+            "panels": [ ],
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [ ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+               {
+                  "expr": "topk(5, sum by (name,level) (rate(promtail_custom_bad_words_total{cluster=\"$cluster\", exported_namespace=\"$namespace\"}[$__interval])) - \nsum by (name,level) (rate(promtail_custom_bad_words_total{cluster=\"$cluster\", exported_namespace=\"$namespace\"}[$__interval] offset 1h)))",
+                  "legendFormat": "{{name}}-{{level}}",
+                  "refId": "A"
+               }
+            ],
+            "thresholds": [ ],
+            "timeFrom": null,
+            "timeRegions": [ ],
+            "timeShift": null,
+            "title": "Bad Words",
+            "tooltip": {
+               "shared": true,
+               "sort": 2,
+               "value_type": "individual"
+            },
+            "type": "timeseries",
+            "xaxis": {
+               "buckets": null,
+               "mode": "time",
+               "name": null,
+               "show": true,
+               "values": [ ]
+            },
+            "yaxes": [
+               {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+               },
+               {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+               }
+            ],
+            "yaxis": {
+               "align": false,
+               "alignLevel": null
+            }
+         },
+         {
+            "aliasColors": { },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$datasource",
+            "fieldConfig": {
+               "defaults": {
                   "custom": { }
                },
                "overrides": [ ]
@@ -254,7 +348,7 @@
             },
             "hiddenSeries": false,
             "id": 2,
-            "interval": "1m",
+            "interval": "",
             "legend": {
                "avg": false,
                "current": false,
@@ -350,7 +444,6 @@
             },
             "hiddenSeries": false,
             "id": 4,
-            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -447,7 +540,6 @@
             },
             "hiddenSeries": false,
             "id": 24,
-            "interval": "1m",
             "legend": {
                "avg": false,
                "current": false,
@@ -531,7 +623,7 @@
             "fieldConfig": {
                "defaults": {
                   "custom": { },
-                  "unit": "s"
+                  "unit": "ms"
                },
                "overrides": [ ]
             },
@@ -545,7 +637,6 @@
             },
             "hiddenSeries": false,
             "id": 9,
-            "interval": "1m",
             "legend": {
                "alignAsTable": true,
                "avg": false,
@@ -574,17 +665,17 @@
             "steppedLine": false,
             "targets": [
                {
-                  "expr": "histogram_quantile(0.99, sum by (le) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/(.*distributor|(loki|enterprise-logs)-write|loki-single-binary)\", route=~\"api_prom_push|loki_api_v1_push\", cluster=~\"$cluster\"})) * 1e3",
+                  "expr": "histogram_quantile(0.99, sum by (le) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/distributor\", route=~\"api_prom_push|loki_api_v1_push\", cluster=~\"$cluster\"})) * 1e3",
                   "legendFormat": ".99",
                   "refId": "A"
                },
                {
-                  "expr": "histogram_quantile(0.75, sum by (le) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/(.*distributor|(loki|enterprise-logs)-write|loki-single-binary)\", route=~\"api_prom_push|loki_api_v1_push\", cluster=~\"$cluster\"})) * 1e3",
+                  "expr": "histogram_quantile(0.75, sum by (le) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/distributor\", route=~\"api_prom_push|loki_api_v1_push\", cluster=~\"$cluster\"})) * 1e3",
                   "legendFormat": ".9",
                   "refId": "B"
                },
                {
-                  "expr": "histogram_quantile(0.5, sum by (le) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/(.*distributor|(loki|enterprise-logs)-write|loki-single-binary)\", route=~\"api_prom_push|loki_api_v1_push\", cluster=~\"$cluster\"})) * 1e3",
+                  "expr": "histogram_quantile(0.5, sum by (le) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/distributor\", route=~\"api_prom_push|loki_api_v1_push\", cluster=~\"$cluster\"})) * 1e3",
                   "legendFormat": ".5",
                   "refId": "C"
                }
@@ -639,7 +730,7 @@
             "fieldConfig": {
                "defaults": {
                   "custom": { },
-                  "unit": "s"
+                  "unit": "ms"
                },
                "overrides": [ ]
             },
@@ -653,7 +744,6 @@
             },
             "hiddenSeries": false,
             "id": 12,
-            "interval": "1m",
             "legend": {
                "alignAsTable": true,
                "avg": false,
@@ -682,17 +772,17 @@
             "steppedLine": false,
             "targets": [
                {
-                  "expr": "histogram_quantile(0.99, sum by (le) (cluster_job:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/(.*distributor|(loki|enterprise-logs)-write|loki-single-binary)\", cluster=~\"$cluster\"})) * 1e3",
+                  "expr": "histogram_quantile(0.99, sum by (le) (cluster_job:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/distributor\", cluster=~\"$cluster\"})) * 1e3",
                   "legendFormat": ".99",
                   "refId": "A"
                },
                {
-                  "expr": "histogram_quantile(0.9, sum by (le) (cluster_job:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/(.*distributor|(loki|enterprise-logs)-write|loki-single-binary)\", cluster=~\"$cluster\"})) * 1e3",
+                  "expr": "histogram_quantile(0.9, sum by (le) (cluster_job:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/distributor\", cluster=~\"$cluster\"})) * 1e3",
                   "legendFormat": ".9",
                   "refId": "B"
                },
                {
-                  "expr": "histogram_quantile(0.5, sum by (le) (cluster_job:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/(.*distributor|(loki|enterprise-logs)-write|loki-single-binary)\", cluster=~\"$cluster\"})) * 1e3",
+                  "expr": "histogram_quantile(0.5, sum by (le) (cluster_job:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/distributor\", cluster=~\"$cluster\"})) * 1e3",
                   "legendFormat": ".5",
                   "refId": "C"
                }
@@ -760,7 +850,6 @@
             },
             "hiddenSeries": false,
             "id": 71,
-            "interval": "1m",
             "legend": {
                "alignAsTable": true,
                "avg": false,
@@ -789,7 +878,7 @@
             "steppedLine": false,
             "targets": [
                {
-                  "expr": "sum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*distributor|(loki|enterprise-logs)-write|loki-single-binary)\", status_code!~\"5[0-9]{2}\"}[$__rate_interval])) by (route)\n/\nsum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*distributor|(loki|enterprise-logs)-write|loki-single-binary)\"}[$__rate_interval])) by (route) > 0",
+                  "expr": "sum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/distributor\", status_code!~\"5[0-9]{2}\"}[$__rate_interval])) by (route)\n/\nsum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/distributor\"}[$__rate_interval])) by (route) > 0",
                   "interval": "",
                   "legendFormat": "{{route}}",
                   "refId": "A"
@@ -846,7 +935,7 @@
             "fieldConfig": {
                "defaults": {
                   "custom": { },
-                  "unit": "s"
+                  "unit": "ms"
                },
                "overrides": [ ]
             },
@@ -860,7 +949,6 @@
             },
             "hiddenSeries": false,
             "id": 13,
-            "interval": "1m",
             "legend": {
                "alignAsTable": true,
                "avg": false,
@@ -889,18 +977,18 @@
             "steppedLine": false,
             "targets": [
                {
-                  "expr": "histogram_quantile(0.99, sum by (le) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/(.*ingester|(loki|enterprise-logs)-write|loki-single-binary)\", route=\"/logproto.Pusher/Push\", cluster=~\"$cluster\"})) * 1e3",
+                  "expr": "histogram_quantile(0.99, sum by (le) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/ingester.*\", route=\"/logproto.Pusher/Push\", cluster=~\"$cluster\"})) * 1e3",
                   "legendFormat": ".99",
                   "refId": "A"
                },
                {
-                  "expr": "histogram_quantile(0.9, sum by (le) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/(.*ingester|(loki|enterprise-logs)-write|loki-single-binary)\", route=\"/logproto.Pusher/Push\", cluster=~\"$cluster\"})) * 1e3",
+                  "expr": "histogram_quantile(0.9, sum by (le) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/ingester.*\", route=\"/logproto.Pusher/Push\", cluster=~\"$cluster\"})) * 1e3",
                   "hide": false,
                   "legendFormat": ".9",
                   "refId": "B"
                },
                {
-                  "expr": "histogram_quantile(0.5, sum by (le) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/(.*ingester|(loki|enterprise-logs)-write|loki-single-binary)\", route=\"/logproto.Pusher/Push\", cluster=~\"$cluster\"})) * 1e3",
+                  "expr": "histogram_quantile(0.5, sum by (le) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/ingester.*\", route=\"/logproto.Pusher/Push\", cluster=~\"$cluster\"})) * 1e3",
                   "hide": false,
                   "legendFormat": ".5",
                   "refId": "C"
@@ -969,7 +1057,6 @@
             },
             "hiddenSeries": false,
             "id": 72,
-            "interval": "1m",
             "legend": {
                "alignAsTable": true,
                "avg": false,
@@ -998,7 +1085,7 @@
             "steppedLine": false,
             "targets": [
                {
-                  "expr": "sum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*ingester|(loki|enterprise-logs)-write|loki-single-binary)\", status_code!~\"5[0-9]{2}\", route=\"/logproto.Pusher/Push\"}[$__rate_interval])) by (route)\n/\nsum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*ingester|(loki|enterprise-logs)-write|loki-single-binary)\", route=\"/logproto.Pusher/Push\"}[$__rate_interval])) by (route) > 0",
+                  "expr": "sum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/ingester.*\", status_code!~\"5[0-9]{2}\", route=\"/logproto.Pusher/Push\"}[$__rate_interval])) by (route)\n/\nsum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/ingester.*\", route=\"/logproto.Pusher/Push\"}[$__rate_interval])) by (route) > 0",
                   "interval": "",
                   "legendFormat": "{{route}}",
                   "refId": "A"
@@ -1055,7 +1142,7 @@
             "fieldConfig": {
                "defaults": {
                   "custom": { },
-                  "unit": "s"
+                  "unit": "ms"
                },
                "overrides": [ ]
             },
@@ -1069,7 +1156,6 @@
             },
             "hiddenSeries": false,
             "id": 10,
-            "interval": "1m",
             "legend": {
                "alignAsTable": true,
                "avg": false,
@@ -1100,17 +1186,17 @@
             "steppedLine": false,
             "targets": [
                {
-                  "expr": "histogram_quantile(0.99, sum by (le,route) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/(.*querier|(loki|enterprise-logs)-read|loki-single-binary)\", route=~\"api_prom_query|api_prom_labels|api_prom_label_name_values|loki_api_v1_query|loki_api_v1_query_range|loki_api_v1_label|loki_api_v1_label_name_values\", cluster=\"$cluster\"}))",
+                  "expr": "histogram_quantile(0.99, sum by (le,route) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/querier\", route=~\"api_prom_query|api_prom_labels|api_prom_label_name_values|loki_api_v1_query|loki_api_v1_query_range|loki_api_v1_label|loki_api_v1_label_name_values\", cluster=\"$cluster\"}))",
                   "legendFormat": "{{route}}-.99",
                   "refId": "A"
                },
                {
-                  "expr": "histogram_quantile(0.9, sum by (le,route) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/(.*querier|(loki|enterprise-logs)-read|loki-single-binary)\", route=~\"api_prom_query|api_prom_labels|api_prom_label_name_values|loki_api_v1_query|loki_api_v1_query_range|loki_api_v1_label|loki_api_v1_label_name_values\", cluster=\"$cluster\"}))",
+                  "expr": "histogram_quantile(0.9, sum by (le,route) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/querier\", route=~\"api_prom_query|api_prom_labels|api_prom_label_name_values|loki_api_v1_query|loki_api_v1_query_range|loki_api_v1_label|loki_api_v1_label_name_values\", cluster=\"$cluster\"}))",
                   "legendFormat": "{{route}}-.9",
                   "refId": "B"
                },
                {
-                  "expr": "histogram_quantile(0.5, sum by (le,route) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/(.*querier|(loki|enterprise-logs)-read|loki-single-binary)\", route=~\"api_prom_query|api_prom_labels|api_prom_label_name_values|loki_api_v1_query|loki_api_v1_query_range|loki_api_v1_label|loki_api_v1_label_name_values\", cluster=\"$cluster\"}))",
+                  "expr": "histogram_quantile(0.5, sum by (le,route) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/querier\", route=~\"api_prom_query|api_prom_labels|api_prom_label_name_values|loki_api_v1_query|loki_api_v1_query_range|loki_api_v1_label|loki_api_v1_label_name_values\", cluster=\"$cluster\"}))",
                   "legendFormat": "{{route}}-.5",
                   "refId": "C"
                }
@@ -1165,7 +1251,7 @@
             "fieldConfig": {
                "defaults": {
                   "custom": { },
-                  "unit": "s"
+                  "unit": "ms"
                },
                "overrides": [ ]
             },
@@ -1179,7 +1265,6 @@
             },
             "hiddenSeries": false,
             "id": 14,
-            "interval": "1m",
             "legend": {
                "alignAsTable": true,
                "avg": false,
@@ -1208,17 +1293,17 @@
             "steppedLine": false,
             "targets": [
                {
-                  "expr": "histogram_quantile(0.99, sum by (le,route) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/(.*querier|(loki|enterprise-logs)-read|loki-single-binary)\", route=~\"api_prom_query|api_prom_labels|api_prom_label_name_values|loki_api_v1_query|loki_api_v1_query_range|loki_api_v1_label|loki_api_v1_label_name_values\", cluster=\"$cluster\"})) * 1e3",
+                  "expr": "histogram_quantile(0.99, sum by (le,route) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/querier\", route=~\"api_prom_query|api_prom_labels|api_prom_label_name_values|loki_api_v1_query|loki_api_v1_query_range|loki_api_v1_label|loki_api_v1_label_name_values\", cluster=\"$cluster\"})) * 1e3",
                   "legendFormat": ".99-{{route}}",
                   "refId": "A"
                },
                {
-                  "expr": "histogram_quantile(0.9, sum by (le,route) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/(.*querier|(loki|enterprise-logs)-read|loki-single-binary)\", route=~\"api_prom_query|api_prom_labels|api_prom_label_name_values|loki_api_v1_query|loki_api_v1_query_range|loki_api_v1_label|loki_api_v1_label_name_values\", cluster=\"$cluster\"})) * 1e3",
+                  "expr": "histogram_quantile(0.9, sum by (le,route) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/querier\", route=~\"api_prom_query|api_prom_labels|api_prom_label_name_values|loki_api_v1_query|loki_api_v1_query_range|loki_api_v1_label|loki_api_v1_label_name_values\", cluster=\"$cluster\"})) * 1e3",
                   "legendFormat": ".9-{{route}}",
                   "refId": "B"
                },
                {
-                  "expr": "histogram_quantile(0.5, sum by (le,route) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/(.*querier|(loki|enterprise-logs)-read|loki-single-binary)\", route=~\"api_prom_query|api_prom_labels|api_prom_label_name_values|loki_api_v1_query|loki_api_v1_query_range|loki_api_v1_label|loki_api_v1_label_name_values\", cluster=\"$cluster\"})) * 1e3",
+                  "expr": "histogram_quantile(0.5, sum by (le,route) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/querier\", route=~\"api_prom_query|api_prom_labels|api_prom_label_name_values|loki_api_v1_query|loki_api_v1_query_range|loki_api_v1_label|loki_api_v1_label_name_values\", cluster=\"$cluster\"})) * 1e3",
                   "legendFormat": ".5-{{route}}",
                   "refId": "C"
                }
@@ -1286,7 +1371,6 @@
             },
             "hiddenSeries": false,
             "id": 73,
-            "interval": "1m",
             "legend": {
                "alignAsTable": true,
                "avg": false,
@@ -1315,7 +1399,7 @@
             "steppedLine": false,
             "targets": [
                {
-                  "expr": "sum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*querier|(loki|enterprise-logs)-read|loki-single-binary)\", status_code!~\"5[0-9]{2}\"}[$__rate_interval])) by (route)\n/\nsum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*querier|(loki|enterprise-logs)-read|loki-single-binary)\"}[$__rate_interval])) by (route) > 0",
+                  "expr": "sum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/querier\", status_code!~\"5[0-9]{2}\"}[$__rate_interval])) by (route)\n/\nsum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/querier\"}[$__rate_interval])) by (route) > 0",
                   "interval": "",
                   "legendFormat": "{{route}}",
                   "refId": "A"
@@ -1373,7 +1457,7 @@
             "fieldConfig": {
                "defaults": {
                   "custom": { },
-                  "unit": "s"
+                  "unit": "ms"
                },
                "overrides": [ ]
             },
@@ -1387,7 +1471,6 @@
             },
             "hiddenSeries": false,
             "id": 15,
-            "interval": "1m",
             "legend": {
                "alignAsTable": true,
                "avg": false,
@@ -1416,17 +1499,17 @@
             "steppedLine": false,
             "targets": [
                {
-                  "expr": "histogram_quantile(0.99, sum by (le,route) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/(.*ingester|(loki|enterprise-logs)-write|loki-single-binary)\", route=~\"/logproto.Querier/Query|/logproto.Querier/Label|/logproto.Querier/Series|/logproto.Querier/QuerySample|/logproto.Querier/GetChunkIDs\", cluster=\"$cluster\"})) * 1e3",
+                  "expr": "histogram_quantile(0.99, sum by (le,route) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/ingester.*\", route=~\"/logproto.Querier/Query|/logproto.Querier/Label|/logproto.Querier/Series|/logproto.Querier/QuerySample|/logproto.Querier/GetChunkIDs\", cluster=\"$cluster\"})) * 1e3",
                   "legendFormat": ".99-{{route}}",
                   "refId": "A"
                },
                {
-                  "expr": "histogram_quantile(0.9, sum by (le,route) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/(.*ingester|(loki|enterprise-logs)-write|loki-single-binary)\", route=~\"/logproto.Querier/Query|/logproto.Querier/Label|/logproto.Querier/Series|/logproto.Querier/QuerySample|/logproto.Querier/GetChunkIDs\", cluster=\"$cluster\"})) * 1e3",
+                  "expr": "histogram_quantile(0.9, sum by (le,route) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/ingester.*\", route=~\"/logproto.Querier/Query|/logproto.Querier/Label|/logproto.Querier/Series|/logproto.Querier/QuerySample|/logproto.Querier/GetChunkIDs\", cluster=\"$cluster\"})) * 1e3",
                   "legendFormat": ".9-{{route}}",
                   "refId": "B"
                },
                {
-                  "expr": "histogram_quantile(0.5, sum by (le,route) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/(.*ingester|(loki|enterprise-logs)-write|loki-single-binary)\", route=~\"/logproto.Querier/Query|/logproto.Querier/Label|/logproto.Querier/Series|/logproto.Querier/QuerySample|/logproto.Querier/GetChunkIDs\", cluster=\"$cluster\"})) * 1e3",
+                  "expr": "histogram_quantile(0.5, sum by (le,route) (cluster_job_route:loki_request_duration_seconds_bucket:sum_rate{job=~\"($namespace)/ingester.*\", route=~\"/logproto.Querier/Query|/logproto.Querier/Label|/logproto.Querier/Series|/logproto.Querier/QuerySample|/logproto.Querier/GetChunkIDs\", cluster=\"$cluster\"})) * 1e3",
                   "legendFormat": ".5-{{route}}",
                   "refId": "C"
                }
@@ -1494,7 +1577,6 @@
             },
             "hiddenSeries": false,
             "id": 74,
-            "interval": "1m",
             "legend": {
                "alignAsTable": true,
                "avg": false,
@@ -1523,7 +1605,7 @@
             "steppedLine": false,
             "targets": [
                {
-                  "expr": "sum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*ingester|(loki|enterprise-logs)-write|loki-single-binary)\", status_code!~\"5[0-9]{2}\", route=~\"/logproto.Querier/Query|/logproto.Querier/Label|/logproto.Querier/Series|/logproto.Querier/QuerySample|/logproto.Querier/GetChunkIDs\"}[$__rate_interval])) by (route)\n/\nsum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*ingester|(loki|enterprise-logs)-write|loki-single-binary)\", route=~\"/logproto.Querier/Query|/logproto.Querier/Label|/logproto.Querier/Series|/logproto.Querier/QuerySample|/logproto.Querier/GetChunkIDs\"}[$__rate_interval])) by (route) > 0",
+                  "expr": "sum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/ingester.*\", status_code!~\"5[0-9]{2}\", route=~\"/logproto.Querier/Query|/logproto.Querier/Label|/logproto.Querier/Series|/logproto.Querier/QuerySample|/logproto.Querier/GetChunkIDs\"}[$__rate_interval])) by (route)\n/\nsum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/ingester.*\", route=~\"/logproto.Querier/Query|/logproto.Querier/Label|/logproto.Querier/Series|/logproto.Querier/QuerySample|/logproto.Querier/GetChunkIDs\"}[$__rate_interval])) by (route) > 0",
                   "interval": "",
                   "legendFormat": "{{route}}",
                   "refId": "A"
@@ -1598,7 +1680,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 112,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -1673,9 +1754,93 @@
                   }
                },
                {
-                  "columns": [ ],
                   "datasource": "$datasource",
-                  "fontSize": "100%",
+                  "fieldConfig": {
+                     "defaults": {
+                        "color": {
+                           "mode": "thresholds"
+                        },
+                        "custom": {
+                           "align": "right",
+                           "cellOptions": {
+                              "type": "auto"
+                           },
+                           "inspect": false
+                        },
+                        "decimals": 2,
+                        "displayName": "",
+                        "mappings": [ ],
+                        "thresholds": {
+                           "mode": "absolute",
+                           "steps": [
+                              {
+                                 "color": "green",
+                                 "value": null
+                              },
+                              {
+                                 "color": "red",
+                                 "value": 80
+                              }
+                           ]
+                        },
+                        "unit": "short"
+                     },
+                     "overrides": [
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "Time"
+                           },
+                           "properties": [
+                              {
+                                 "id": "displayName",
+                                 "value": "Time"
+                              },
+                              {
+                                 "id": "custom.align"
+                              }
+                           ]
+                        },
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "tenant"
+                           },
+                           "properties": [
+                              {
+                                 "id": "unit",
+                                 "value": "short"
+                              },
+                              {
+                                 "id": "decimals",
+                                 "value": 2
+                              },
+                              {
+                                 "id": "custom.align"
+                              }
+                           ]
+                        },
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "reason"
+                           },
+                           "properties": [
+                              {
+                                 "id": "unit",
+                                 "value": "short"
+                              },
+                              {
+                                 "id": "decimals",
+                                 "value": 2
+                              },
+                              {
+                                 "id": "custom.align"
+                              }
+                           ]
+                        }
+                     ]
+                  },
                   "gridPos": {
                      "h": 8,
                      "w": 12,
@@ -1683,72 +1848,20 @@
                      "y": 27
                   },
                   "id": 113,
-                  "interval": "1m",
-                  "pageSize": null,
-                  "panels": [ ],
-                  "showHeader": true,
-                  "sort": {
-                     "col": 3,
-                     "desc": true
+                  "options": {
+                     "cellHeight": "sm",
+                     "footer": {
+                        "countRows": false,
+                        "fields": "",
+                        "reducer": [
+                           "sum"
+                        ],
+                        "show": false
+                     },
+                     "showHeader": true
                   },
-                  "styles": [
-                     {
-                        "alias": "Time",
-                        "align": "auto",
-                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                        "pattern": "Time",
-                        "type": "hidden"
-                     },
-                     {
-                        "alias": "",
-                        "align": "auto",
-                        "colorMode": null,
-                        "colors": [
-                           "rgba(245, 54, 54, 0.9)",
-                           "rgba(237, 129, 40, 0.89)",
-                           "rgba(50, 172, 45, 0.97)"
-                        ],
-                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                        "decimals": 2,
-                        "mappingType": 1,
-                        "pattern": "tenant",
-                        "thresholds": [ ],
-                        "type": "string",
-                        "unit": "short"
-                     },
-                     {
-                        "alias": "",
-                        "align": "auto",
-                        "colorMode": null,
-                        "colors": [
-                           "rgba(245, 54, 54, 0.9)",
-                           "rgba(237, 129, 40, 0.89)",
-                           "rgba(50, 172, 45, 0.97)"
-                        ],
-                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                        "decimals": 2,
-                        "mappingType": 1,
-                        "pattern": "reason",
-                        "thresholds": [ ],
-                        "type": "number",
-                        "unit": "short"
-                     },
-                     {
-                        "alias": "",
-                        "align": "right",
-                        "colorMode": null,
-                        "colors": [
-                           "rgba(245, 54, 54, 0.9)",
-                           "rgba(237, 129, 40, 0.89)",
-                           "rgba(50, 172, 45, 0.97)"
-                        ],
-                        "decimals": 2,
-                        "pattern": "/.*/",
-                        "thresholds": [ ],
-                        "type": "number",
-                        "unit": "short"
-                     }
-                  ],
+                  "panels": [ ],
+                  "pluginVersion": "10.4.0",
                   "targets": [
                      {
                         "expr": "topk(10, sum by (tenant, reason) (sum_over_time(increase(loki_discarded_samples_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])[$__range:$__rate_interval])))",
@@ -1759,11 +1872,16 @@
                         "refId": "A"
                      }
                   ],
-                  "timeFrom": null,
-                  "timeShift": null,
                   "title": "Discarded Lines Per Interval",
-                  "transform": "table",
-                  "type": "table-old"
+                  "transformations": [
+                     {
+                        "id": "merge",
+                        "options": {
+                           "reducers": [ ]
+                        }
+                     }
+                  ],
+                  "type": "table"
                }
             ],
             "targets": [ ],
@@ -1797,7 +1915,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 26,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -1824,7 +1941,7 @@
                   "steppedLine": false,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"(.*distributor.*|(loki|enterprise-logs)-write.*|$namespace-[0-9]+)\"}[$__rate_interval]))",
+                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"distributor.*\"}[$__rate_interval]))",
                         "intervalFactor": 3,
                         "legendFormat": "{{pod}}",
                         "refId": "A"
@@ -1892,7 +2009,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 27,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -1921,7 +2037,7 @@
                   "steppedLine": false,
                   "targets": [
                      {
-                        "expr": "go_memstats_heap_inuse_bytes{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"(.*/.*distributor|$namespace/(loki|enterprise-logs)-write|.*/loki|$namespace/loki-single-binary)\"}",
+                        "expr": "go_memstats_heap_inuse_bytes{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"distributor.*\"}",
                         "instant": false,
                         "intervalFactor": 3,
                         "legendFormat": "{{pod}}",
@@ -1985,7 +2101,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 31,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -2017,7 +2132,7 @@
                   "steppedLine": false,
                   "targets": [
                      {
-                        "expr": "sum(rate({cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*distributor.*|(loki|enterprise-logs)-write|loki-single-binary)\"} | logfmt | level=\"error\"[$__interval]))",
+                        "expr": "sum(rate({cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/distributor\"} | logfmt | level=\"error\"[$__auto]))",
                         "refId": "A"
                      }
                   ],
@@ -2071,7 +2186,6 @@
                      "y": 32
                   },
                   "id": 29,
-                  "interval": "1m",
                   "options": {
                      "showLabels": false,
                      "showTime": false,
@@ -2081,7 +2195,7 @@
                   "panels": [ ],
                   "targets": [
                      {
-                        "expr": "{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*distributor.*|(loki|enterprise-logs)-write|loki-single-binary)\"} |= \"level=error\"",
+                        "expr": "{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/distributor\"} |= \"level=error\"",
                         "refId": "A"
                      }
                   ],
@@ -2106,7 +2220,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 33,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -2133,7 +2246,7 @@
                   "steppedLine": false,
                   "targets": [
                      {
-                        "expr": "sum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*distributor.*|(loki|enterprise-logs)-write|loki-single-binary)\", status_code!~\"5[0-9]{2}\"}[$__rate_interval])) by (route)\n/\nsum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*distributor.*|(loki|enterprise-logs)-write|loki-single-binary)\"}[$__rate_interval])) by (route) > 0",
+                        "expr": "sum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/distributor\", status_code!~\"5[0-9]{2}\"}[$__rate_interval])) by (route)\n/\nsum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/distributor\"}[$__rate_interval])) by (route) > 0",
                         "interval": "",
                         "intervalFactor": 1,
                         "legendFormat": "{{route}}",
@@ -2202,7 +2315,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 32,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -2297,7 +2409,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 34,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -2392,7 +2503,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 35,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -2498,7 +2608,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 36,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -2525,7 +2634,7 @@
                   "steppedLine": false,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"(.*ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary|$namespace-[0-9]+)\"}[$__rate_interval]))",
+                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"ingester.*\"}[$__rate_interval]))",
                         "intervalFactor": 3,
                         "legendFormat": "{{pod}}",
                         "refId": "A"
@@ -2593,7 +2702,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 37,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -2622,7 +2730,7 @@
                   "steppedLine": false,
                   "targets": [
                      {
-                        "expr": "go_memstats_heap_inuse_bytes{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"(.*ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary|$namespace-[0-9]+)\"}",
+                        "expr": "go_memstats_heap_inuse_bytes{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"ingester.*\"}",
                         "instant": false,
                         "intervalFactor": 3,
                         "legendFormat": "{{pod}}",
@@ -2686,7 +2794,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 38,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -2718,7 +2825,7 @@
                   "steppedLine": false,
                   "targets": [
                      {
-                        "expr": "sum(rate({cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*ingester.*|(loki|enterprise-logs)-write|loki-single-binary)\"} | logfmt | level=\"error\"[$__interval]))",
+                        "expr": "sum(rate({cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/ingester.*\"} | logfmt | level=\"error\"[$__auto]))",
                         "refId": "A"
                      }
                   ],
@@ -2772,7 +2879,6 @@
                      "y": 32
                   },
                   "id": 39,
-                  "interval": "1m",
                   "options": {
                      "showLabels": false,
                      "showTime": false,
@@ -2782,7 +2888,7 @@
                   "panels": [ ],
                   "targets": [
                      {
-                        "expr": "{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*ingester.*|(loki|enterprise-logs)-write|loki-single-binary)\"} |= \"level=error\"",
+                        "expr": "{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/ingester.*\"} |= \"level=error\"",
                         "refId": "A"
                      }
                   ],
@@ -2807,7 +2913,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 67,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -2834,7 +2939,7 @@
                   "steppedLine": false,
                   "targets": [
                      {
-                        "expr": "sum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*ingester.*|(loki|enterprise-logs)-write|loki-single-binary)\", status_code!~\"5[0-9]{2}\"}[$__rate_interval])) by (route)\n/\nsum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*ingester.*|(loki|enterprise-logs)-write|loki-single-binary)\"}[$__rate_interval])) by (route) > 0",
+                        "expr": "sum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/ingester.*\", status_code!~\"5[0-9]{2}\"}[$__rate_interval])) by (route)\n/\nsum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/ingester.*\"}[$__rate_interval])) by (route) > 0",
                         "interval": "",
                         "intervalFactor": 1,
                         "legendFormat": "{{route}}",
@@ -2914,7 +3019,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 106,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -2943,7 +3047,7 @@
                   "steppedLine": false,
                   "targets": [
                      {
-                        "expr": "topk(10,sum by (tenant) (loki_ingester_memory_streams{cluster=\"$cluster\",job=~\"($namespace)/(.*ingester.*|(loki|enterprise-logs)-write|loki-single-binary)\"}))",
+                        "expr": "topk(10,sum by (tenant) (loki_ingester_memory_streams{cluster=\"$cluster\",job=~\"($namespace)/ingester.*\"}))",
                         "interval": "",
                         "legendFormat": "{{ tenant }}",
                         "refId": "A"
@@ -3006,7 +3110,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 108,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -3035,7 +3138,7 @@
                   "steppedLine": false,
                   "targets": [
                      {
-                        "expr": "topk(10, sum by (tenant) (rate(loki_ingester_streams_created_total{cluster=\"$cluster\",job=~\"($namespace)/(.*ingester.*|(loki|enterprise-logs)-write|loki-single-binary)\"}[$__rate_interval]) > 0))",
+                        "expr": "topk(10, sum by (tenant) (rate(loki_ingester_streams_created_total{cluster=\"$cluster\",job=~\"($namespace)/ingester.*\"}[$__rate_interval]) > 0))",
                         "interval": "",
                         "legendFormat": "{{ tenant }}",
                         "refId": "A"
@@ -3114,7 +3217,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 102,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -3146,13 +3248,13 @@
                   "steppedLine": false,
                   "targets": [
                      {
-                        "expr": "sum(rate(loki_ingester_chunks_flushed_total{cluster=\"$cluster\",job=~\"($namespace)/(.*ingester.*|(loki|enterprise-logs)-write|loki-single-binary)\"}[$__rate_interval]))",
+                        "expr": "sum(rate(loki_ingester_chunks_flushed_total{cluster=\"$cluster\",job=~\"($namespace)/ingester.*\"}[$__rate_interval]))",
                         "interval": "",
                         "legendFormat": "Chunks",
                         "refId": "A"
                      },
                      {
-                        "expr": "sum(increase(loki_chunk_store_deduped_chunks_total{cluster=\"$cluster\", job=~\"($namespace)/(.*ingester.*|(loki|enterprise-logs)-write|loki-single-binary)\"}[$__rate_interval]))/sum(increase(loki_ingester_chunks_flushed_total{cluster=\"$cluster\", job=~\"($namespace)/(.*ingester.*|(loki|enterprise-logs)-write|loki-single-binary)\"}[$__rate_interval])) < 1",
+                        "expr": "sum(increase(loki_chunk_store_deduped_chunks_total{cluster=\"$cluster\", job=~\"($namespace)/ingester.*\"}[$__rate_interval]))/sum(increase(loki_ingester_chunks_flushed_total{cluster=\"$cluster\", job=~\"($namespace)/ingester.*\"}[$__rate_interval])) < 1",
                         "interval": "",
                         "legendFormat": "De-Dupe Ratio",
                         "refId": "B"
@@ -3223,7 +3325,6 @@
                   "hideZeroBuckets": false,
                   "highlightCards": true,
                   "id": 100,
-                  "interval": "1m",
                   "legend": {
                      "show": true
                   },
@@ -3231,7 +3332,7 @@
                   "reverseYBuckets": false,
                   "targets": [
                      {
-                        "expr": "sum(rate(loki_ingester_chunk_size_bytes_bucket{cluster=\"$cluster\",job=~\"($namespace)/(.*ingester.*|(loki|enterprise-logs)-write|loki-single-binary)\"}[$__rate_interval])) by (le)",
+                        "expr": "sum(rate(loki_ingester_chunk_size_bytes_bucket{cluster=\"$cluster\",job=~\"($namespace)/ingester.*\"}[$__rate_interval])) by (le)",
                         "format": "heatmap",
                         "instant": false,
                         "interval": "",
@@ -3281,7 +3382,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 96,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -3308,7 +3408,7 @@
                   "steppedLine": false,
                   "targets": [
                      {
-                        "expr": "sum by(reason) (rate(loki_ingester_chunks_flushed_total{cluster=~\"$cluster\",job=~\"($namespace)/(.*ingester.*|(loki|enterprise-logs)-write|loki-single-binary)\", namespace=~\"$namespace\"}[$__rate_interval])) / ignoring(reason) group_left sum(rate(loki_ingester_chunks_flushed_total{cluster=~\"$cluster\",job=~\"($namespace)/(.*ingester.*|(loki|enterprise-logs)-write|loki-single-binary)\", namespace=~\"$namespace\"}[$__rate_interval]))",
+                        "expr": "sum by(reason) (rate(loki_ingester_chunks_flushed_total{cluster=~\"$cluster\",job=~\"$namespace/ingester\", namespace=~\"$namespace\"}[$__rate_interval])) / ignoring(reason) group_left sum(rate(loki_ingester_chunks_flushed_total{cluster=~\"$cluster\",job=~\"$namespace/ingester\", namespace=~\"$namespace\"}[$__rate_interval]))",
                         "interval": "",
                         "legendFormat": "{{ reason }}"
                      }
@@ -3380,7 +3480,6 @@
                   "hideZeroBuckets": true,
                   "highlightCards": true,
                   "id": 98,
-                  "interval": "1m",
                   "legend": {
                      "show": true
                   },
@@ -3388,7 +3487,7 @@
                   "reverseYBuckets": false,
                   "targets": [
                      {
-                        "expr": "sum by (le) (rate(loki_ingester_chunk_utilization_bucket{cluster=\"$cluster\", job=~\"($namespace)/(.*ingester|(loki|enterprise-logs)-write|loki-single-binary)\"}[$__rate_interval]))",
+                        "expr": "sum by (le) (rate(loki_ingester_chunk_utilization_bucket{cluster=\"$cluster\", job=~\"($namespace)/ingester.*\"}[$__rate_interval]))",
                         "format": "heatmap",
                         "instant": false,
                         "interval": "",
@@ -3454,7 +3553,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 68,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -3481,7 +3579,7 @@
                   "steppedLine": false,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"(.*querier.*|(loki|enterprise-logs)-read.*|loki-single-binary|$namespace-[0-9]+)\"}[$__rate_interval]))",
+                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"querier.*\"}[$__rate_interval]))",
                         "intervalFactor": 3,
                         "legendFormat": "{{pod}}",
                         "refId": "A"
@@ -3549,7 +3647,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 69,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -3578,7 +3675,7 @@
                   "steppedLine": false,
                   "targets": [
                      {
-                        "expr": "go_memstats_heap_inuse_bytes{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"(.*querier.*|(loki|enterprise-logs)-read.*|.*loki-single-binary|$namespace-[0-9]+)\"}",
+                        "expr": "go_memstats_heap_inuse_bytes{cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"querier.*\"}",
                         "instant": false,
                         "intervalFactor": 3,
                         "legendFormat": "{{pod}}",
@@ -3642,7 +3739,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 65,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -3674,7 +3770,7 @@
                   "steppedLine": false,
                   "targets": [
                      {
-                        "expr": "sum(rate({cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*querier.*|(loki|enterprise-logs)-read|loki-single-binary)\"} | logfmt |  level=\"error\"[$__interval]))",
+                        "expr": "sum(rate({cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/querier\"} | logfmt |  level=\"error\"[$__auto]))",
                         "refId": "A"
                      }
                   ],
@@ -3737,7 +3833,7 @@
                   "panels": [ ],
                   "targets": [
                      {
-                        "expr": "{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(querier|(loki|enterprise-logs)-read|loki-single-binary)\"} |= \"level=error\"",
+                        "expr": "{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/querier\"} |= \"level=error\"",
                         "refId": "A"
                      }
                   ],
@@ -3762,7 +3858,6 @@
                   },
                   "hiddenSeries": false,
                   "id": 70,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -3789,7 +3884,7 @@
                   "steppedLine": false,
                   "targets": [
                      {
-                        "expr": "sum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*querier.*|(loki|enterprise-logs)-read|loki-single-binary)\", status_code!~\"5[0-9]{2}\"}[$__rate_interval])) by (route)\n/\nsum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/(.*querier.*|(loki|enterprise-logs)-read|loki-single-binary)\"}[$__rate_interval])) by (route) > 0",
+                        "expr": "sum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/querier\", status_code!~\"5[0-9]{2}\"}[$__rate_interval])) by (route)\n/\nsum(rate(loki_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", job=~\"($namespace)/querier\"}[$__rate_interval])) by (route) > 0",
                         "interval": "",
                         "intervalFactor": 1,
                         "legendFormat": "{{route}}",
@@ -3874,7 +3969,7 @@
                   },
                   "hiddenSeries": false,
                   "id": 53,
-                  "interval": "1m",
+                  "interval": "",
                   "legend": {
                      "alignAsTable": true,
                      "avg": false,
@@ -3978,7 +4073,7 @@
                   },
                   "hiddenSeries": false,
                   "id": 54,
-                  "interval": "1m",
+                  "interval": "",
                   "legend": {
                      "alignAsTable": true,
                      "avg": false,
@@ -4091,7 +4186,7 @@
                   },
                   "hiddenSeries": false,
                   "id": 55,
-                  "interval": "1m",
+                  "interval": "",
                   "legend": {
                      "alignAsTable": true,
                      "avg": false,
@@ -4200,7 +4295,7 @@
                   },
                   "hiddenSeries": false,
                   "id": 58,
-                  "interval": "1m",
+                  "interval": "",
                   "legend": {
                      "alignAsTable": true,
                      "avg": false,
@@ -4288,6 +4383,824 @@
                "h": 1,
                "w": 24,
                "x": 0,
+               "y": 34
+            },
+            "id": 43,
+            "panels": [
+               {
+                  "aliasColors": { },
+                  "bars": false,
+                  "dashLength": 10,
+                  "dashes": false,
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "unit": "s"
+                     }
+                  },
+                  "fill": 1,
+                  "fillGradient": 0,
+                  "gridPos": {
+                     "h": 7,
+                     "w": 6,
+                     "x": 0,
+                     "y": 9
+                  },
+                  "hiddenSeries": false,
+                  "id": 41,
+                  "interval": "",
+                  "legend": {
+                     "avg": false,
+                     "current": false,
+                     "max": false,
+                     "min": false,
+                     "show": false,
+                     "total": false,
+                     "values": false
+                  },
+                  "lines": true,
+                  "linewidth": 1,
+                  "nullPointMode": "null",
+                  "options": {
+                     "dataLinks": [ ]
+                  },
+                  "panels": [ ],
+                  "percentage": false,
+                  "pointradius": 1,
+                  "points": false,
+                  "renderer": "flot",
+                  "seriesOverrides": [ ],
+                  "spaceLength": 10,
+                  "stack": false,
+                  "steppedLine": false,
+                  "targets": [
+                     {
+                        "expr": "histogram_quantile(.99, sum(rate(loki_bigtable_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", operation=\"/google.bigtable.v2.Bigtable/MutateRows\"}[$__rate_interval])) by (operation, le))",
+                        "intervalFactor": 1,
+                        "legendFormat": ".9",
+                        "refId": "A"
+                     },
+                     {
+                        "expr": "histogram_quantile(.9, sum(rate(loki_bigtable_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", operation=\"/google.bigtable.v2.Bigtable/MutateRows\"}[$__rate_interval])) by (operation, le))",
+                        "refId": "B"
+                     },
+                     {
+                        "expr": "histogram_quantile(.5, sum(rate(loki_bigtable_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", operation=\"/google.bigtable.v2.Bigtable/MutateRows\"}[$__rate_interval])) by (operation, le))",
+                        "refId": "C"
+                     }
+                  ],
+                  "thresholds": [ ],
+                  "timeFrom": null,
+                  "timeRegions": [ ],
+                  "timeShift": null,
+                  "title": "MutateRows Latency",
+                  "tooltip": {
+                     "shared": true,
+                     "sort": 2,
+                     "value_type": "individual"
+                  },
+                  "type": "timeseries",
+                  "xaxis": {
+                     "buckets": null,
+                     "mode": "time",
+                     "name": null,
+                     "show": true,
+                     "values": [ ]
+                  },
+                  "yaxes": [
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     },
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     }
+                  ],
+                  "yaxis": {
+                     "align": false,
+                     "alignLevel": null
+                  }
+               },
+               {
+                  "aliasColors": { },
+                  "bars": false,
+                  "dashLength": 10,
+                  "dashes": false,
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "unit": "s"
+                     }
+                  },
+                  "fill": 1,
+                  "fillGradient": 0,
+                  "gridPos": {
+                     "h": 7,
+                     "w": 6,
+                     "x": 6,
+                     "y": 9
+                  },
+                  "hiddenSeries": false,
+                  "id": 46,
+                  "interval": "",
+                  "legend": {
+                     "avg": false,
+                     "current": false,
+                     "max": false,
+                     "min": false,
+                     "show": false,
+                     "total": false,
+                     "values": false
+                  },
+                  "lines": true,
+                  "linewidth": 1,
+                  "nullPointMode": "null",
+                  "options": {
+                     "dataLinks": [ ]
+                  },
+                  "panels": [ ],
+                  "percentage": false,
+                  "pointradius": 1,
+                  "points": false,
+                  "renderer": "flot",
+                  "seriesOverrides": [ ],
+                  "spaceLength": 10,
+                  "stack": false,
+                  "steppedLine": false,
+                  "targets": [
+                     {
+                        "expr": "histogram_quantile(.99, sum(rate(loki_bigtable_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", operation=\"/google.bigtable.v2.Bigtable/ReadRows\"}[$__rate_interval])) by (operation, le))",
+                        "interval": "",
+                        "intervalFactor": 1,
+                        "legendFormat": "99%",
+                        "refId": "A"
+                     },
+                     {
+                        "expr": "histogram_quantile(.9, sum(rate(loki_bigtable_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", operation=\"/google.bigtable.v2.Bigtable/ReadRows\"}[$__rate_interval])) by (operation, le))",
+                        "interval": "",
+                        "legendFormat": "90%",
+                        "refId": "B"
+                     },
+                     {
+                        "expr": "histogram_quantile(.5, sum(rate(loki_bigtable_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", operation=\"/google.bigtable.v2.Bigtable/ReadRows\"}[$__rate_interval])) by (operation, le))",
+                        "interval": "",
+                        "legendFormat": "50%",
+                        "refId": "C"
+                     }
+                  ],
+                  "thresholds": [ ],
+                  "timeFrom": null,
+                  "timeRegions": [ ],
+                  "timeShift": null,
+                  "title": "ReadRows Latency",
+                  "tooltip": {
+                     "shared": true,
+                     "sort": 2,
+                     "value_type": "individual"
+                  },
+                  "type": "timeseries",
+                  "xaxis": {
+                     "buckets": null,
+                     "mode": "time",
+                     "name": null,
+                     "show": true,
+                     "values": [ ]
+                  },
+                  "yaxes": [
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     },
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     }
+                  ],
+                  "yaxis": {
+                     "align": false,
+                     "alignLevel": null
+                  }
+               },
+               {
+                  "aliasColors": { },
+                  "bars": false,
+                  "dashLength": 10,
+                  "dashes": false,
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "unit": "s"
+                     }
+                  },
+                  "fill": 1,
+                  "fillGradient": 0,
+                  "gridPos": {
+                     "h": 7,
+                     "w": 6,
+                     "x": 12,
+                     "y": 9
+                  },
+                  "hiddenSeries": false,
+                  "id": 44,
+                  "interval": "",
+                  "legend": {
+                     "avg": false,
+                     "current": false,
+                     "max": false,
+                     "min": false,
+                     "show": false,
+                     "total": false,
+                     "values": false
+                  },
+                  "lines": true,
+                  "linewidth": 1,
+                  "nullPointMode": "null",
+                  "options": {
+                     "dataLinks": [ ]
+                  },
+                  "panels": [ ],
+                  "percentage": false,
+                  "pointradius": 1,
+                  "points": false,
+                  "renderer": "flot",
+                  "seriesOverrides": [ ],
+                  "spaceLength": 10,
+                  "stack": false,
+                  "steppedLine": false,
+                  "targets": [
+                     {
+                        "expr": "histogram_quantile(.99, sum(rate(loki_bigtable_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", operation=\"/google.bigtable.admin.v2.BigtableTableAdmin/GetTable\"}[$__rate_interval])) by (operation, le))",
+                        "interval": "",
+                        "intervalFactor": 1,
+                        "legendFormat": "99%",
+                        "refId": "A"
+                     },
+                     {
+                        "expr": "histogram_quantile(.9, sum(rate(loki_bigtable_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", operation=\"/google.bigtable.admin.v2.BigtableTableAdmin/GetTable\"}[$__rate_interval])) by (operation, le))",
+                        "interval": "",
+                        "legendFormat": "90%",
+                        "refId": "B"
+                     },
+                     {
+                        "expr": "histogram_quantile(.5, sum(rate(loki_bigtable_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", operation=\"/google.bigtable.admin.v2.BigtableTableAdmin/GetTable\"}[$__rate_interval])) by (operation, le))",
+                        "interval": "",
+                        "legendFormat": "50%",
+                        "refId": "C"
+                     }
+                  ],
+                  "thresholds": [ ],
+                  "timeFrom": null,
+                  "timeRegions": [ ],
+                  "timeShift": null,
+                  "title": "GetTable Latency",
+                  "tooltip": {
+                     "shared": true,
+                     "sort": 2,
+                     "value_type": "individual"
+                  },
+                  "type": "timeseries",
+                  "xaxis": {
+                     "buckets": null,
+                     "mode": "time",
+                     "name": null,
+                     "show": true,
+                     "values": [ ]
+                  },
+                  "yaxes": [
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     },
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     }
+                  ],
+                  "yaxis": {
+                     "align": false,
+                     "alignLevel": null
+                  }
+               },
+               {
+                  "aliasColors": { },
+                  "bars": false,
+                  "dashLength": 10,
+                  "dashes": false,
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "unit": "s"
+                     }
+                  },
+                  "fill": 1,
+                  "fillGradient": 0,
+                  "gridPos": {
+                     "h": 7,
+                     "w": 6,
+                     "x": 18,
+                     "y": 9
+                  },
+                  "hiddenSeries": false,
+                  "id": 45,
+                  "interval": "",
+                  "legend": {
+                     "avg": false,
+                     "current": false,
+                     "max": false,
+                     "min": false,
+                     "show": false,
+                     "total": false,
+                     "values": false
+                  },
+                  "lines": true,
+                  "linewidth": 1,
+                  "nullPointMode": "null",
+                  "options": {
+                     "dataLinks": [ ]
+                  },
+                  "panels": [ ],
+                  "percentage": false,
+                  "pointradius": 1,
+                  "points": false,
+                  "renderer": "flot",
+                  "seriesOverrides": [ ],
+                  "spaceLength": 10,
+                  "stack": false,
+                  "steppedLine": false,
+                  "targets": [
+                     {
+                        "expr": "histogram_quantile(.99, sum(rate(loki_bigtable_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", operation=\"/google.bigtable.admin.v2.BigtableTableAdmin/ListTables\"}[$__rate_interval])) by (operation, le))",
+                        "intervalFactor": 1,
+                        "legendFormat": ".9",
+                        "refId": "A"
+                     },
+                     {
+                        "expr": "histogram_quantile(.9, sum(rate(loki_bigtable_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", operation=\"/google.bigtable.admin.v2.BigtableTableAdmin/ListTables\"}[$__rate_interval])) by (operation, le))",
+                        "refId": "B"
+                     },
+                     {
+                        "expr": "histogram_quantile(.5, sum(rate(loki_bigtable_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\", operation=\"/google.bigtable.admin.v2.BigtableTableAdmin/ListTables\"}[$__rate_interval])) by (operation, le))",
+                        "refId": "C"
+                     }
+                  ],
+                  "thresholds": [ ],
+                  "timeFrom": null,
+                  "timeRegions": [ ],
+                  "timeShift": null,
+                  "title": "ListTables Latency",
+                  "tooltip": {
+                     "shared": true,
+                     "sort": 2,
+                     "value_type": "individual"
+                  },
+                  "type": "timeseries",
+                  "xaxis": {
+                     "buckets": null,
+                     "mode": "time",
+                     "name": null,
+                     "show": true,
+                     "values": [ ]
+                  },
+                  "yaxes": [
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     },
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     }
+                  ],
+                  "yaxis": {
+                     "align": false,
+                     "alignLevel": null
+                  }
+               },
+               {
+                  "aliasColors": { },
+                  "bars": false,
+                  "dashLength": 10,
+                  "dashes": false,
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "unit": "ops"
+                     }
+                  },
+                  "fill": 1,
+                  "fillGradient": 0,
+                  "gridPos": {
+                     "h": 7,
+                     "w": 6,
+                     "x": 0,
+                     "y": 16
+                  },
+                  "hiddenSeries": false,
+                  "id": 47,
+                  "interval": "",
+                  "legend": {
+                     "avg": false,
+                     "current": false,
+                     "max": false,
+                     "min": false,
+                     "show": false,
+                     "total": false,
+                     "values": false
+                  },
+                  "lines": true,
+                  "linewidth": 1,
+                  "nullPointMode": "null",
+                  "options": {
+                     "dataLinks": [ ]
+                  },
+                  "panels": [ ],
+                  "percentage": false,
+                  "pointradius": 1,
+                  "points": false,
+                  "renderer": "flot",
+                  "seriesOverrides": [ ],
+                  "spaceLength": 10,
+                  "stack": false,
+                  "steppedLine": false,
+                  "targets": [
+                     {
+                        "expr": "sum(rate(loki_bigtable_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", operation=\"/google.bigtable.v2.Bigtable/MutateRows\"}[$__rate_interval])) by (status_code)",
+                        "intervalFactor": 1,
+                        "legendFormat": "{{status_code}}",
+                        "refId": "A"
+                     }
+                  ],
+                  "thresholds": [ ],
+                  "timeFrom": null,
+                  "timeRegions": [ ],
+                  "timeShift": null,
+                  "title": "MutateRows Status",
+                  "tooltip": {
+                     "shared": true,
+                     "sort": 2,
+                     "value_type": "individual"
+                  },
+                  "type": "timeseries",
+                  "xaxis": {
+                     "buckets": null,
+                     "mode": "time",
+                     "name": null,
+                     "show": true,
+                     "values": [ ]
+                  },
+                  "yaxes": [
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     },
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     }
+                  ],
+                  "yaxis": {
+                     "align": false,
+                     "alignLevel": null
+                  }
+               },
+               {
+                  "aliasColors": { },
+                  "bars": false,
+                  "dashLength": 10,
+                  "dashes": false,
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "unit": "ops"
+                     }
+                  },
+                  "fill": 1,
+                  "fillGradient": 0,
+                  "gridPos": {
+                     "h": 7,
+                     "w": 6,
+                     "x": 6,
+                     "y": 16
+                  },
+                  "hiddenSeries": false,
+                  "id": 50,
+                  "interval": "",
+                  "legend": {
+                     "avg": false,
+                     "current": false,
+                     "max": false,
+                     "min": false,
+                     "show": false,
+                     "total": false,
+                     "values": false
+                  },
+                  "lines": true,
+                  "linewidth": 1,
+                  "nullPointMode": "null",
+                  "options": {
+                     "dataLinks": [ ]
+                  },
+                  "panels": [ ],
+                  "percentage": false,
+                  "pointradius": 1,
+                  "points": false,
+                  "renderer": "flot",
+                  "seriesOverrides": [ ],
+                  "spaceLength": 10,
+                  "stack": false,
+                  "steppedLine": false,
+                  "targets": [
+                     {
+                        "expr": "sum(rate(loki_bigtable_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", operation=\"/google.bigtable.v2.Bigtable/ReadRows\"}[$__rate_interval])) by (status_code)",
+                        "intervalFactor": 1,
+                        "legendFormat": "{{status_code}}",
+                        "refId": "A"
+                     }
+                  ],
+                  "thresholds": [ ],
+                  "timeFrom": null,
+                  "timeRegions": [ ],
+                  "timeShift": null,
+                  "title": "ReadRows Status",
+                  "tooltip": {
+                     "shared": true,
+                     "sort": 2,
+                     "value_type": "individual"
+                  },
+                  "type": "timeseries",
+                  "xaxis": {
+                     "buckets": null,
+                     "mode": "time",
+                     "name": null,
+                     "show": true,
+                     "values": [ ]
+                  },
+                  "yaxes": [
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     },
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     }
+                  ],
+                  "yaxis": {
+                     "align": false,
+                     "alignLevel": null
+                  }
+               },
+               {
+                  "aliasColors": { },
+                  "bars": false,
+                  "dashLength": 10,
+                  "dashes": false,
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "unit": "ops"
+                     }
+                  },
+                  "fill": 1,
+                  "fillGradient": 0,
+                  "gridPos": {
+                     "h": 7,
+                     "w": 6,
+                     "x": 12,
+                     "y": 16
+                  },
+                  "hiddenSeries": false,
+                  "id": 48,
+                  "interval": "",
+                  "legend": {
+                     "avg": false,
+                     "current": false,
+                     "max": false,
+                     "min": false,
+                     "show": false,
+                     "total": false,
+                     "values": false
+                  },
+                  "lines": true,
+                  "linewidth": 1,
+                  "nullPointMode": "null",
+                  "options": {
+                     "dataLinks": [ ]
+                  },
+                  "panels": [ ],
+                  "percentage": false,
+                  "pointradius": 1,
+                  "points": false,
+                  "renderer": "flot",
+                  "seriesOverrides": [ ],
+                  "spaceLength": 10,
+                  "stack": false,
+                  "steppedLine": false,
+                  "targets": [
+                     {
+                        "expr": "sum(rate(loki_bigtable_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", operation=\"/google.bigtable.admin.v2.BigtableTableAdmin/GetTable\"}[$__rate_interval])) by (status_code)",
+                        "intervalFactor": 1,
+                        "legendFormat": "{{status_code}}",
+                        "refId": "A"
+                     }
+                  ],
+                  "thresholds": [ ],
+                  "timeFrom": null,
+                  "timeRegions": [ ],
+                  "timeShift": null,
+                  "title": "GetTable Status",
+                  "tooltip": {
+                     "shared": true,
+                     "sort": 2,
+                     "value_type": "individual"
+                  },
+                  "type": "timeseries",
+                  "xaxis": {
+                     "buckets": null,
+                     "mode": "time",
+                     "name": null,
+                     "show": true,
+                     "values": [ ]
+                  },
+                  "yaxes": [
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     },
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     }
+                  ],
+                  "yaxis": {
+                     "align": false,
+                     "alignLevel": null
+                  }
+               },
+               {
+                  "aliasColors": { },
+                  "bars": false,
+                  "dashLength": 10,
+                  "dashes": false,
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "unit": "ops"
+                     }
+                  },
+                  "fill": 1,
+                  "fillGradient": 0,
+                  "gridPos": {
+                     "h": 7,
+                     "w": 6,
+                     "x": 18,
+                     "y": 16
+                  },
+                  "hiddenSeries": false,
+                  "id": 49,
+                  "interval": "",
+                  "legend": {
+                     "avg": false,
+                     "current": false,
+                     "max": false,
+                     "min": false,
+                     "show": false,
+                     "total": false,
+                     "values": false
+                  },
+                  "lines": true,
+                  "linewidth": 1,
+                  "nullPointMode": "null",
+                  "options": {
+                     "dataLinks": [ ]
+                  },
+                  "panels": [ ],
+                  "percentage": false,
+                  "pointradius": 1,
+                  "points": false,
+                  "renderer": "flot",
+                  "seriesOverrides": [ ],
+                  "spaceLength": 10,
+                  "stack": false,
+                  "steppedLine": false,
+                  "targets": [
+                     {
+                        "expr": "sum(rate(loki_bigtable_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\", operation=\"/google.bigtable.admin.v2.BigtableTableAdmin/ListTables\"}[$__rate_interval])) by (status_code)",
+                        "intervalFactor": 1,
+                        "legendFormat": "{{status_code}}",
+                        "refId": "A"
+                     }
+                  ],
+                  "thresholds": [ ],
+                  "timeFrom": null,
+                  "timeRegions": [ ],
+                  "timeShift": null,
+                  "title": "ListTables Status",
+                  "tooltip": {
+                     "shared": true,
+                     "sort": 2,
+                     "value_type": "individual"
+                  },
+                  "type": "timeseries",
+                  "xaxis": {
+                     "buckets": null,
+                     "mode": "time",
+                     "name": null,
+                     "show": true,
+                     "values": [ ]
+                  },
+                  "yaxes": [
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     },
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     }
+                  ],
+                  "yaxis": {
+                     "align": false,
+                     "alignLevel": null
+                  }
+               }
+            ],
+            "targets": [ ],
+            "title": "Big Table",
+            "type": "row"
+         },
+         {
+            "collapsed": true,
+            "datasource": null,
+            "gridPos": {
+               "h": 1,
+               "w": 24,
+               "x": 0,
                "y": 35
             },
             "id": 60,
@@ -4313,7 +5226,7 @@
                   },
                   "hiddenSeries": false,
                   "id": 61,
-                  "interval": "1m",
+                  "interval": "",
                   "legend": {
                      "alignAsTable": true,
                      "avg": false,
@@ -4417,7 +5330,7 @@
                   },
                   "hiddenSeries": false,
                   "id": 62,
-                  "interval": "1m",
+                  "interval": "",
                   "legend": {
                      "alignAsTable": true,
                      "avg": false,
@@ -4505,6 +5418,662 @@
                "h": 1,
                "w": 24,
                "x": 0,
+               "y": 36
+            },
+            "id": 76,
+            "panels": [
+               {
+                  "aliasColors": { },
+                  "bars": false,
+                  "dashLength": 10,
+                  "dashes": false,
+                  "datasource": null,
+                  "fill": 1,
+                  "fillGradient": 0,
+                  "gridPos": {
+                     "h": 6,
+                     "w": 6,
+                     "x": 0,
+                     "y": 9
+                  },
+                  "id": 82,
+                  "legend": {
+                     "avg": false,
+                     "current": false,
+                     "max": false,
+                     "min": false,
+                     "show": true,
+                     "total": false,
+                     "values": false
+                  },
+                  "lines": true,
+                  "linewidth": 1,
+                  "nullPointMode": "null",
+                  "options": {
+                     "dataLinks": [ ]
+                  },
+                  "panels": [ ],
+                  "percentage": false,
+                  "pointradius": 2,
+                  "points": false,
+                  "renderer": "flot",
+                  "seriesOverrides": [ ],
+                  "spaceLength": 10,
+                  "stack": false,
+                  "steppedLine": false,
+                  "targets": [
+                     {
+                        "expr": "sum(rate(loki_dynamo_failures_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))",
+                        "refId": "A"
+                     }
+                  ],
+                  "thresholds": [ ],
+                  "timeFrom": null,
+                  "timeRegions": [ ],
+                  "timeShift": null,
+                  "title": "Failure Rate",
+                  "tooltip": {
+                     "shared": true,
+                     "sort": 0,
+                     "value_type": "individual"
+                  },
+                  "type": "timeseries",
+                  "xaxis": {
+                     "buckets": null,
+                     "mode": "time",
+                     "name": null,
+                     "show": true,
+                     "values": [ ]
+                  },
+                  "yaxes": [
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     },
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     }
+                  ],
+                  "yaxis": {
+                     "align": false,
+                     "alignLevel": null
+                  }
+               },
+               {
+                  "aliasColors": { },
+                  "bars": false,
+                  "dashLength": 10,
+                  "dashes": false,
+                  "datasource": null,
+                  "fill": 1,
+                  "fillGradient": 0,
+                  "gridPos": {
+                     "h": 6,
+                     "w": 6,
+                     "x": 6,
+                     "y": 9
+                  },
+                  "id": 83,
+                  "legend": {
+                     "avg": false,
+                     "current": false,
+                     "max": false,
+                     "min": false,
+                     "show": true,
+                     "total": false,
+                     "values": false
+                  },
+                  "lines": true,
+                  "linewidth": 1,
+                  "nullPointMode": "null",
+                  "options": {
+                     "dataLinks": [ ]
+                  },
+                  "panels": [ ],
+                  "percentage": false,
+                  "pointradius": 2,
+                  "points": false,
+                  "renderer": "flot",
+                  "seriesOverrides": [ ],
+                  "spaceLength": 10,
+                  "stack": false,
+                  "steppedLine": false,
+                  "targets": [
+                     {
+                        "expr": "sum(rate(loki_dynamo_consumed_capacity_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))",
+                        "refId": "A"
+                     }
+                  ],
+                  "thresholds": [ ],
+                  "timeFrom": null,
+                  "timeRegions": [ ],
+                  "timeShift": null,
+                  "title": "Consumed Capacity Rate",
+                  "tooltip": {
+                     "shared": true,
+                     "sort": 0,
+                     "value_type": "individual"
+                  },
+                  "type": "timeseries",
+                  "xaxis": {
+                     "buckets": null,
+                     "mode": "time",
+                     "name": null,
+                     "show": true,
+                     "values": [ ]
+                  },
+                  "yaxes": [
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     },
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     }
+                  ],
+                  "yaxis": {
+                     "align": false,
+                     "alignLevel": null
+                  }
+               },
+               {
+                  "aliasColors": { },
+                  "bars": false,
+                  "dashLength": 10,
+                  "dashes": false,
+                  "datasource": null,
+                  "fill": 1,
+                  "fillGradient": 0,
+                  "gridPos": {
+                     "h": 6,
+                     "w": 6,
+                     "x": 12,
+                     "y": 9
+                  },
+                  "id": 84,
+                  "legend": {
+                     "avg": false,
+                     "current": false,
+                     "max": false,
+                     "min": false,
+                     "show": true,
+                     "total": false,
+                     "values": false
+                  },
+                  "lines": true,
+                  "linewidth": 1,
+                  "nullPointMode": "null",
+                  "options": {
+                     "dataLinks": [ ]
+                  },
+                  "panels": [ ],
+                  "percentage": false,
+                  "pointradius": 2,
+                  "points": false,
+                  "renderer": "flot",
+                  "seriesOverrides": [ ],
+                  "spaceLength": 10,
+                  "stack": false,
+                  "steppedLine": false,
+                  "targets": [
+                     {
+                        "expr": "sum(rate(loki_dynamo_throttled_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))",
+                        "refId": "A"
+                     }
+                  ],
+                  "thresholds": [ ],
+                  "timeFrom": null,
+                  "timeRegions": [ ],
+                  "timeShift": null,
+                  "title": "Throttled Rate",
+                  "tooltip": {
+                     "shared": true,
+                     "sort": 0,
+                     "value_type": "individual"
+                  },
+                  "type": "timeseries",
+                  "xaxis": {
+                     "buckets": null,
+                     "mode": "time",
+                     "name": null,
+                     "show": true,
+                     "values": [ ]
+                  },
+                  "yaxes": [
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     },
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     }
+                  ],
+                  "yaxis": {
+                     "align": false,
+                     "alignLevel": null
+                  }
+               },
+               {
+                  "aliasColors": { },
+                  "bars": false,
+                  "dashLength": 10,
+                  "dashes": false,
+                  "datasource": null,
+                  "fill": 1,
+                  "fillGradient": 0,
+                  "gridPos": {
+                     "h": 6,
+                     "w": 6,
+                     "x": 18,
+                     "y": 9
+                  },
+                  "id": 85,
+                  "legend": {
+                     "avg": false,
+                     "current": false,
+                     "max": false,
+                     "min": false,
+                     "show": true,
+                     "total": false,
+                     "values": false
+                  },
+                  "lines": true,
+                  "linewidth": 1,
+                  "nullPointMode": "null",
+                  "options": {
+                     "dataLinks": [ ]
+                  },
+                  "panels": [ ],
+                  "percentage": false,
+                  "pointradius": 2,
+                  "points": false,
+                  "renderer": "flot",
+                  "seriesOverrides": [ ],
+                  "spaceLength": 10,
+                  "stack": false,
+                  "steppedLine": false,
+                  "targets": [
+                     {
+                        "expr": "sum(rate(loki_dynamo_dropped_requests_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))",
+                        "refId": "A"
+                     }
+                  ],
+                  "thresholds": [ ],
+                  "timeFrom": null,
+                  "timeRegions": [ ],
+                  "timeShift": null,
+                  "title": "Dropped Rate",
+                  "tooltip": {
+                     "shared": true,
+                     "sort": 0,
+                     "value_type": "individual"
+                  },
+                  "type": "timeseries",
+                  "xaxis": {
+                     "buckets": null,
+                     "mode": "time",
+                     "name": null,
+                     "show": true,
+                     "values": [ ]
+                  },
+                  "yaxes": [
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     },
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     }
+                  ],
+                  "yaxis": {
+                     "align": false,
+                     "alignLevel": null
+                  }
+               },
+               {
+                  "aliasColors": { },
+                  "bars": false,
+                  "dashLength": 10,
+                  "dashes": false,
+                  "datasource": null,
+                  "fill": 1,
+                  "fillGradient": 0,
+                  "gridPos": {
+                     "h": 6,
+                     "w": 6,
+                     "x": 0,
+                     "y": 15
+                  },
+                  "id": 86,
+                  "legend": {
+                     "avg": false,
+                     "current": false,
+                     "max": false,
+                     "min": false,
+                     "show": true,
+                     "total": false,
+                     "values": false
+                  },
+                  "lines": true,
+                  "linewidth": 1,
+                  "nullPointMode": "null",
+                  "options": {
+                     "dataLinks": [ ]
+                  },
+                  "panels": [ ],
+                  "percentage": false,
+                  "pointradius": 2,
+                  "points": false,
+                  "renderer": "flot",
+                  "seriesOverrides": [ ],
+                  "spaceLength": 10,
+                  "stack": false,
+                  "steppedLine": false,
+                  "targets": [
+                     {
+                        "expr": "histogram_quantile(.99, sum(rate(loki_dynamo_query_pages_count{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])))",
+                        "legendFormat": ".99",
+                        "refId": "A"
+                     },
+                     {
+                        "expr": "histogram_quantile(.9, sum(rate(loki_dynamo_query_pages_count{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])))",
+                        "legendFormat": ".9",
+                        "refId": "B"
+                     },
+                     {
+                        "expr": "histogram_quantile(.5, sum(rate(loki_dynamo_query_pages_count{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])))",
+                        "legendFormat": ".5",
+                        "refId": "C"
+                     }
+                  ],
+                  "thresholds": [ ],
+                  "timeFrom": null,
+                  "timeRegions": [ ],
+                  "timeShift": null,
+                  "title": "Query Pages",
+                  "tooltip": {
+                     "shared": true,
+                     "sort": 0,
+                     "value_type": "individual"
+                  },
+                  "type": "timeseries",
+                  "xaxis": {
+                     "buckets": null,
+                     "mode": "time",
+                     "name": null,
+                     "show": true,
+                     "values": [ ]
+                  },
+                  "yaxes": [
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     },
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     }
+                  ],
+                  "yaxis": {
+                     "align": false,
+                     "alignLevel": null
+                  }
+               },
+               {
+                  "aliasColors": { },
+                  "bars": false,
+                  "dashLength": 10,
+                  "dashes": false,
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "unit": "s"
+                     }
+                  },
+                  "fill": 1,
+                  "fillGradient": 0,
+                  "gridPos": {
+                     "h": 6,
+                     "w": 9,
+                     "x": 6,
+                     "y": 15
+                  },
+                  "id": 87,
+                  "interval": "",
+                  "legend": {
+                     "alignAsTable": true,
+                     "avg": false,
+                     "current": false,
+                     "max": false,
+                     "min": false,
+                     "rightSide": true,
+                     "show": true,
+                     "total": false,
+                     "values": false
+                  },
+                  "lines": true,
+                  "linewidth": 1,
+                  "nullPointMode": "null",
+                  "options": {
+                     "dataLinks": [ ]
+                  },
+                  "panels": [ ],
+                  "percentage": false,
+                  "pointradius": 1,
+                  "points": false,
+                  "renderer": "flot",
+                  "seriesOverrides": [ ],
+                  "spaceLength": 10,
+                  "stack": false,
+                  "steppedLine": false,
+                  "targets": [
+                     {
+                        "expr": "histogram_quantile(.99, sum(rate(loki_dynamo_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (operation, le))",
+                        "intervalFactor": 1,
+                        "legendFormat": ".99-{{operation}}",
+                        "refId": "A"
+                     },
+                     {
+                        "expr": "histogram_quantile(.9, sum(rate(loki_dynamo_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (operation, le))",
+                        "hide": false,
+                        "legendFormat": ".9-{{operation}}",
+                        "refId": "B"
+                     },
+                     {
+                        "expr": "histogram_quantile(.5, sum(rate(loki_dynamo_request_duration_seconds_bucket{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (operation, le))",
+                        "hide": false,
+                        "legendFormat": ".5-{{operation}}",
+                        "refId": "C"
+                     }
+                  ],
+                  "thresholds": [ ],
+                  "timeFrom": null,
+                  "timeRegions": [ ],
+                  "timeShift": null,
+                  "title": "Latency By Operation",
+                  "tooltip": {
+                     "shared": true,
+                     "sort": 2,
+                     "value_type": "individual"
+                  },
+                  "type": "timeseries",
+                  "xaxis": {
+                     "buckets": null,
+                     "mode": "time",
+                     "name": null,
+                     "show": true,
+                     "values": [ ]
+                  },
+                  "yaxes": [
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     },
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     }
+                  ],
+                  "yaxis": {
+                     "align": false,
+                     "alignLevel": null
+                  }
+               },
+               {
+                  "aliasColors": { },
+                  "bars": false,
+                  "dashLength": 10,
+                  "dashes": false,
+                  "datasource": "$datasource",
+                  "fill": 1,
+                  "fillGradient": 0,
+                  "gridPos": {
+                     "h": 6,
+                     "w": 9,
+                     "x": 15,
+                     "y": 15
+                  },
+                  "id": 88,
+                  "interval": "",
+                  "legend": {
+                     "alignAsTable": true,
+                     "avg": false,
+                     "current": false,
+                     "max": false,
+                     "min": false,
+                     "rightSide": true,
+                     "show": true,
+                     "total": false,
+                     "values": false
+                  },
+                  "lines": true,
+                  "linewidth": 1,
+                  "nullPointMode": "null",
+                  "options": {
+                     "dataLinks": [ ]
+                  },
+                  "panels": [ ],
+                  "percentage": false,
+                  "pointradius": 1,
+                  "points": false,
+                  "renderer": "flot",
+                  "seriesOverrides": [ ],
+                  "spaceLength": 10,
+                  "stack": false,
+                  "steppedLine": false,
+                  "targets": [
+                     {
+                        "expr": "sum(rate(loki_dynamo_request_duration_seconds_count{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (status_code, operation)",
+                        "intervalFactor": 1,
+                        "legendFormat": "{{status_code}}-{{operation}}",
+                        "refId": "A"
+                     }
+                  ],
+                  "thresholds": [ ],
+                  "timeFrom": null,
+                  "timeRegions": [ ],
+                  "timeShift": null,
+                  "title": "Status By Method",
+                  "tooltip": {
+                     "shared": true,
+                     "sort": 2,
+                     "value_type": "individual"
+                  },
+                  "type": "timeseries",
+                  "xaxis": {
+                     "buckets": null,
+                     "mode": "time",
+                     "name": null,
+                     "show": true,
+                     "values": [ ]
+                  },
+                  "yaxes": [
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     },
+                     {
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                     }
+                  ],
+                  "yaxis": {
+                     "align": false,
+                     "alignLevel": null
+                  }
+               }
+            ],
+            "targets": [ ],
+            "title": "Dynamo",
+            "type": "row"
+         },
+         {
+            "collapsed": true,
+            "datasource": null,
+            "gridPos": {
+               "h": 1,
+               "w": 24,
+               "x": 0,
                "y": 37
             },
             "id": 78,
@@ -4529,7 +6098,7 @@
                      "y": 10
                   },
                   "id": 79,
-                  "interval": "1m",
+                  "interval": "",
                   "legend": {
                      "alignAsTable": true,
                      "avg": false,
@@ -4632,7 +6201,7 @@
                      "y": 18
                   },
                   "id": 80,
-                  "interval": "1m",
+                  "interval": "",
                   "legend": {
                      "alignAsTable": true,
                      "avg": false,
@@ -4744,7 +6313,7 @@
                      "y": 10
                   },
                   "id": 79,
-                  "interval": "1m",
+                  "interval": "",
                   "legend": {
                      "alignAsTable": true,
                      "avg": false,
@@ -4847,7 +6416,7 @@
                      "y": 18
                   },
                   "id": 80,
-                  "interval": "1m",
+                  "interval": "",
                   "legend": {
                      "alignAsTable": true,
                      "avg": false,
@@ -4959,7 +6528,7 @@
                      "y": 10
                   },
                   "id": 115,
-                  "interval": "1m",
+                  "interval": "",
                   "legend": {
                      "alignAsTable": true,
                      "avg": false,
@@ -5062,7 +6631,7 @@
                      "y": 18
                   },
                   "id": 116,
-                  "interval": "1m",
+                  "interval": "",
                   "legend": {
                      "alignAsTable": true,
                      "avg": false,
