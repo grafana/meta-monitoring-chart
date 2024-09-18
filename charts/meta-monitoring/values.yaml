@@ -5,6 +5,17 @@ namespacesToMonitor:
 clusterLabelValue: "meta"
 # Set to true to write logs, metrics or traces to Grafana Cloud
 # The secrets have to be created first
+
+alloy:
+  metrics:
+    enabled: true
+  logs:
+    enabled: false
+  events:
+    enabled: false
+  traces:
+    enabled: false
+
 cloud:
   logs:
     enabled: true
