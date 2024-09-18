@@ -1,0 +1,58 @@
+{{- if .Values.alloy.events.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alloy-events-config
+  namespace: {{ .Release.Namespace }}
+data:
+  config.alloy: |
+    logging {
+        level = "info"
+        format = "logfmt"
+    }
+
+    loki.source.kubernetes_events "cluster_events" {
+      job_name   = "integrations/kubernetes/eventhandler"
+      log_format = "logfmt"
+      namespaces = [{{- include "alloy.events.namespaces" . }}] 
+      forward_to = [
+        loki.process.logs_service.receiver,
+      ]
+    }
+
+    loki.process "logs_service" {
+      stage.static_labels {
+        values = {
+          cluster = env("{{- .Values.clusterLabelValue }}"),
+        }
+      }
+      forward_to = [{{ include "agent.loki_write_targets" . }},]
+    }
+
+    {{- if .Values.cloud.logs.enabled }}
+    remote.kubernetes.secret "logs_credentials" {
+      namespace = "{{- $.Release.Namespace -}}"
+      name = "{{- .Values.cloud.logs.secret -}}"
+    }
+    {{- end }}
+
+    {{- if .Values.local.logs.enabled }}
+    loki.write "local" {
+      endpoint {
+        url = "http://loki-write.{{- .Release.Namespace -}}.svc.cluster.local:3100/loki/api/v1/push"
+      }
+    }
+    {{- end }}
+
+    {{- if .Values.cloud.logs.enabled }}
+    loki.write "cloud" {
+      endpoint {
+        url = nonsensitive(remote.kubernetes.secret.logs_credentials.data["endpoint"])
+        basic_auth {
+          username = nonsensitive(remote.kubernetes.secret.logs_credentials.data["username"])
+          password = remote.kubernetes.secret.logs_credentials.data["password"]
+        }
+      }
+    }
+    {{- end }}
+{{- end }}
