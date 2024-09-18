@@ -1,3 +1,4 @@
+{{- if .Values.alloy.metrics.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -200,3 +201,4 @@ data:
       namespace = "{{- $.Release.Namespace -}}"
       name = "{{- .Values.cloud.metrics.secret -}}"
     }
+{{- end }}
