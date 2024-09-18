@@ -3,11 +3,9 @@ namespacesToMonitor:
 - loki
 # The name of the cluster where this will be installed
 clusterLabelValue: "meta"
-# Set to true to write logs, metrics or traces to Grafana Cloud
-# The secrets have to be created first
 
 # Configure what you are collecting and how you are collecting it
-alloy:
+alloy: # Not sure of the use of 'Alloy' here, but for testing purposes I'm going with it for now. 
   metrics:
     # Set to true to deploy alloy-metrics
     enabled: true
@@ -23,14 +21,14 @@ alloy:
     grafana:
       enabled: true
       namespace: ge
-    node_exporter:
-      enabled: true
-    kube_state_metrics:
-      enabled: true
     alloy:
       enabled: true
       namespace: alloy
     self:
+      enabled: true
+    node_exporter:
+      enabled: true
+    kube_state_metrics:
       enabled: true
   logs:
     # Set to true to deploy alloy-logs
@@ -42,6 +40,9 @@ alloy:
     # Set to true to deploy alloy-traces
     enabled: false
 
+
+# Set to true to write logs, metrics or traces to Grafana Cloud
+# The secrets have to be created first
 cloud:
   logs:
     enabled: true

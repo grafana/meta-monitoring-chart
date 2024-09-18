@@ -132,6 +132,47 @@ data:
     }
     {{- end }}
 
+    {{- if .Values.alloy.metrics.node_exporter.enabled }}
+    remote.kubernetes.configmap "node_exporter" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "node_exporter-metrics"
+    }
+
+    import.string "node_exporter" {
+      content = remote.kubernetes.configmap.node_exporter.data.node_exporter
+    }
+
+    node_exporter.kubernetes "targets" {}
+
+    node_exporter.scrape "metrics" {
+      targets = node_exporter.kubernetes.targets.output
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }    
+    {{- end }}
+
+    {{- if .Values.alloy.metrics.kube_state_metrics.enabled }}
+    remote.kubernetes.configmap "kube_state_metrics" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "kube_state_metrics-metrics"
+    }
+
+    import.string "kube_state_metrics" {
+      content = remote.kubernetes.configmap.kube_state_metrics.data.kube_state_metrics
+    }
+
+    kube_state_metrics.kubernetes "targets" {}
+
+    kube_state_metrics.scrape "metrics" {
+      targets = kube_state_metrics.kubernetes.targets.output
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }    
+    {{- end }}
 
     {{- if .Values.cloud.metrics.enabled }}
     prometheus.remote_write "cloud" {
