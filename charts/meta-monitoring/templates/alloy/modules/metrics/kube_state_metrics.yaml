@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: kube_state_metrics-metrics
+  name: kube-state-metrics-metrics
   namespace: {{ .Release.Namespace }}
 data:
   kube_state_metrics: |

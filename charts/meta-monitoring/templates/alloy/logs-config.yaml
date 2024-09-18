@@ -1,0 +1,99 @@
+{{- if .Values.alloy.logs.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alloy-logs-config
+  namespace: {{ .Release.Namespace }}
+data:
+  config.alloy: |
+    remote.kubernetes.configmap "logs" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "logs"
+    }
+
+    import.string "logs" {
+      content = remote.kubernetes.configmap.logs.data.logs
+    }
+
+    remote.kubernetes.configmap "annotations" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "annotations"
+    }
+
+    import.string "annotations" {
+      content = remote.kubernetes.configmap.annotations.data.annotations
+    }
+
+    remote.kubernetes.configmap "utils" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "utils"
+    }
+
+    import.string "utils" {
+      content = remote.kubernetes.configmap.utils.data.utils
+    }
+  
+    annotations.pods "targets" {
+        namespaces = [{{- include "alloy.logs.namespaces" . }}]
+        annotation = "{{- .Values.alloy.logs.annotation }}"
+    }
+
+    logs.from_worker "default" {
+        targets = annotations.pods.targets.output
+        forward_to = [loki.process.default.receiver]
+    }
+
+    loki.process "default" {
+      forward_to = [{{ include "agent.loki_write_targets" . }},]
+      stage.label_drop {
+        values = [
+            "filename", 
+            "flags", 
+            "controller_revision_hash", 
+            "app_kubernetes_io_instance", 
+            "app_kubernetes_io_name",
+            "app_kubernetes_io_component",
+            "app_kubernetes_io_managed_by",
+            "app_kubernetes_io_part_of",
+            "app_kubernetes_io_version",
+            "apps_kubernetes_io_pod_index",
+            "checksum_config",
+            "helm_sh_chart",
+            "rollout_group",
+            "source",
+            "statefulset_kubernetes_io_pod_name",
+            "kubectl_kubernetes_io_default_container", 
+            "pod_template_generation", 
+            "workload",
+            "version",
+          ]
+      }
+    }
+
+    {{- if .Values.cloud.logs.enabled }}
+    remote.kubernetes.secret "logs_credentials" {
+      namespace = "{{- $.Release.Namespace -}}"
+      name = "{{- .Values.cloud.logs.secret -}}"
+    }
+    {{- end }}
+
+    {{- if .Values.local.logs.enabled }}
+    loki.write "local" {
+      endpoint {
+        url = "http://loki-write.{{- .Release.Namespace -}}.svc.cluster.local:3100/loki/api/v1/push"
+      }
+    }
+    {{- end }}
+
+    {{- if .Values.cloud.logs.enabled }}
+    loki.write "cloud" {
+      endpoint {
+        url = nonsensitive(remote.kubernetes.secret.logs_credentials.data["endpoint"])
+        basic_auth {
+          username = nonsensitive(remote.kubernetes.secret.logs_credentials.data["username"])
+          password = remote.kubernetes.secret.logs_credentials.data["password"]
+        }
+      }
+    }
+    {{- end }}
+{{- end }}

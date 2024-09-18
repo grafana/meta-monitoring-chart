@@ -1,3 +1,4 @@
+{{- if .Values.alloy.metrics.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -135,7 +136,7 @@ data:
     {{- if .Values.alloy.metrics.node_exporter.enabled }}
     remote.kubernetes.configmap "node_exporter" {
       namespace = "{{ .Release.Namespace }}"
-      name = "node_exporter-metrics"
+      name = "node-exporter-metrics"
     }
 
     import.string "node_exporter" {
@@ -156,7 +157,7 @@ data:
     {{- if .Values.alloy.metrics.kube_state_metrics.enabled }}
     remote.kubernetes.configmap "kube_state_metrics" {
       namespace = "{{ .Release.Namespace }}"
-      name = "kube_state_metrics-metrics"
+      name = "kube-state-metrics-metrics"
     }
 
     import.string "kube_state_metrics" {
@@ -200,3 +201,4 @@ data:
       namespace = "{{- $.Release.Namespace -}}"
       name = "{{- .Values.cloud.metrics.secret -}}"
     }
+{{- end }}
