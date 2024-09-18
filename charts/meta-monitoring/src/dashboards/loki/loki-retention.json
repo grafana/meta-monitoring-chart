@@ -90,7 +90,6 @@
                      ]
                   },
                   "id": 1,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -104,19 +103,19 @@
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"(.*compactor.*|(loki|enterprise-logs)-backend.*|loki-single-binary)\"}[$__rate_interval]))",
+                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=\"compactor\"}[$__rate_interval]))",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"(.*compactor.*|(loki|enterprise-logs)-backend.*|loki-single-binary)\", resource=\"cpu\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=\"compactor\", resource=\"cpu\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "request",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"(.*compactor.*|(loki|enterprise-logs)-backend.*|loki-single-binary)\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"(.*compactor.*|(loki|enterprise-logs)-backend.*|loki-single-binary)\"})",
+                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=\"compactor\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=\"compactor\"})",
                         "format": "time_series",
                         "legendFormat": "limit",
                         "legendLink": null
@@ -192,7 +191,6 @@
                      ]
                   },
                   "id": 2,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -206,19 +204,19 @@
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"(.*compactor.*|(loki|enterprise-logs)-backend.*|loki-single-binary)\"})",
+                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=\"compactor\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"(.*compactor.*|(loki|enterprise-logs)-backend.*|loki-single-binary)\", resource=\"memory\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=\"compactor\", resource=\"memory\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "request",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"(.*compactor.*|(loki|enterprise-logs)-backend.*|loki-single-binary)\"} > 0)",
+                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=\"compactor\"} > 0)",
                         "format": "time_series",
                         "legendFormat": "limit",
                         "legendLink": null
@@ -255,7 +253,6 @@
                      "overrides": [ ]
                   },
                   "id": 3,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -269,7 +266,7 @@
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*compactor|(loki|enterprise-logs)-backend.*|loki-single-binary)\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/compactor\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
@@ -320,7 +317,6 @@
                   },
                   "fill": 1,
                   "id": 4,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -427,7 +423,6 @@
                      "overrides": [ ]
                   },
                   "id": 5,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -487,7 +482,6 @@
                      "overrides": [ ]
                   },
                   "id": 6,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -535,7 +529,6 @@
                      "overrides": [ ]
                   },
                   "id": 7,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -597,7 +590,6 @@
                   },
                   "fill": 1,
                   "id": 8,
-                  "interval": "1m",
                   "legend": {
                      "avg": false,
                      "current": false,
@@ -704,7 +696,6 @@
                      "overrides": [ ]
                   },
                   "id": 9,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -752,7 +743,6 @@
                      "overrides": [ ]
                   },
                   "id": 10,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -812,7 +802,6 @@
                      "overrides": [ ]
                   },
                   "id": 11,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -860,7 +849,6 @@
                      "overrides": [ ]
                   },
                   "id": 12,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -908,7 +896,6 @@
                      "overrides": [ ]
                   },
                   "id": 13,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -969,7 +956,6 @@
                   },
                   "format": "short",
                   "id": 14,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -1018,7 +1004,6 @@
                      "overrides": [ ]
                   },
                   "id": 15,
-                  "interval": "1m",
                   "links": [ ],
                   "nullPointMode": "null as zero",
                   "options": {
@@ -1110,7 +1095,6 @@
                   },
                   "format": "short",
                   "id": 16,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -1159,7 +1143,6 @@
                      "overrides": [ ]
                   },
                   "id": 17,
-                  "interval": "1m",
                   "links": [ ],
                   "nullPointMode": "null as zero",
                   "options": {
@@ -1250,7 +1233,6 @@
                      "overrides": [ ]
                   },
                   "id": 18,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -1298,7 +1280,6 @@
                      "overrides": [ ]
                   },
                   "id": 19,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -1346,7 +1327,6 @@
                      "overrides": [ ]
                   },
                   "id": 20,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
@@ -1387,7 +1367,7 @@
                   "span": 12,
                   "targets": [
                      {
-                        "expr": "{cluster=~\"$cluster\", job=~\"($namespace)/(.*compactor|(loki|enterprise-logs)-backend.*|loki-single-binary)\"}",
+                        "expr": "{cluster=~\"$cluster\", job=~\"($namespace)/compactor\"}",
                         "refId": "A"
                      }
                   ],
