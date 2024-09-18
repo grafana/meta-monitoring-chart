@@ -6,6 +6,7 @@ clusterLabelValue: "meta"
 # Set to true to write logs, metrics or traces to Grafana Cloud
 # The secrets have to be created first
 
+# Configure what you are collecting and how you are collecting it
 alloy:
   metrics:
     # Set to true to deploy alloy-metrics
