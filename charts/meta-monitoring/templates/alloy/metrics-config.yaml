@@ -98,6 +98,40 @@ data:
     }    
     {{- end }}
 
+    {{- if .Values.alloy.metrics.alloy.enabled }}
+    remote.kubernetes.configmap "alloy" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "alloy-metrics"
+    }
+
+    import.string "alloy" {
+      content = remote.kubernetes.configmap.alloy.data.alloy
+    }
+
+    alloy.kubernetes "targets" {
+        namespaces = ["{{- .Values.alloy.metrics.alloy.namespace -}}"]
+    }
+
+    alloy.scrape "metrics" {
+      targets = alloy.kubernetes.targets.output
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }    
+    {{- end }}
+
+    {{- if .Values.alloy.metrics.self.enabled }}
+    prometheus.exporter.self "self" {}
+
+    prometheus.scrape "self" {
+        targets = prometheus.exporter.self.self.targets
+        forward_to = [
+            {{ include "agent.prometheus_write_targets" . }},
+        ]
+    }
+    {{- end }}
+
 
     {{- if .Values.cloud.metrics.enabled }}
     prometheus.remote_write "cloud" {
