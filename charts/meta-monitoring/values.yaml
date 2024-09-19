@@ -452,29 +452,6 @@ alloy-logs:
         memory: '4Gi'
   controller:
     type: "daemonset"
-  service:
-    enabled: true
-    type: NodePort
-    nodePort: 31128
-
-  ingress:
-    enabled: true
-    ingressClassName: alb
-    annotations:
-      kubernetes.io/ingress.class: alb
-      alb.ingress.kubernetes.io/scheme: internet-facing
-      alb.ingress.kubernetes.io/target-type: ip
-      alb.ingress.kubernetes.io/ip-address-type: dualstack
-    hosts: {}
-    faroPort: 12345
-    extraPaths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: alloy-metrics
-            port:
-              number: 31128
   
 alloy-traces:
   alloy:

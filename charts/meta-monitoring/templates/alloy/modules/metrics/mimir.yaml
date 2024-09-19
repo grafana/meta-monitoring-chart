@@ -252,10 +252,10 @@ data:
           replacement = "$1/$2"
           target_label = "job"
         }
-        
+
         rule {
           action = "labelkeep"
-          regex = "__name__|job|component|app|workload|pod|namespace|container"
+          regex = "__name__|job|component|app|workload|namespace|pod|container"
         }        
       }
     }
