@@ -15,59 +15,9 @@ data:
       content = remote.kubernetes.configmap.logs.data.logs
     }
 
-    remote.kubernetes.configmap "annotations" {
-      namespace = "{{ .Release.Namespace }}"
-      name = "annotations"
-    }
-
-    import.string "annotations" {
-      content = remote.kubernetes.configmap.annotations.data.annotations
-    }
-
-    remote.kubernetes.configmap "utils" {
-      namespace = "{{ .Release.Namespace }}"
-      name = "utils"
-    }
-
-    import.string "utils" {
-      content = remote.kubernetes.configmap.utils.data.utils
-    }
-  
-    annotations.pods "targets" {
-        namespaces = [{{- include "alloy.logs.namespaces" . }}]
-        annotation = "{{- .Values.alloy.logs.annotation }}"
-    }
-
-    logs.from_worker "default" {
-        targets = annotations.pods.targets.output
-        forward_to = [loki.process.default.receiver]
-    }
-
-    loki.process "default" {
-      forward_to = [{{ include "agent.loki_write_targets" . }},]
-      stage.label_drop {
-        values = [
-            "filename", 
-            "flags", 
-            "controller_revision_hash", 
-            "app_kubernetes_io_instance", 
-            "app_kubernetes_io_name",
-            "app_kubernetes_io_component",
-            "app_kubernetes_io_managed_by",
-            "app_kubernetes_io_part_of",
-            "app_kubernetes_io_version",
-            "apps_kubernetes_io_pod_index",
-            "checksum_config",
-            "helm_sh_chart",
-            "rollout_group",
-            "source",
-            "statefulset_kubernetes_io_pod_name",
-            "kubectl_kubernetes_io_default_container", 
-            "pod_template_generation", 
-            "workload",
-            "version",
-          ]
-      }
+    logs.pod_logs "default" {
+        namespaces = [{{ include "alloy.logs.namespaces" . }}]
+        forward_to = [{{ include "agent.loki_write_targets" . }},]
     }
 
     {{- if .Values.cloud.logs.enabled }}
