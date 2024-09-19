@@ -22,32 +22,14 @@ data:
         optional = true
       }
 
-      argument "field_selectors" {
-        // Docs: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-        comment = "The label selectors to use to find matching targets (default: [])"
-        optional = true
-      }
-
-      argument "label_selectors" {
-        // Docs: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-        comment = "The label selectors to use to find matching targets (default: [\"app.kubernetes.io/name=grafana\"])"
-        optional = true
-      }
-
       argument "port_name" {
-        comment = "The of the port to scrape metrics from (default: grafana)"
+        comment = "The of the port to scrape metrics from (default: http-metrics)"
         optional = true
       }
 
       // grafana service discovery for all of the pods
       discovery.kubernetes "grafana" {
         role = "pod"
-
-        selectors {
-          role = "pod"
-          field = join(coalesce(argument.field_selectors.value, []), ",")
-          label = join(coalesce(argument.label_selectors.value, ["app.kubernetes.io/name=grafana"]), ",")
-        }
 
         namespaces {
           names = coalesce(argument.namespaces.value, [])
@@ -67,29 +49,43 @@ data:
             "__meta_kubernetes_pod_container_init",
           ]
           separator = "@"
-          regex = coalesce(argument.port_name.value, "grafana") + "@Running@true@false"
+          regex = coalesce(argument.port_name.value, "http-metrics") + "@Running@true@false"
           action = "keep"
         }
 
-        // set the namespace label
+        rule {
+          action = "replace"
+          source_labels = ["__meta_kubernetes_pod_node_name"]
+          target_label = "__host__"
+        }
+
+        rule {
+          action = "labelmap"
+          regex = "__meta_kubernetes_pod_label_(.+)"
+        }
+
+        // make all annotations on the pod available to the pipeline as labels,
+        // they are omitted before write via labelallow unless explicitly set
+        rule {
+          action = "labelmap"
+          regex = "__meta_kubernetes_pod_annotation_(.+)"
+        }
+
         rule {
           source_labels = ["__meta_kubernetes_namespace"]
           target_label  = "namespace"
         }
 
-        // set the pod label
         rule {
           source_labels = ["__meta_kubernetes_pod_name"]
           target_label  = "pod"
         }
 
-        // set the container label
         rule {
           source_labels = ["__meta_kubernetes_pod_container_name"]
           target_label  = "container"
         }
 
-        // set a workload label
         rule {
           source_labels = [
             "__meta_kubernetes_pod_controller_kind",
@@ -98,14 +94,13 @@ data:
           separator = "/"
           target_label  = "workload"
         }
-        // remove the hash from the ReplicaSet
+
         rule {
           source_labels = ["workload"]
           regex = "(ReplicaSet/.+)-.+"
           target_label  = "workload"
         }
 
-        // set the app name if specified as metadata labels "app:" or "app.kubernetes.io/name:" or "k8s-app:"
         rule {
           action = "replace"
           source_labels = [
@@ -119,7 +114,6 @@ data:
           target_label = "app"
         }
 
-        // set the component if specified as metadata labels "component:" or "app.kubernetes.io/component:" or "k8s-component:"
         rule {
           action = "replace"
           source_labels = [
@@ -132,11 +126,15 @@ data:
           target_label = "component"
         }
 
-        // set a source label
         rule {
           action = "replace"
-          replacement = "kubernetes"
-          target_label = "source"
+          source_labels = [
+            "workload",
+            "__meta_kubernetes_namespace",
+          ]
+          regex = ".+\\/(.+);(.+)"
+          replacement = "$2/$1"
+          target_label = "job"
         }
       }
 
@@ -241,6 +239,11 @@ data:
           source_labels = ["__name__"]
           regex = coalesce(argument.keep_metrics.value, "(.+)")
           action = "keep"
+        }
+
+        rule {
+          action = "labelkeep"
+          regex = "__name__|job|component|app|workload|namespace|pod|container"
         }
       }
     }

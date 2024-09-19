@@ -32,6 +32,10 @@ data:
       endpoint {
         url = "http://loki-write.{{- .Release.Namespace -}}.svc.cluster.local:3100/loki/api/v1/push"
       }
+      
+      external_labels = {
+          cluster = "{{- .Values.clusterLabelValue -}}",
+      }
     }
     {{- end }}
 
@@ -43,6 +47,10 @@ data:
           username = nonsensitive(remote.kubernetes.secret.logs_credentials.data["username"])
           password = remote.kubernetes.secret.logs_credentials.data["password"]
         }
+      }
+
+      external_labels = {
+          cluster = "{{- .Values.clusterLabelValue -}}",
       }
     }
     {{- end }}

@@ -184,6 +184,10 @@ data:
           password = remote.kubernetes.secret.metrics_credentials.data["password"]
         }
       }
+
+      external_labels = {
+          cluster = "{{- .Values.clusterLabelValue -}}",
+      }
     }
     {{- end }}
 
@@ -192,6 +196,10 @@ data:
     prometheus.remote_write "local" {
       endpoint {
         url = "http://{{- .Release.Name -}}-mimir-nginx.{{- .Release.Namespace -}}.svc:80/api/v1/push"
+      }
+
+      external_labels = {
+          cluster = "{{- .Values.clusterLabelValue -}}",
       }
     }
     {{- end }}
