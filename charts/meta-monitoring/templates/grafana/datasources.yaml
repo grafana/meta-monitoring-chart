@@ -32,7 +32,7 @@ data:
         uid: loki_ds
         # <string> Sets the data source's URL, including the
         # port.
-        url: http://{{- $.Release.Namespace -}}-loki-gateway.{{- $.Release.Namespace -}}.svc.cluster.local
+        url: http://{{ $.Release.Name }}-loki-gateway.{{- $.Release.Namespace -}}.svc.cluster.local
         # <bool> Toggles whether the data source is pre-selected
         # for new panels. You can set only one default
         # data source per organization.
