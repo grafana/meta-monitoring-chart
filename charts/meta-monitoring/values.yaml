@@ -1,5 +1,3 @@
-nameOverride: ""
-fullnameOverride: ""
 # Specify the namespaces to monitor here
 namespacesToMonitor:
 - loki
