@@ -150,8 +150,8 @@ alloy-traces:
       enabled: true
     configMap:
       create: false
-      name: "agent-configmap"
-      key: 'config.river'
+      name: "alloy-traces-config"
+      key: 'config.alloy'
     resources:
       requests:
         cpu: '1000m'

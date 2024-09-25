@@ -141,28 +141,6 @@ data:
       }
     }
 
-    declare "local" {
-
-      argument "port_name" {
-        comment = "The port to use (default: 8080)"
-        optional = true
-      }
-
-      // arguments for local (static)
-      discovery.relabel "local" {
-        targets = [
-          {
-            "__address__" = "localhost" + format("%s", coalesce(argument.port.value, "8080")),
-            "source" = "local",
-          },
-        ]
-      }
-
-      export "output" {
-        value = discovery.relabel.local.output
-      }
-    }
-
     declare "scrape" {
       argument "targets" {
         comment = "Must be a list() of targets"
