@@ -82,9 +82,16 @@ alloy-metrics:
       - alloy
 
   # Alloy Metrics deployment configuration
+  nameOverride: alloy-metrics
+  fullnameOverride: meta-monitoring-alloy-metrics
+
+  crds:
+    create: false
+
   alloy:
     clustering:
       enabled: true
+      name: alloy-metrics
     configMap:
       create: false
       name: "alloy-metrics-config"
@@ -120,6 +127,12 @@ alloy-logs:
     - alloy
 
   # Alloy deployment configuration
+  nameOverride: alloy-logs
+  fullnameOverride: meta-monitoring-alloy-logs
+  
+  crds:
+    create: false
+
   alloy:
     clustering:
       enabled: false
@@ -145,9 +158,13 @@ alloy-logs:
 alloy-traces:
   enabled: false
 
+  nameOverride: alloy-traces
+  fullnameOverride: meta-monitoring-alloy-traces
+  crds:
+    create: false
   alloy:
     clustering:
-      enabled: true
+      enabled: false
     configMap:
       create: false
       name: "alloy-traces-config"
@@ -183,9 +200,14 @@ alloy-events:
     - alloy
 
   # Alloy deployment configuration
+  nameOverride: alloy-events
+  fullnameOverride: meta-monitoring-alloy-events
+  crds:
+    create: false
   alloy:
     clustering:
       enabled: true
+      name: alloy-events
     configMap:
       create: false
       name: "alloy-events-config"
