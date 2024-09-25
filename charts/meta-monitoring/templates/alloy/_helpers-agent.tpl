@@ -102,3 +102,11 @@
 {{- end }}
 {{- join ", " $list }}
 {{- end }}
+
+{{- define "alloy.cadvisor.namespaces" -}}
+{{- $list := list }}
+{{- range .Values.alloy.metrics.cadvisor.namespacesToMonitor }}
+{{- $list = append $list (printf "\"%s\"" .) }}
+{{- end }}
+{{- join ", " $list }}
+{{- end }}

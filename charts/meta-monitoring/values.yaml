@@ -30,6 +30,14 @@ alloy: # Not sure of the use of 'Alloy' here, but for testing purposes I'm going
       enabled: true
     kube_state_metrics:
       enabled: true
+    cadvisor:
+      enabled: true
+      namespacesToMonitor:
+        - gem
+        - gel
+        - get
+        - ge
+        - alloy
   logs:
     # Set to true to deploy alloy-logs
     enabled: true

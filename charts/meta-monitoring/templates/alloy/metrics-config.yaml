@@ -6,6 +6,26 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   config.alloy: |
+    {{- if .Values.alloy.metrics.cadvisor.enabled }}
+
+    remote.kubernetes.configmap "cadvisor" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "cadvisor-metrics"
+    }
+
+    import.string "cadvisor" {
+      content = remote.kubernetes.configmap.cadvisor.data.cadvisor
+    }
+
+    cadvisor.cadvisor "targets" {
+      namespaces = [{{- include "alloy.cadvisor.namespaces" . }}]
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }
+    {{- end }}
+
     {{- if .Values.alloy.metrics.mimir.enabled }}
 
     remote.kubernetes.configmap "mimir" {
