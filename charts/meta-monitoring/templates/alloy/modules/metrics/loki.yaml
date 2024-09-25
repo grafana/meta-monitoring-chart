@@ -1,4 +1,4 @@
-{{- if .Values.alloy.metrics.loki.enabled }}
+{{- if index .Values "alloy-metrics" "loki" "enabled" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:

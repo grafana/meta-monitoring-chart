@@ -1,4 +1,4 @@
-{{- if .Values.alloy.metrics.enabled }}
+{{- if index .Values "alloy-metrics" "enabled" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -6,27 +6,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   config.alloy: |
-    {{- if .Values.alloy.metrics.cadvisor.enabled }}
-
-    remote.kubernetes.configmap "cadvisor" {
-      namespace = "{{ .Release.Namespace }}"
-      name = "cadvisor-metrics"
-    }
-
-    import.string "cadvisor" {
-      content = remote.kubernetes.configmap.cadvisor.data.cadvisor
-    }
-
-    cadvisor.cadvisor "targets" {
-      namespaces = [{{- include "alloy.cadvisor.namespaces" . }}]
-      clustering = true
-      forward_to = [
-        {{ include "agent.prometheus_write_targets" . }},
-      ]
-    }
-    {{- end }}
-
-    {{- if .Values.alloy.metrics.mimir.enabled }}
+    {{- if index .Values "alloy-metrics" "mimir" "enabled" }}
 
     remote.kubernetes.configmap "mimir" {
       namespace = "{{ .Release.Namespace }}"
@@ -38,7 +18,7 @@ data:
     }
 
     mimir.kubernetes "targets" {
-      namespaces = ["{{- .Values.alloy.metrics.mimir.namespace -}}"]
+      namespaces = ["{{- index .Values "alloy-metrics" "mimir" "namespace" -}}"]
     }
 
     mimir.scrape "metrics" {
@@ -50,7 +30,7 @@ data:
     }
     {{- end }}
 
-    {{- if .Values.alloy.metrics.loki.enabled }}
+    {{- if index .Values "alloy-metrics" "loki" "enabled" }}
     remote.kubernetes.configmap "loki" {
       namespace = "{{ .Release.Namespace }}"
       name = "loki-metrics"
@@ -61,7 +41,7 @@ data:
     }
 
     loki.kubernetes "targets" {
-        namespaces = ["{{- .Values.alloy.metrics.loki.namespace -}}"]
+        namespaces = ["{{- index .Values "alloy-metrics" "loki" "namespace" -}}"]
     }
 
     loki.scrape "metrics" {
@@ -73,7 +53,7 @@ data:
     }    
     {{- end }}
 
-    {{- if .Values.alloy.metrics.tempo.enabled }}
+    {{- if index .Values "alloy-metrics" "tempo" "enabled" }}
     remote.kubernetes.configmap "tempo" {
       namespace = "{{ .Release.Namespace }}"
       name = "tempo-metrics"
@@ -84,7 +64,7 @@ data:
     }
 
     tempo.kubernetes "targets" {
-        namespaces = ["{{- .Values.alloy.metrics.tempo.namespace -}}"]
+        namespaces = ["{{- index .Values "alloy-metrics" "tempo" "namespace" -}}"]
     }
 
     tempo.scrape "metrics" {
@@ -96,7 +76,7 @@ data:
     }    
     {{- end }}
 
-    {{- if .Values.alloy.metrics.grafana.enabled }}
+    {{- if index .Values "alloy-metrics" "grafana" "enabled" }}
     remote.kubernetes.configmap "grafana" {
       namespace = "{{ .Release.Namespace }}"
       name = "grafana-metrics"
@@ -107,7 +87,7 @@ data:
     }
 
     grafana.kubernetes "targets" {
-        namespaces = ["{{- .Values.alloy.metrics.grafana.namespace -}}"]
+        namespaces = ["{{- index .Values "alloy-metrics" "grafana" "namespace" -}}"]
     }
 
     grafana.scrape "metrics" {
@@ -119,7 +99,7 @@ data:
     }    
     {{- end }}
 
-    {{- if .Values.alloy.metrics.alloy.enabled }}
+    {{- if index .Values "alloy-metrics" "alloy" "enabled" }}
     remote.kubernetes.configmap "alloy" {
       namespace = "{{ .Release.Namespace }}"
       name = "alloy-metrics"
@@ -130,7 +110,7 @@ data:
     }
 
     alloy.kubernetes "targets" {
-        namespaces = ["{{- .Values.alloy.metrics.alloy.namespace -}}"]
+        namespaces = ["{{- index .Values "alloy-metrics" "alloy" "namespace" -}}"]
     }
 
     alloy.scrape "metrics" {
@@ -142,18 +122,30 @@ data:
     }    
     {{- end }}
 
-    {{- if .Values.alloy.metrics.self.enabled }}
-    prometheus.exporter.self "self" {}
-
-    prometheus.scrape "self" {
-        targets = prometheus.exporter.self.self.targets
-        forward_to = [
-            {{ include "agent.prometheus_write_targets" . }},
-        ]
+    {{- if index .Values "alloy-metrics" "meta-monitoring" "enabled" }}
+    remote.kubernetes.configmap "meta_monitoring" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "alloy-metrics"
     }
+
+    import.string "meta_monitoring" {
+      content = remote.kubernetes.configmap.meta_monitoring.data.alloy
+    }
+
+    meta_monitoring.kubernetes "targets" {
+        namespaces = ["{{ .Release.Namespace -}}"]
+    }
+
+    meta_monitoring.scrape "metrics" {
+      targets = meta_monitoring.kubernetes.targets.output
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }    
     {{- end }}
 
-    {{- if .Values.alloy.metrics.node_exporter.enabled }}
+    {{- if index .Values "alloy-metrics" "node_exporter" "enabled" }}
     remote.kubernetes.configmap "node_exporter" {
       namespace = "{{ .Release.Namespace }}"
       name = "node-exporter-metrics"
@@ -174,7 +166,7 @@ data:
     }    
     {{- end }}
 
-    {{- if .Values.alloy.metrics.kube_state_metrics.enabled }}
+    {{- if index .Values "alloy-metrics" "kube_state_metrics" "enabled" }}
     remote.kubernetes.configmap "kube_state_metrics" {
       namespace = "{{ .Release.Namespace }}"
       name = "kube-state-metrics-metrics"
@@ -184,7 +176,9 @@ data:
       content = remote.kubernetes.configmap.kube_state_metrics.data.kube_state_metrics
     }
 
-    kube_state_metrics.kubernetes "targets" {}
+    kube_state_metrics.kubernetes "targets" {
+      namespaces = [{{- include "alloy.ksm.namespaces" . }}]
+    }
 
     kube_state_metrics.scrape "metrics" {
       targets = kube_state_metrics.kubernetes.targets.output
@@ -193,6 +187,26 @@ data:
         {{ include "agent.prometheus_write_targets" . }},
       ]
     }    
+    {{- end }}
+
+    {{- if index .Values "alloy-metrics" "cadvisor" "enabled" }}
+
+    remote.kubernetes.configmap "cadvisor" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "cadvisor-metrics"
+    }
+
+    import.string "cadvisor" {
+      content = remote.kubernetes.configmap.cadvisor.data.cadvisor
+    }
+
+    cadvisor.cadvisor "targets" {
+      namespaces = [{{- include "alloy.cadvisor.namespaces" . }}]
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }
     {{- end }}
 
     {{- if .Values.cloud.metrics.enabled }}

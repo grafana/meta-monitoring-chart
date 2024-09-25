@@ -1,4 +1,4 @@
-{{- if .Values.alloy.metrics.kube_state_metrics.enabled }}
+{{- if index .Values "alloy-metrics" "kube_state_metrics" "enabled" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
