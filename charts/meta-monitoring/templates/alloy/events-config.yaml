@@ -1,4 +1,4 @@
-{{- if .Values.alloy.events.enabled }}
+{{- if index .Values "alloy-events" "enabled" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:

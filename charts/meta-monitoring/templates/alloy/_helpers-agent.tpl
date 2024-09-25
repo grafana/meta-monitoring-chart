@@ -89,7 +89,7 @@
 
 {{- define "alloy.logs.namespaces" -}}
 {{- $list := list }}
-{{- range .Values.alloy.logs.namespacesToMonitor }}
+{{- range index .Values "alloy-logs" "namespacesToMonitor" }}
 {{- $list = append $list (printf "\"%s\"" .) }}
 {{- end }}
 {{- join ", " $list }}
@@ -97,7 +97,7 @@
 
 {{- define "alloy.events.namespaces" -}}
 {{- $list := list }}
-{{- range .Values.alloy.events.namespacesToMonitor }}
+{{- range index .Values "alloy-events" "namespacesToMonitor" }}
 {{- $list = append $list (printf "\"%s\"" .) }}
 {{- end }}
 {{- join ", " $list }}
@@ -105,7 +105,15 @@
 
 {{- define "alloy.cadvisor.namespaces" -}}
 {{- $list := list }}
-{{- range .Values.alloy.metrics.cadvisor.namespacesToMonitor }}
+{{- range index .Values "alloy-metrics" "cadvisor" "namespacesToMonitor" }}
+{{- $list = append $list (printf "\"%s\"" .) }}
+{{- end }}
+{{- join ", " $list }}
+{{- end }}
+
+{{- define "alloy.ksm.namespaces" -}}
+{{- $list := list }}
+{{- range index .Values "alloy-metrics" "kube_state_metrics" "namespacesToMonitor" }}
 {{- $list = append $list (printf "\"%s\"" .) }}
 {{- end }}
 {{- join ", " $list }}
