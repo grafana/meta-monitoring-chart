@@ -104,12 +104,43 @@ alloy-metrics:
         memory: '4Gi'
   controller:
     type: "statefulset"
+    replicas: 1
     autoscaling:
-      enabled: true
+      enabled: false
       minReplicas: 3
       maxReplicas: 30
       targetMemoryUtilizationPercentage: 90
       targetCPUUtilizationPercentage: 90
+
+  service:
+    enabled: true
+    type: NodePort
+    ipFamilies:
+      - "IPv6"
+    port: 80
+    targetPort: 3000
+    annotations:
+      metrics.agent.grafana.com/scrape: "true"
+      metrics.agent.grafana.com/tenant: ops
+      metrics.agent.grafana.com/port: "3000"
+
+  ingress:
+    enabled: true
+    ingressClassName: alb
+    annotations:
+      kubernetes.io/ingress.class: alb
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/target-type: ip
+      alb.ingress.kubernetes.io/ip-address-type: dualstack
+    hosts: {}
+    extraPaths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: meta-monitoring-alloy-metrics
+            port:
+              number: 80
 
 ########################################################################################################
 # Grafana Alloy Logs Configuration

@@ -42,6 +42,7 @@ data:
 
     loki.kubernetes "targets" {
         namespaces = ["{{- index .Values "alloy-metrics" "loki" "namespace" -}}"]
+        label_selectors = ["app.kubernetes.io/name=enterprise-logs"]
     }
 
     loki.scrape "metrics" {
