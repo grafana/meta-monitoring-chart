@@ -154,7 +154,7 @@ data:
         // keep only metrics that match the keep_metrics regex
         rule {
           source_labels = ["__name__"]
-          regex = coalesce(argument.keep_metrics.value, "(up|container_(cpu_(cfs_(periods|throttled_periods)_total|usage_seconds_total)|fs_(reads|writes)(_bytes)?_total|memory_(cache|rss|swap|working_set_bytes)|network_(receive|transmit)_(bytes|packets(_dropped)?_total))|machine_memory_bytes)")
+          regex = coalesce(argument.keep_metrics.value, "(up|container_(cpu_(cfs_(periods|throttled_periods)_total|usage_seconds_total)|fs_(reads|writes)(_bytes)?_total|memory_(cache|rss|swap|working_set_bytes)|network_(receive|transmit)_(bytes_|packets_)(_dropped)?(total))|machine_memory_bytes)")
           action = "keep"
         }
 

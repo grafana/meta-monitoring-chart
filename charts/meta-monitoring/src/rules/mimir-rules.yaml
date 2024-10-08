@@ -275,11 +275,11 @@ groups:
         - expr: |
             ceil(
               (sum by (cluster, namespace) (
-                cortex_ingester_tsdb_storage_blocks_bytes{job=~".+/ingester.*"}
+                cortex_ingester_tsdb_storage_blocks_bytes{job=~".+/.*ingester.*"}
               ) / 4)
                 /
               avg by (cluster, namespace) (
-                memcached_limit_bytes{job=~".+/memcached"}
+                memcached_limit_bytes{job=~".+/.*memcached"}
               )
             )
           labels:

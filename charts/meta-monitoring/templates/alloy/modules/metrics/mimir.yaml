@@ -222,15 +222,15 @@ data:
           action = "keep"
         }
 
-        // set the job label to be namespace/pod as this is what the cloud integration expects
+        // set the job label to be namespace/component as this is what the cloud integration expects
         rule {
           action = "replace"
           source_labels = [
             "namespace",
-            "workload",
+            "component",
           ]
           separator = "/"
-          regex = "(.+)/.+/(.+)"
+          regex = "(.+)/(.+)"
           replacement = "$1/$2"
           target_label = "job"
         }
