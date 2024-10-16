@@ -111,7 +111,7 @@ alloy-metrics:
     resources:
       requests:
         cpu: '1000m'
-        memory: '600Mi'
+        memory: '1Gi'
       limits:
         memory: '4Gi'
   controller:
