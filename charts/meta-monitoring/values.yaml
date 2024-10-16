@@ -72,6 +72,7 @@ alloy-metrics:
       - "app.kubernetes.io/name=kube-state-metrics"
       - "app.kubernetes.io/purpose=meta-monitoring"
 
+    # This should be the namespace kube-state-metrics is deployed to. If enabled via this chart, will be the release namespace
     namespacesToMonitor:
       - meta-monitoring
 
@@ -236,9 +237,9 @@ alloy-events:
 
 #####################################################################################################
 # Node Exporter
-# Enable to send Metrics, Logs or Traces to a Grafana Cloud Instance (Recommended)
-# A secret with the configured name must be deployed in the namespace you deploy meta-monitoring to.
-# See Installation documentation for more info. 
+# Enable to deploy node-exporter as a daemonset to the cluster to collect node infrastructure metrics
+# alloy_metrics.node_exporter.enabled must be set to true to scrape the metrics.
+# Ensure that alloy_metrics.node_exporter.labelSelectors match the pod labels
 #####################################################################################################
 node-exporter:
   enabled: true
@@ -253,9 +254,10 @@ node-exporter:
 
 #####################################################################################################
 # Kube State Metrics
-# Enable to send Metrics, Logs or Traces to a Grafana Cloud Instance (Recommended)
-# A secret with the configured name must be deployed in the namespace you deploy meta-monitoring to.
-# See Installation documentation for more info. 
+# Enable to deploy kube-state-metrics to the meta-monitoring namespace.
+# alloy_metrics.kube_state_metrics.enabled must be set to true to scrape the metrics.
+# Ensure that alloy_metrics.kube_state_metrics.labelSelectors match the pod labels
+# Ensure that kube-state-metrics.namespaces list the namespaces of your observability stack
 #####################################################################################################
 kube-state-metrics:
   enabled: true
@@ -267,7 +269,7 @@ kube-state-metrics:
   podLabels:
     app.kubernetes.io/purpose: meta-monitoring
 
-    # This should include the namespace of any enabled component namespaces
+  # This should include the namespaces of any GE/GEM/GEL/GET/Alloy deployments
   namespaces:
     - gem
     - gel
