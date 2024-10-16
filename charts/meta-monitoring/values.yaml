@@ -2,6 +2,11 @@
 # Traces will have a cluster attribute with this value
 clusterLabelValue: "meta"
 
+# The environment (dev, staging, prod, etc..) where this will be installed. Metrics, Logs & Events will have an environment label with this value.
+# Traces will have an environment attribute with this value
+# Included to assist with alert notification routing, when cluster label values might be ambiguous
+environmentLabelValue: "prod"
+
 #####################################################################################################
 # Grafana Alloy Configurations
 # This chart can install 4 different Grafana Alloy Deployments. Each can be enabled or disabled.

@@ -51,6 +51,7 @@ data:
 
       external_labels = {
           cluster = "{{- .Values.clusterLabelValue -}}",
+          environment = "{{- .Values.environmentLabelValue -}}",
       }
     }
     {{- end }}

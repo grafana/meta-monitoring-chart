@@ -24,6 +24,7 @@ data:
       stage.static_labels {
         values = {
           cluster = "{{- .Values.clusterLabelValue }}",
+          environment = "{{- .Values.environmentLabelValue -}}",
         }
       }
       forward_to = [{{ include "agent.loki_write_targets" . }},]
