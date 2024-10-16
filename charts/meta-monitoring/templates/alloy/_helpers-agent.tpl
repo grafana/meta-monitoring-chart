@@ -86,3 +86,51 @@
 {{- end }}
 {{- join "|" $list }}
 {{- end }}
+
+{{- define "alloy.logs.namespaces" -}}
+{{- $list := list }}
+{{- range index .Values "alloy-logs" "namespacesToMonitor" }}
+{{- $list = append $list (printf "\"%s\"" .) }}
+{{- end }}
+{{- join ", " $list }}
+{{- end }}
+
+{{- define "alloy.events.namespaces" -}}
+{{- $list := list }}
+{{- range index .Values "alloy-events" "namespacesToMonitor" }}
+{{- $list = append $list (printf "\"%s\"" .) }}
+{{- end }}
+{{- join ", " $list }}
+{{- end }}
+
+{{- define "alloy.cadvisor.namespaces" -}}
+{{- $list := list }}
+{{- range index .Values "alloy-metrics" "cadvisor" "namespacesToMonitor" }}
+{{- $list = append $list (printf "\"%s\"" .) }}
+{{- end }}
+{{- join ", " $list }}
+{{- end }}
+
+{{- define "alloy.ksm.namespaces" -}}
+{{- $list := list }}
+{{- range index .Values "alloy-metrics" "kube_state_metrics" "namespacesToMonitor" }}
+{{- $list = append $list (printf "\"%s\"" .) }}
+{{- end }}
+{{- join ", " $list }}
+{{- end }}
+
+{{- define "alloy.node_exporter.labelselectors" -}}
+{{- $list := list }}
+{{- range index .Values "alloy-metrics" "node_exporter" "labelSelectors" }}
+{{- $list = append $list (printf "\"%s\"" .) }}
+{{- end }}
+{{- join ", " $list }}
+{{- end }}
+
+{{- define "alloy.ksm.labelselectors" -}}
+{{- $list := list }}
+{{- range index .Values "alloy-metrics" "kube_state_metrics" "labelSelectors" }}
+{{- $list = append $list (printf "\"%s\"" .) }}
+{{- end }}
+{{- join ", " $list }}
+{{- end }}

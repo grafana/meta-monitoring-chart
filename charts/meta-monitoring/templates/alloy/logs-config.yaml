@@ -1,0 +1,58 @@
+{{- if index .Values "alloy-logs" "enabled" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alloy-logs-config
+  namespace: {{ .Release.Namespace }}
+data:
+  config.alloy: |
+    remote.kubernetes.configmap "logs" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "logs"
+    }
+
+    import.string "logs" {
+      content = remote.kubernetes.configmap.logs.data.logs
+    }
+
+    logs.pod_logs "default" {
+        namespaces = [{{ include "alloy.logs.namespaces" . }}]
+        forward_to = [{{ include "agent.loki_write_targets" . }},]
+    }
+
+    {{- if .Values.cloud.logs.enabled }}
+    remote.kubernetes.secret "logs_credentials" {
+      namespace = "{{- $.Release.Namespace -}}"
+      name = "{{- .Values.cloud.logs.secret -}}"
+    }
+    {{- end }}
+
+    {{- if .Values.local.logs.enabled }}
+    loki.write "local" {
+      endpoint {
+        url = "http://loki-write.{{- .Release.Namespace -}}.svc.cluster.local:3100/loki/api/v1/push"
+      }
+      
+      external_labels = {
+          cluster = "{{- .Values.clusterLabelValue -}}",
+      }
+    }
+    {{- end }}
+
+    {{- if .Values.cloud.logs.enabled }}
+    loki.write "cloud" {
+      endpoint {
+        url = nonsensitive(remote.kubernetes.secret.logs_credentials.data["endpoint"])
+        basic_auth {
+          username = nonsensitive(remote.kubernetes.secret.logs_credentials.data["username"])
+          password = remote.kubernetes.secret.logs_credentials.data["password"]
+        }
+      }
+
+      external_labels = {
+          cluster = "{{- .Values.clusterLabelValue -}}",
+          environment = "{{- .Values.environmentLabelValue -}}",
+      }
+    }
+    {{- end }}
+{{- end }}

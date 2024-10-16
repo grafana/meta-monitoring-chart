@@ -1,10 +1,18 @@
 {
+      "__requires": [
+         {
+            "id": "grafana",
+            "name": "Grafana",
+            "type": "grafana",
+            "version": "8.0.0"
+         }
+      ],
       "annotations": {
          "list": [ ]
       },
       "editable": true,
       "gnetId": null,
-      "graphTooltip": 0,
+      "graphTooltip": 1,
       "hideControls": false,
       "links": [
          {
@@ -13,14 +21,14 @@
             "includeVars": true,
             "keepTime": true,
             "tags": [
-               "loki"
+               "mimir"
             ],
             "targetBlank": false,
-            "title": "Loki Dashboards",
+            "title": "Mimir dashboards",
             "type": "dashboards"
          }
       ],
-      "refresh": "10s",
+      "refresh": "5m",
       "rows": [
          {
             "collapse": false,
@@ -32,100 +40,46 @@
                      "defaults": {
                         "custom": {
                            "drawStyle": "line",
-                           "fillOpacity": 10,
-                           "lineWidth": 1,
+                           "fillOpacity": 100,
+                           "lineWidth": 0,
                            "pointSize": 5,
                            "showPoints": "never",
                            "spanNulls": false,
                            "stacking": {
                               "group": "A",
-                              "mode": "none"
+                              "mode": "normal"
                            }
                         },
+                        "min": 0,
                         "thresholds": {
                            "mode": "absolute",
                            "steps": [ ]
                         },
                         "unit": "short"
                      },
-                     "overrides": [
-                        {
-                           "matcher": {
-                              "id": "byName",
-                              "options": "request"
-                           },
-                           "properties": [
-                              {
-                                 "id": "color",
-                                 "value": {
-                                    "fixedColor": "#FFC000",
-                                    "mode": "fixed"
-                                 }
-                              },
-                              {
-                                 "id": "custom.fillOpacity",
-                                 "value": 0
-                              }
-                           ]
-                        },
-                        {
-                           "matcher": {
-                              "id": "byName",
-                              "options": "limit"
-                           },
-                           "properties": [
-                              {
-                                 "id": "color",
-                                 "value": {
-                                    "fixedColor": "#E02F44",
-                                    "mode": "fixed"
-                                 }
-                              },
-                              {
-                                 "id": "custom.fillOpacity",
-                                 "value": 0
-                              }
-                           ]
-                        }
-                     ]
+                     "overrides": [ ]
                   },
                   "id": 1,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
                         "showLegend": true
                      },
                      "tooltip": {
-                        "mode": "single",
+                        "mode": "multi",
                         "sort": "none"
                      }
                   },
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"}[$__rate_interval]))",
+                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-frontend|querier|ruler-query-frontend|ruler-querier|mimir-read\"}[$__rate_interval]))",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
-                        "legendLink": null
-                     },
-                     {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", resource=\"cpu\"} > 0)",
-                        "format": "time_series",
-                        "legendFormat": "request",
-                        "legendLink": null
-                     },
-                     {
-                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"})",
-                        "format": "time_series",
-                        "legendFormat": "limit",
                         "legendLink": null
                      }
                   ],
                   "title": "CPU",
-                  "tooltip": {
-                     "sort": 2
-                  },
                   "type": "timeseries"
                },
                {
@@ -134,100 +88,46 @@
                      "defaults": {
                         "custom": {
                            "drawStyle": "line",
-                           "fillOpacity": 10,
-                           "lineWidth": 1,
+                           "fillOpacity": 100,
+                           "lineWidth": 0,
                            "pointSize": 5,
                            "showPoints": "never",
                            "spanNulls": false,
                            "stacking": {
                               "group": "A",
-                              "mode": "none"
+                              "mode": "normal"
                            }
                         },
+                        "min": 0,
                         "thresholds": {
                            "mode": "absolute",
                            "steps": [ ]
                         },
                         "unit": "bytes"
                      },
-                     "overrides": [
-                        {
-                           "matcher": {
-                              "id": "byName",
-                              "options": "request"
-                           },
-                           "properties": [
-                              {
-                                 "id": "color",
-                                 "value": {
-                                    "fixedColor": "#FFC000",
-                                    "mode": "fixed"
-                                 }
-                              },
-                              {
-                                 "id": "custom.fillOpacity",
-                                 "value": 0
-                              }
-                           ]
-                        },
-                        {
-                           "matcher": {
-                              "id": "byName",
-                              "options": "limit"
-                           },
-                           "properties": [
-                              {
-                                 "id": "color",
-                                 "value": {
-                                    "fixedColor": "#E02F44",
-                                    "mode": "fixed"
-                                 }
-                              },
-                              {
-                                 "id": "custom.fillOpacity",
-                                 "value": 0
-                              }
-                           ]
-                        }
-                     ]
+                     "overrides": [ ]
                   },
                   "id": 2,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
                         "showLegend": true
                      },
                      "tooltip": {
-                        "mode": "single",
+                        "mode": "multi",
                         "sort": "none"
                      }
                   },
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"})",
+                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-frontend|querier|ruler-query-frontend|ruler-querier|mimir-read\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
-                        "legendLink": null
-                     },
-                     {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", resource=\"memory\"} > 0)",
-                        "format": "time_series",
-                        "legendFormat": "request",
-                        "legendLink": null
-                     },
-                     {
-                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"} > 0)",
-                        "format": "time_series",
-                        "legendFormat": "limit",
                         "legendLink": null
                      }
                   ],
                   "title": "Memory (workingset)",
-                  "tooltip": {
-                     "sort": 2
-                  },
                   "type": "timeseries"
                },
                {
@@ -236,16 +136,17 @@
                      "defaults": {
                         "custom": {
                            "drawStyle": "line",
-                           "fillOpacity": 10,
-                           "lineWidth": 1,
+                           "fillOpacity": 100,
+                           "lineWidth": 0,
                            "pointSize": 5,
                            "showPoints": "never",
                            "spanNulls": false,
                            "stacking": {
                               "group": "A",
-                              "mode": "none"
+                              "mode": "normal"
                            }
                         },
+                        "min": 0,
                         "thresholds": {
                            "mode": "absolute",
                            "steps": [ ]
@@ -255,30 +156,26 @@
                      "overrides": [ ]
                   },
                   "id": 3,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
                         "showLegend": true
                      },
                      "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
+                        "mode": "multi",
+                        "sort": "desc"
                      }
                   },
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*query-frontend|loki-read|loki-single-binary)\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-frontend|querier|ruler-query-frontend|ruler-querier|mimir-read\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      }
                   ],
                   "title": "Memory (go heap inuse)",
-                  "tooltip": {
-                     "sort": 2
-                  },
                   "type": "timeseries"
                }
             ],
@@ -286,7 +183,7 @@
             "repeatIteration": null,
             "repeatRowId": null,
             "showTitle": true,
-            "title": "Query Frontend",
+            "title": "Summary",
             "titleSize": "h6"
          },
          {
@@ -299,7 +196,7 @@
                      "defaults": {
                         "custom": {
                            "drawStyle": "line",
-                           "fillOpacity": 10,
+                           "fillOpacity": 0,
                            "lineWidth": 1,
                            "pointSize": 5,
                            "showPoints": "never",
@@ -309,6 +206,7 @@
                               "mode": "none"
                            }
                         },
+                        "min": 0,
                         "thresholds": {
                            "mode": "absolute",
                            "steps": [ ]
@@ -332,6 +230,12 @@
                               {
                                  "id": "custom.fillOpacity",
                                  "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
                               }
                            ]
                         },
@@ -351,48 +255,50 @@
                               {
                                  "id": "custom.fillOpacity",
                                  "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
                               }
                            ]
                         }
                      ]
                   },
                   "id": 4,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
                         "showLegend": true
                      },
                      "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
+                        "mode": "multi",
+                        "sort": "desc"
                      }
                   },
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler|loki\", pod=~\"query-scheduler|loki-read-.*|$namespace-[0-9]*\"}[$__rate_interval]))",
+                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-frontend\"}[$__rate_interval]))",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler|loki\", pod=~\"query-scheduler|loki-read-.*|$namespace-[0-9]*\", resource=\"cpu\"} > 0)",
+                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-frontend\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-frontend\"})",
                         "format": "time_series",
-                        "legendFormat": "request",
+                        "legendFormat": "limit",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler|loki\", pod=~\"query-scheduler|loki-read-.*|$namespace-[0-9]*\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler|loki\", pod=~\"query-scheduler|loki-read-.*|$namespace-[0-9]*\"})",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-frontend\",resource=\"cpu\"})",
                         "format": "time_series",
-                        "legendFormat": "limit",
+                        "legendFormat": "request",
                         "legendLink": null
                      }
                   ],
                   "title": "CPU",
-                  "tooltip": {
-                     "sort": 2
-                  },
                   "type": "timeseries"
                },
                {
@@ -401,7 +307,7 @@
                      "defaults": {
                         "custom": {
                            "drawStyle": "line",
-                           "fillOpacity": 10,
+                           "fillOpacity": 0,
                            "lineWidth": 1,
                            "pointSize": 5,
                            "showPoints": "never",
@@ -411,6 +317,7 @@
                               "mode": "none"
                            }
                         },
+                        "min": 0,
                         "thresholds": {
                            "mode": "absolute",
                            "steps": [ ]
@@ -434,6 +341,12 @@
                               {
                                  "id": "custom.fillOpacity",
                                  "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
                               }
                            ]
                         },
@@ -453,48 +366,50 @@
                               {
                                  "id": "custom.fillOpacity",
                                  "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
                               }
                            ]
                         }
                      ]
                   },
                   "id": 5,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
                         "showLegend": true
                      },
                      "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
+                        "mode": "multi",
+                        "sort": "desc"
                      }
                   },
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler|loki\", pod=~\"query-scheduler|loki-read-.*|$namespace-[0-9]*\"})",
+                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-frontend\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler|loki\", pod=~\"query-scheduler|loki-read-.*|$namespace-[0-9]*\", resource=\"memory\"} > 0)",
+                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-frontend\"} > 0)",
                         "format": "time_series",
-                        "legendFormat": "request",
+                        "legendFormat": "limit",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-scheduler|loki\", pod=~\"query-scheduler|loki-read-.*|$namespace-[0-9]*\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-frontend\",resource=\"memory\"})",
                         "format": "time_series",
-                        "legendFormat": "limit",
+                        "legendFormat": "request",
                         "legendLink": null
                      }
                   ],
                   "title": "Memory (workingset)",
-                  "tooltip": {
-                     "sort": 2
-                  },
                   "type": "timeseries"
                },
                {
@@ -503,7 +418,7 @@
                      "defaults": {
                         "custom": {
                            "drawStyle": "line",
-                           "fillOpacity": 10,
+                           "fillOpacity": 0,
                            "lineWidth": 1,
                            "pointSize": 5,
                            "showPoints": "never",
@@ -513,6 +428,7 @@
                               "mode": "none"
                            }
                         },
+                        "min": 0,
                         "thresholds": {
                            "mode": "absolute",
                            "steps": [ ]
@@ -522,30 +438,26 @@
                      "overrides": [ ]
                   },
                   "id": 6,
-                  "interval": "1m",
                   "links": [ ],
                   "options": {
                      "legend": {
                         "showLegend": true
                      },
                      "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
+                        "mode": "multi",
+                        "sort": "desc"
                      }
                   },
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*query-scheduler|loki-read|loki-single-binary)\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-frontend\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      }
                   ],
                   "title": "Memory (go heap inuse)",
-                  "tooltip": {
-                     "sort": 2
-                  },
                   "type": "timeseries"
                }
             ],
@@ -553,1244 +465,8 @@
             "repeatIteration": null,
             "repeatRowId": null,
             "showTitle": true,
-            "title": "Query Scheduler",
+            "title": "Query-frontend",
             "titleSize": "h6"
-         },
-         {
-            "collapse": false,
-            "collapsed": false,
-            "panels": [
-               {
-                  "datasource": "$datasource",
-                  "fieldConfig": {
-                     "defaults": {
-                        "custom": {
-                           "drawStyle": "line",
-                           "fillOpacity": 10,
-                           "lineWidth": 1,
-                           "pointSize": 5,
-                           "showPoints": "never",
-                           "spanNulls": false,
-                           "stacking": {
-                              "group": "A",
-                              "mode": "none"
-                           }
-                        },
-                        "thresholds": {
-                           "mode": "absolute",
-                           "steps": [ ]
-                        },
-                        "unit": "short"
-                     },
-                     "overrides": [
-                        {
-                           "matcher": {
-                              "id": "byName",
-                              "options": "request"
-                           },
-                           "properties": [
-                              {
-                                 "id": "color",
-                                 "value": {
-                                    "fixedColor": "#FFC000",
-                                    "mode": "fixed"
-                                 }
-                              },
-                              {
-                                 "id": "custom.fillOpacity",
-                                 "value": 0
-                              }
-                           ]
-                        },
-                        {
-                           "matcher": {
-                              "id": "byName",
-                              "options": "limit"
-                           },
-                           "properties": [
-                              {
-                                 "id": "color",
-                                 "value": {
-                                    "fixedColor": "#E02F44",
-                                    "mode": "fixed"
-                                 }
-                              },
-                              {
-                                 "id": "custom.fillOpacity",
-                                 "value": 0
-                              }
-                           ]
-                        }
-                     ]
-                  },
-                  "gridPos": { },
-                  "id": 7,
-                  "interval": "1m",
-                  "links": [ ],
-                  "options": {
-                     "legend": {
-                        "showLegend": true
-                     },
-                     "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
-                     }
-                  },
-                  "targets": [
-                     {
-                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"}[$__rate_interval]))",
-                        "format": "time_series",
-                        "legendFormat": "{{pod}}",
-                        "legendLink": null
-                     },
-                     {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", resource=\"cpu\"} > 0)",
-                        "format": "time_series",
-                        "legendFormat": "request",
-                        "legendLink": null
-                     },
-                     {
-                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"})",
-                        "format": "time_series",
-                        "legendFormat": "limit",
-                        "legendLink": null
-                     }
-                  ],
-                  "title": "CPU",
-                  "tooltip": {
-                     "sort": 2
-                  },
-                  "type": "timeseries"
-               },
-               {
-                  "datasource": "$datasource",
-                  "fieldConfig": {
-                     "defaults": {
-                        "custom": {
-                           "drawStyle": "line",
-                           "fillOpacity": 10,
-                           "lineWidth": 1,
-                           "pointSize": 5,
-                           "showPoints": "never",
-                           "spanNulls": false,
-                           "stacking": {
-                              "group": "A",
-                              "mode": "none"
-                           }
-                        },
-                        "thresholds": {
-                           "mode": "absolute",
-                           "steps": [ ]
-                        },
-                        "unit": "bytes"
-                     },
-                     "overrides": [
-                        {
-                           "matcher": {
-                              "id": "byName",
-                              "options": "request"
-                           },
-                           "properties": [
-                              {
-                                 "id": "color",
-                                 "value": {
-                                    "fixedColor": "#FFC000",
-                                    "mode": "fixed"
-                                 }
-                              },
-                              {
-                                 "id": "custom.fillOpacity",
-                                 "value": 0
-                              }
-                           ]
-                        },
-                        {
-                           "matcher": {
-                              "id": "byName",
-                              "options": "limit"
-                           },
-                           "properties": [
-                              {
-                                 "id": "color",
-                                 "value": {
-                                    "fixedColor": "#E02F44",
-                                    "mode": "fixed"
-                                 }
-                              },
-                              {
-                                 "id": "custom.fillOpacity",
-                                 "value": 0
-                              }
-                           ]
-                        }
-                     ]
-                  },
-                  "gridPos": { },
-                  "id": 8,
-                  "interval": "1m",
-                  "links": [ ],
-                  "options": {
-                     "legend": {
-                        "showLegend": true
-                     },
-                     "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
-                     }
-                  },
-                  "targets": [
-                     {
-                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"})",
-                        "format": "time_series",
-                        "legendFormat": "{{pod}}",
-                        "legendLink": null
-                     },
-                     {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", resource=\"memory\"} > 0)",
-                        "format": "time_series",
-                        "legendFormat": "request",
-                        "legendLink": null
-                     },
-                     {
-                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"querier|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"} > 0)",
-                        "format": "time_series",
-                        "legendFormat": "limit",
-                        "legendLink": null
-                     }
-                  ],
-                  "title": "Memory (workingset)",
-                  "tooltip": {
-                     "sort": 2
-                  },
-                  "type": "timeseries"
-               },
-               {
-                  "datasource": "$datasource",
-                  "fieldConfig": {
-                     "defaults": {
-                        "custom": {
-                           "drawStyle": "line",
-                           "fillOpacity": 10,
-                           "lineWidth": 1,
-                           "pointSize": 5,
-                           "showPoints": "never",
-                           "spanNulls": false,
-                           "stacking": {
-                              "group": "A",
-                              "mode": "none"
-                           }
-                        },
-                        "thresholds": {
-                           "mode": "absolute",
-                           "steps": [ ]
-                        },
-                        "unit": "bytes"
-                     },
-                     "overrides": [ ]
-                  },
-                  "gridPos": { },
-                  "id": 9,
-                  "interval": "1m",
-                  "links": [ ],
-                  "options": {
-                     "legend": {
-                        "showLegend": true
-                     },
-                     "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
-                     }
-                  },
-                  "targets": [
-                     {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*querier|loki-read|loki-single-binary)\"})",
-                        "format": "time_series",
-                        "legendFormat": "{{pod}}",
-                        "legendLink": null
-                     }
-                  ],
-                  "title": "Memory (go heap inuse)",
-                  "tooltip": {
-                     "sort": 2
-                  },
-                  "type": "timeseries"
-               },
-               {
-                  "datasource": "$datasource",
-                  "fieldConfig": {
-                     "defaults": {
-                        "custom": {
-                           "drawStyle": "line",
-                           "fillOpacity": 100,
-                           "lineWidth": 0,
-                           "pointSize": 5,
-                           "showPoints": "never",
-                           "spanNulls": false,
-                           "stacking": {
-                              "group": "A",
-                              "mode": "normal"
-                           }
-                        },
-                        "thresholds": {
-                           "mode": "absolute",
-                           "steps": [ ]
-                        },
-                        "unit": "Bps"
-                     },
-                     "overrides": [ ]
-                  },
-                  "gridPos": { },
-                  "id": 10,
-                  "interval": "1m",
-                  "links": [ ],
-                  "options": {
-                     "legend": {
-                        "showLegend": true
-                     },
-                     "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
-                     }
-                  },
-                  "targets": [
-                     {
-                        "expr": "sum by(instance, pod, device) (rate(node_disk_written_bytes_total[$__rate_interval])) + ignoring(pod) group_right() (label_replace(count by(instance, pod, device) (container_fs_writes_bytes_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", device!~\".*sda.*\"}), \"device\", \"$1\", \"device\", \"/dev/(.*)\") * 0)\n",
-                        "format": "time_series",
-                        "legendFormat": "{{pod}} - {{device}}",
-                        "legendLink": null
-                     }
-                  ],
-                  "title": "Disk Writes",
-                  "type": "timeseries"
-               },
-               {
-                  "datasource": "$datasource",
-                  "fieldConfig": {
-                     "defaults": {
-                        "custom": {
-                           "drawStyle": "line",
-                           "fillOpacity": 100,
-                           "lineWidth": 0,
-                           "pointSize": 5,
-                           "showPoints": "never",
-                           "spanNulls": false,
-                           "stacking": {
-                              "group": "A",
-                              "mode": "normal"
-                           }
-                        },
-                        "thresholds": {
-                           "mode": "absolute",
-                           "steps": [ ]
-                        },
-                        "unit": "Bps"
-                     },
-                     "overrides": [ ]
-                  },
-                  "gridPos": { },
-                  "id": 11,
-                  "interval": "1m",
-                  "links": [ ],
-                  "options": {
-                     "legend": {
-                        "showLegend": true
-                     },
-                     "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
-                     }
-                  },
-                  "targets": [
-                     {
-                        "expr": "sum by(instance, pod, device) (rate(node_disk_read_bytes_total[$__rate_interval])) + ignoring(pod) group_right() (label_replace(count by(instance, pod, device) (container_fs_writes_bytes_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"query-frontend|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", device!~\".*sda.*\"}), \"device\", \"$1\", \"device\", \"/dev/(.*)\") * 0)\n",
-                        "format": "time_series",
-                        "legendFormat": "{{pod}} - {{device}}",
-                        "legendLink": null
-                     }
-                  ],
-                  "title": "Disk Reads",
-                  "type": "timeseries"
-               },
-               {
-                  "datasource": "$datasource",
-                  "fieldConfig": {
-                     "defaults": {
-                        "custom": {
-                           "drawStyle": "line",
-                           "fillOpacity": 10,
-                           "lineWidth": 1,
-                           "pointSize": 5,
-                           "showPoints": "never",
-                           "spanNulls": false,
-                           "stacking": {
-                              "group": "A",
-                              "mode": "none"
-                           }
-                        },
-                        "thresholds": {
-                           "mode": "absolute",
-                           "steps": [ ]
-                        },
-                        "unit": "percentunit"
-                     },
-                     "overrides": [ ]
-                  },
-                  "gridPos": { },
-                  "id": 12,
-                  "interval": "1m",
-                  "links": [ ],
-                  "options": {
-                     "legend": {
-                        "showLegend": true
-                     },
-                     "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
-                     }
-                  },
-                  "targets": [
-                     {
-                        "expr": "max by(persistentvolumeclaim) (kubelet_volume_stats_used_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\"} / kubelet_volume_stats_capacity_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\"}) and count by(persistentvolumeclaim) (kube_persistentvolumeclaim_labels{cluster=~\"$cluster\", namespace=~\"$namespace\",label_name=~\"querier.*\"})",
-                        "format": "time_series",
-                        "legendFormat": "{{persistentvolumeclaim}}",
-                        "legendLink": null
-                     }
-                  ],
-                  "title": "Disk Space Utilization",
-                  "type": "timeseries"
-               }
-            ],
-            "repeat": null,
-            "repeatIteration": null,
-            "repeatRowId": null,
-            "showTitle": true,
-            "title": "Querier",
-            "titleSize": "h6",
-            "type": "row"
-         },
-         {
-            "collapse": false,
-            "collapsed": false,
-            "panels": [
-               {
-                  "datasource": "$datasource",
-                  "fieldConfig": {
-                     "defaults": {
-                        "custom": {
-                           "drawStyle": "line",
-                           "fillOpacity": 10,
-                           "lineWidth": 1,
-                           "pointSize": 5,
-                           "showPoints": "never",
-                           "spanNulls": false,
-                           "stacking": {
-                              "group": "A",
-                              "mode": "none"
-                           }
-                        },
-                        "thresholds": {
-                           "mode": "absolute",
-                           "steps": [ ]
-                        },
-                        "unit": "short"
-                     },
-                     "overrides": [
-                        {
-                           "matcher": {
-                              "id": "byName",
-                              "options": "request"
-                           },
-                           "properties": [
-                              {
-                                 "id": "color",
-                                 "value": {
-                                    "fixedColor": "#FFC000",
-                                    "mode": "fixed"
-                                 }
-                              },
-                              {
-                                 "id": "custom.fillOpacity",
-                                 "value": 0
-                              }
-                           ]
-                        },
-                        {
-                           "matcher": {
-                              "id": "byName",
-                              "options": "limit"
-                           },
-                           "properties": [
-                              {
-                                 "id": "color",
-                                 "value": {
-                                    "fixedColor": "#E02F44",
-                                    "mode": "fixed"
-                                 }
-                              },
-                              {
-                                 "id": "custom.fillOpacity",
-                                 "value": 0
-                              }
-                           ]
-                        }
-                     ]
-                  },
-                  "gridPos": { },
-                  "id": 13,
-                  "interval": "1m",
-                  "links": [ ],
-                  "options": {
-                     "legend": {
-                        "showLegend": true
-                     },
-                     "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
-                     }
-                  },
-                  "targets": [
-                     {
-                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\"}[$__rate_interval]))",
-                        "format": "time_series",
-                        "legendFormat": "{{pod}}",
-                        "legendLink": null
-                     },
-                     {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\", resource=\"cpu\"} > 0)",
-                        "format": "time_series",
-                        "legendFormat": "request",
-                        "legendLink": null
-                     },
-                     {
-                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\"})",
-                        "format": "time_series",
-                        "legendFormat": "limit",
-                        "legendLink": null
-                     }
-                  ],
-                  "title": "CPU",
-                  "tooltip": {
-                     "sort": 2
-                  },
-                  "type": "timeseries"
-               },
-               {
-                  "datasource": "$datasource",
-                  "fieldConfig": {
-                     "defaults": {
-                        "custom": {
-                           "drawStyle": "line",
-                           "fillOpacity": 10,
-                           "lineWidth": 1,
-                           "pointSize": 5,
-                           "showPoints": "never",
-                           "spanNulls": false,
-                           "stacking": {
-                              "group": "A",
-                              "mode": "none"
-                           }
-                        },
-                        "thresholds": {
-                           "mode": "absolute",
-                           "steps": [ ]
-                        },
-                        "unit": "bytes"
-                     },
-                     "overrides": [
-                        {
-                           "matcher": {
-                              "id": "byName",
-                              "options": "request"
-                           },
-                           "properties": [
-                              {
-                                 "id": "color",
-                                 "value": {
-                                    "fixedColor": "#FFC000",
-                                    "mode": "fixed"
-                                 }
-                              },
-                              {
-                                 "id": "custom.fillOpacity",
-                                 "value": 0
-                              }
-                           ]
-                        },
-                        {
-                           "matcher": {
-                              "id": "byName",
-                              "options": "limit"
-                           },
-                           "properties": [
-                              {
-                                 "id": "color",
-                                 "value": {
-                                    "fixedColor": "#E02F44",
-                                    "mode": "fixed"
-                                 }
-                              },
-                              {
-                                 "id": "custom.fillOpacity",
-                                 "value": 0
-                              }
-                           ]
-                        }
-                     ]
-                  },
-                  "gridPos": { },
-                  "id": 14,
-                  "interval": "1m",
-                  "links": [ ],
-                  "options": {
-                     "legend": {
-                        "showLegend": true
-                     },
-                     "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
-                     }
-                  },
-                  "targets": [
-                     {
-                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\"})",
-                        "format": "time_series",
-                        "legendFormat": "{{pod}}",
-                        "legendLink": null
-                     },
-                     {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\", resource=\"memory\"} > 0)",
-                        "format": "time_series",
-                        "legendFormat": "request",
-                        "legendLink": null
-                     },
-                     {
-                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\"} > 0)",
-                        "format": "time_series",
-                        "legendFormat": "limit",
-                        "legendLink": null
-                     }
-                  ],
-                  "title": "Memory (workingset)",
-                  "tooltip": {
-                     "sort": 2
-                  },
-                  "type": "timeseries"
-               },
-               {
-                  "datasource": "$datasource",
-                  "fieldConfig": {
-                     "defaults": {
-                        "custom": {
-                           "drawStyle": "line",
-                           "fillOpacity": 10,
-                           "lineWidth": 1,
-                           "pointSize": 5,
-                           "showPoints": "never",
-                           "spanNulls": false,
-                           "stacking": {
-                              "group": "A",
-                              "mode": "none"
-                           }
-                        },
-                        "thresholds": {
-                           "mode": "absolute",
-                           "steps": [ ]
-                        },
-                        "unit": "bytes"
-                     },
-                     "overrides": [ ]
-                  },
-                  "gridPos": { },
-                  "id": 15,
-                  "interval": "1m",
-                  "links": [ ],
-                  "options": {
-                     "legend": {
-                        "showLegend": true
-                     },
-                     "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
-                     }
-                  },
-                  "targets": [
-                     {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\"})",
-                        "format": "time_series",
-                        "legendFormat": "{{pod}}",
-                        "legendLink": null
-                     }
-                  ],
-                  "title": "Memory (go heap inuse)",
-                  "tooltip": {
-                     "sort": 2
-                  },
-                  "type": "timeseries"
-               },
-               {
-                  "datasource": "$datasource",
-                  "fieldConfig": {
-                     "defaults": {
-                        "custom": {
-                           "drawStyle": "line",
-                           "fillOpacity": 100,
-                           "lineWidth": 0,
-                           "pointSize": 5,
-                           "showPoints": "never",
-                           "spanNulls": false,
-                           "stacking": {
-                              "group": "A",
-                              "mode": "normal"
-                           }
-                        },
-                        "thresholds": {
-                           "mode": "absolute",
-                           "steps": [ ]
-                        },
-                        "unit": "Bps"
-                     },
-                     "overrides": [ ]
-                  },
-                  "gridPos": { },
-                  "id": 16,
-                  "interval": "1m",
-                  "links": [ ],
-                  "options": {
-                     "legend": {
-                        "showLegend": true
-                     },
-                     "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
-                     }
-                  },
-                  "targets": [
-                     {
-                        "expr": "sum by(instance, pod, device) (rate(node_disk_written_bytes_total[$__rate_interval])) + ignoring(pod) group_right() (label_replace(count by(instance, pod, device) (container_fs_writes_bytes_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\", device!~\".*sda.*\"}), \"device\", \"$1\", \"device\", \"/dev/(.*)\") * 0)\n",
-                        "format": "time_series",
-                        "legendFormat": "{{pod}} - {{device}}",
-                        "legendLink": null
-                     }
-                  ],
-                  "title": "Disk Writes",
-                  "type": "timeseries"
-               },
-               {
-                  "datasource": "$datasource",
-                  "fieldConfig": {
-                     "defaults": {
-                        "custom": {
-                           "drawStyle": "line",
-                           "fillOpacity": 100,
-                           "lineWidth": 0,
-                           "pointSize": 5,
-                           "showPoints": "never",
-                           "spanNulls": false,
-                           "stacking": {
-                              "group": "A",
-                              "mode": "normal"
-                           }
-                        },
-                        "thresholds": {
-                           "mode": "absolute",
-                           "steps": [ ]
-                        },
-                        "unit": "Bps"
-                     },
-                     "overrides": [ ]
-                  },
-                  "gridPos": { },
-                  "id": 17,
-                  "interval": "1m",
-                  "links": [ ],
-                  "options": {
-                     "legend": {
-                        "showLegend": true
-                     },
-                     "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
-                     }
-                  },
-                  "targets": [
-                     {
-                        "expr": "sum by(instance, pod, device) (rate(node_disk_read_bytes_total[$__rate_interval])) + ignoring(pod) group_right() (label_replace(count by(instance, pod, device) (container_fs_writes_bytes_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|index-gateway\", pod=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary)\", device!~\".*sda.*\"}), \"device\", \"$1\", \"device\", \"/dev/(.*)\") * 0)\n",
-                        "format": "time_series",
-                        "legendFormat": "{{pod}} - {{device}}",
-                        "legendLink": null
-                     }
-                  ],
-                  "title": "Disk Reads",
-                  "type": "timeseries"
-               },
-               {
-                  "datasource": "$datasource",
-                  "fieldConfig": {
-                     "defaults": {
-                        "custom": {
-                           "drawStyle": "line",
-                           "fillOpacity": 10,
-                           "lineWidth": 1,
-                           "pointSize": 5,
-                           "showPoints": "never",
-                           "spanNulls": false,
-                           "stacking": {
-                              "group": "A",
-                              "mode": "none"
-                           }
-                        },
-                        "thresholds": {
-                           "mode": "absolute",
-                           "steps": [ ]
-                        },
-                        "unit": "percentunit"
-                     },
-                     "overrides": [ ]
-                  },
-                  "gridPos": { },
-                  "id": 18,
-                  "interval": "1m",
-                  "links": [ ],
-                  "options": {
-                     "legend": {
-                        "showLegend": true
-                     },
-                     "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
-                     }
-                  },
-                  "targets": [
-                     {
-                        "expr": "max by(persistentvolumeclaim) (kubelet_volume_stats_used_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\"} / kubelet_volume_stats_capacity_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\"}) and count by(persistentvolumeclaim) (kube_persistentvolumeclaim_labels{cluster=~\"$cluster\", namespace=~\"$namespace\",label_name=~\"(.*index-gateway.*|(loki|enterprise-logs)-read.*|loki-single-binary).*\"})",
-                        "format": "time_series",
-                        "legendFormat": "{{persistentvolumeclaim}}",
-                        "legendLink": null
-                     }
-                  ],
-                  "title": "Disk Space Utilization",
-                  "type": "timeseries"
-               }
-            ],
-            "repeat": null,
-            "repeatIteration": null,
-            "repeatRowId": null,
-            "showTitle": true,
-            "title": "Index Gateway",
-            "titleSize": "h6",
-            "type": "row"
-         },
-         {
-            "collapse": false,
-            "collapsed": false,
-            "panels": [
-               {
-                  "datasource": "$datasource",
-                  "fieldConfig": {
-                     "defaults": {
-                        "custom": {
-                           "drawStyle": "line",
-                           "fillOpacity": 10,
-                           "lineWidth": 1,
-                           "pointSize": 5,
-                           "showPoints": "never",
-                           "spanNulls": false,
-                           "stacking": {
-                              "group": "A",
-                              "mode": "none"
-                           }
-                        },
-                        "thresholds": {
-                           "mode": "absolute",
-                           "steps": [ ]
-                        },
-                        "unit": "short"
-                     },
-                     "overrides": [
-                        {
-                           "matcher": {
-                              "id": "byName",
-                              "options": "request"
-                           },
-                           "properties": [
-                              {
-                                 "id": "color",
-                                 "value": {
-                                    "fixedColor": "#FFC000",
-                                    "mode": "fixed"
-                                 }
-                              },
-                              {
-                                 "id": "custom.fillOpacity",
-                                 "value": 0
-                              }
-                           ]
-                        },
-                        {
-                           "matcher": {
-                              "id": "byName",
-                              "options": "limit"
-                           },
-                           "properties": [
-                              {
-                                 "id": "color",
-                                 "value": {
-                                    "fixedColor": "#E02F44",
-                                    "mode": "fixed"
-                                 }
-                              },
-                              {
-                                 "id": "custom.fillOpacity",
-                                 "value": 0
-                              }
-                           ]
-                        }
-                     ]
-                  },
-                  "gridPos": { },
-                  "id": 19,
-                  "interval": "1m",
-                  "links": [ ],
-                  "options": {
-                     "legend": {
-                        "showLegend": true
-                     },
-                     "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
-                     }
-                  },
-                  "targets": [
-                     {
-                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"}[$__rate_interval]))",
-                        "format": "time_series",
-                        "legendFormat": "{{pod}}",
-                        "legendLink": null
-                     },
-                     {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", resource=\"cpu\"} > 0)",
-                        "format": "time_series",
-                        "legendFormat": "request",
-                        "legendLink": null
-                     },
-                     {
-                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"})",
-                        "format": "time_series",
-                        "legendFormat": "limit",
-                        "legendLink": null
-                     }
-                  ],
-                  "title": "CPU",
-                  "tooltip": {
-                     "sort": 2
-                  },
-                  "type": "timeseries"
-               },
-               {
-                  "datasource": "$datasource",
-                  "fieldConfig": {
-                     "defaults": {
-                        "custom": {
-                           "drawStyle": "line",
-                           "fillOpacity": 10,
-                           "lineWidth": 1,
-                           "pointSize": 5,
-                           "showPoints": "never",
-                           "spanNulls": false,
-                           "stacking": {
-                              "group": "A",
-                              "mode": "none"
-                           }
-                        },
-                        "thresholds": {
-                           "mode": "absolute",
-                           "steps": [ ]
-                        },
-                        "unit": "bytes"
-                     },
-                     "overrides": [
-                        {
-                           "matcher": {
-                              "id": "byName",
-                              "options": "request"
-                           },
-                           "properties": [
-                              {
-                                 "id": "color",
-                                 "value": {
-                                    "fixedColor": "#FFC000",
-                                    "mode": "fixed"
-                                 }
-                              },
-                              {
-                                 "id": "custom.fillOpacity",
-                                 "value": 0
-                              }
-                           ]
-                        },
-                        {
-                           "matcher": {
-                              "id": "byName",
-                              "options": "limit"
-                           },
-                           "properties": [
-                              {
-                                 "id": "color",
-                                 "value": {
-                                    "fixedColor": "#E02F44",
-                                    "mode": "fixed"
-                                 }
-                              },
-                              {
-                                 "id": "custom.fillOpacity",
-                                 "value": 0
-                              }
-                           ]
-                        }
-                     ]
-                  },
-                  "gridPos": { },
-                  "id": 20,
-                  "interval": "1m",
-                  "links": [ ],
-                  "options": {
-                     "legend": {
-                        "showLegend": true
-                     },
-                     "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
-                     }
-                  },
-                  "targets": [
-                     {
-                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"})",
-                        "format": "time_series",
-                        "legendFormat": "{{pod}}",
-                        "legendLink": null
-                     },
-                     {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", resource=\"memory\"} > 0)",
-                        "format": "time_series",
-                        "legendFormat": "request",
-                        "legendLink": null
-                     },
-                     {
-                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\"} > 0)",
-                        "format": "time_series",
-                        "legendFormat": "limit",
-                        "legendLink": null
-                     }
-                  ],
-                  "title": "Memory (workingset)",
-                  "tooltip": {
-                     "sort": 2
-                  },
-                  "type": "timeseries"
-               },
-               {
-                  "datasource": "$datasource",
-                  "fieldConfig": {
-                     "defaults": {
-                        "custom": {
-                           "drawStyle": "line",
-                           "fillOpacity": 10,
-                           "lineWidth": 1,
-                           "pointSize": 5,
-                           "showPoints": "never",
-                           "spanNulls": false,
-                           "stacking": {
-                              "group": "A",
-                              "mode": "none"
-                           }
-                        },
-                        "thresholds": {
-                           "mode": "absolute",
-                           "steps": [ ]
-                        },
-                        "unit": "bytes"
-                     },
-                     "overrides": [ ]
-                  },
-                  "gridPos": { },
-                  "id": 21,
-                  "interval": "1m",
-                  "links": [ ],
-                  "options": {
-                     "legend": {
-                        "showLegend": true
-                     },
-                     "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
-                     }
-                  },
-                  "targets": [
-                     {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*bloom-gateway|loki-read|loki-single-binary)\"})",
-                        "format": "time_series",
-                        "legendFormat": "{{pod}}",
-                        "legendLink": null
-                     }
-                  ],
-                  "title": "Memory (go heap inuse)",
-                  "tooltip": {
-                     "sort": 2
-                  },
-                  "type": "timeseries"
-               },
-               {
-                  "datasource": "$datasource",
-                  "fieldConfig": {
-                     "defaults": {
-                        "custom": {
-                           "drawStyle": "line",
-                           "fillOpacity": 100,
-                           "lineWidth": 0,
-                           "pointSize": 5,
-                           "showPoints": "never",
-                           "spanNulls": false,
-                           "stacking": {
-                              "group": "A",
-                              "mode": "normal"
-                           }
-                        },
-                        "thresholds": {
-                           "mode": "absolute",
-                           "steps": [ ]
-                        },
-                        "unit": "Bps"
-                     },
-                     "overrides": [ ]
-                  },
-                  "gridPos": { },
-                  "id": 22,
-                  "interval": "1m",
-                  "links": [ ],
-                  "options": {
-                     "legend": {
-                        "showLegend": true
-                     },
-                     "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
-                     }
-                  },
-                  "targets": [
-                     {
-                        "expr": "sum by(instance, pod, device) (rate(node_disk_written_bytes_total[$__rate_interval])) + ignoring(pod) group_right() (label_replace(count by(instance, pod, device) (container_fs_writes_bytes_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", device!~\".*sda.*\"}), \"device\", \"$1\", \"device\", \"/dev/(.*)\") * 0)\n",
-                        "format": "time_series",
-                        "legendFormat": "{{pod}} - {{device}}",
-                        "legendLink": null
-                     }
-                  ],
-                  "title": "Disk Writes",
-                  "type": "timeseries"
-               },
-               {
-                  "datasource": "$datasource",
-                  "fieldConfig": {
-                     "defaults": {
-                        "custom": {
-                           "drawStyle": "line",
-                           "fillOpacity": 100,
-                           "lineWidth": 0,
-                           "pointSize": 5,
-                           "showPoints": "never",
-                           "spanNulls": false,
-                           "stacking": {
-                              "group": "A",
-                              "mode": "normal"
-                           }
-                        },
-                        "thresholds": {
-                           "mode": "absolute",
-                           "steps": [ ]
-                        },
-                        "unit": "Bps"
-                     },
-                     "overrides": [ ]
-                  },
-                  "gridPos": { },
-                  "id": 23,
-                  "interval": "1m",
-                  "links": [ ],
-                  "options": {
-                     "legend": {
-                        "showLegend": true
-                     },
-                     "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
-                     }
-                  },
-                  "targets": [
-                     {
-                        "expr": "sum by(instance, pod, device) (rate(node_disk_read_bytes_total[$__rate_interval])) + ignoring(pod) group_right() (label_replace(count by(instance, pod, device) (container_fs_writes_bytes_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"bloom-gateway|loki\", pod=~\"query-frontend|loki-read-.*|$namespace-[0-9]*\", device!~\".*sda.*\"}), \"device\", \"$1\", \"device\", \"/dev/(.*)\") * 0)\n",
-                        "format": "time_series",
-                        "legendFormat": "{{pod}} - {{device}}",
-                        "legendLink": null
-                     }
-                  ],
-                  "title": "Disk Reads",
-                  "type": "timeseries"
-               },
-               {
-                  "datasource": "$datasource",
-                  "fieldConfig": {
-                     "defaults": {
-                        "custom": {
-                           "drawStyle": "line",
-                           "fillOpacity": 10,
-                           "lineWidth": 1,
-                           "pointSize": 5,
-                           "showPoints": "never",
-                           "spanNulls": false,
-                           "stacking": {
-                              "group": "A",
-                              "mode": "none"
-                           }
-                        },
-                        "thresholds": {
-                           "mode": "absolute",
-                           "steps": [ ]
-                        },
-                        "unit": "percentunit"
-                     },
-                     "overrides": [ ]
-                  },
-                  "gridPos": { },
-                  "id": 24,
-                  "interval": "1m",
-                  "links": [ ],
-                  "options": {
-                     "legend": {
-                        "showLegend": true
-                     },
-                     "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
-                     }
-                  },
-                  "targets": [
-                     {
-                        "expr": "max by(persistentvolumeclaim) (kubelet_volume_stats_used_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\"} / kubelet_volume_stats_capacity_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\"}) and count by(persistentvolumeclaim) (kube_persistentvolumeclaim_labels{cluster=~\"$cluster\", namespace=~\"$namespace\",label_name=~\"bloom-gateway.*\"})",
-                        "format": "time_series",
-                        "legendFormat": "{{persistentvolumeclaim}}",
-                        "legendLink": null
-                     }
-                  ],
-                  "title": "Disk Space Utilization",
-                  "type": "timeseries"
-               }
-            ],
-            "repeat": null,
-            "repeatIteration": null,
-            "repeatRowId": null,
-            "showTitle": true,
-            "title": "Bloom Gateway",
-            "titleSize": "h6",
-            "type": "row"
          },
          {
             "collapse": false,
@@ -1802,7 +478,7 @@
                      "defaults": {
                         "custom": {
                            "drawStyle": "line",
-                           "fillOpacity": 10,
+                           "fillOpacity": 0,
                            "lineWidth": 1,
                            "pointSize": 5,
                            "showPoints": "never",
@@ -1812,6 +488,7 @@
                               "mode": "none"
                            }
                         },
+                        "min": 0,
                         "thresholds": {
                            "mode": "absolute",
                            "steps": [ ]
@@ -1835,6 +512,12 @@
                               {
                                  "id": "custom.fillOpacity",
                                  "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
                               }
                            ]
                         },
@@ -1854,48 +537,50 @@
                               {
                                  "id": "custom.fillOpacity",
                                  "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
                               }
                            ]
                         }
                      ]
                   },
-                  "id": 25,
-                  "interval": "1m",
+                  "id": 7,
                   "links": [ ],
                   "options": {
                      "legend": {
                         "showLegend": true
                      },
                      "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
+                        "mode": "multi",
+                        "sort": "desc"
                      }
                   },
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(.*ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\"}[$__rate_interval]))",
+                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-scheduler\"}[$__rate_interval]))",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(.*ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\", resource=\"cpu\"} > 0)",
+                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-scheduler\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-scheduler\"})",
                         "format": "time_series",
-                        "legendFormat": "request",
+                        "legendFormat": "limit",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(.*ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(.*ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\"})",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-scheduler\",resource=\"cpu\"})",
                         "format": "time_series",
-                        "legendFormat": "limit",
+                        "legendFormat": "request",
                         "legendLink": null
                      }
                   ],
                   "title": "CPU",
-                  "tooltip": {
-                     "sort": 2
-                  },
                   "type": "timeseries"
                },
                {
@@ -1904,7 +589,7 @@
                      "defaults": {
                         "custom": {
                            "drawStyle": "line",
-                           "fillOpacity": 10,
+                           "fillOpacity": 0,
                            "lineWidth": 1,
                            "pointSize": 5,
                            "showPoints": "never",
@@ -1914,6 +599,7 @@
                               "mode": "none"
                            }
                         },
+                        "min": 0,
                         "thresholds": {
                            "mode": "absolute",
                            "steps": [ ]
@@ -1937,6 +623,12 @@
                               {
                                  "id": "custom.fillOpacity",
                                  "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
                               }
                            ]
                         },
@@ -1956,48 +648,50 @@
                               {
                                  "id": "custom.fillOpacity",
                                  "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
                               }
                            ]
                         }
                      ]
                   },
-                  "id": 26,
-                  "interval": "1m",
+                  "id": 8,
                   "links": [ ],
                   "options": {
                      "legend": {
                         "showLegend": true
                      },
                      "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
+                        "mode": "multi",
+                        "sort": "desc"
                      }
                   },
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(.*ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\"})",
+                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-scheduler\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(.*ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\", resource=\"memory\"} > 0)",
+                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-scheduler\"} > 0)",
                         "format": "time_series",
-                        "legendFormat": "request",
+                        "legendFormat": "limit",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"loki|ingester\", pod=~\"(.*ingester.*|(loki|enterprise-logs)-write.*|loki-single-binary)\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-scheduler\",resource=\"memory\"})",
                         "format": "time_series",
-                        "legendFormat": "limit",
+                        "legendFormat": "request",
                         "legendLink": null
                      }
                   ],
                   "title": "Memory (workingset)",
-                  "tooltip": {
-                     "sort": 2
-                  },
                   "type": "timeseries"
                },
                {
@@ -2006,7 +700,7 @@
                      "defaults": {
                         "custom": {
                            "drawStyle": "line",
-                           "fillOpacity": 10,
+                           "fillOpacity": 0,
                            "lineWidth": 1,
                            "pointSize": 5,
                            "showPoints": "never",
@@ -2016,6 +710,7 @@
                               "mode": "none"
                            }
                         },
+                        "min": 0,
                         "thresholds": {
                            "mode": "absolute",
                            "steps": [ ]
@@ -2024,31 +719,480 @@
                      },
                      "overrides": [ ]
                   },
-                  "id": 27,
-                  "interval": "1m",
+                  "id": 9,
                   "links": [ ],
                   "options": {
                      "legend": {
                         "showLegend": true
                      },
                      "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
+                        "mode": "multi",
+                        "sort": "desc"
                      }
                   },
                   "span": 4,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*ingester.*|(loki|enterprise-logs)-write|loki-single-binary)\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"query-scheduler\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      }
                   ],
                   "title": "Memory (go heap inuse)",
-                  "tooltip": {
-                     "sort": 2
+                  "type": "timeseries"
+               }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": true,
+            "title": "Query-scheduler",
+            "titleSize": "h6"
+         },
+         {
+            "collapse": false,
+            "height": "250px",
+            "panels": [
+               {
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "custom": {
+                           "drawStyle": "line",
+                           "fillOpacity": 0,
+                           "lineWidth": 1,
+                           "pointSize": 5,
+                           "showPoints": "never",
+                           "spanNulls": false,
+                           "stacking": {
+                              "group": "A",
+                              "mode": "none"
+                           }
+                        },
+                        "min": 0,
+                        "thresholds": {
+                           "mode": "absolute",
+                           "steps": [ ]
+                        },
+                        "unit": "short"
+                     },
+                     "overrides": [
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "request"
+                           },
+                           "properties": [
+                              {
+                                 "id": "color",
+                                 "value": {
+                                    "fixedColor": "#FFC000",
+                                    "mode": "fixed"
+                                 }
+                              },
+                              {
+                                 "id": "custom.fillOpacity",
+                                 "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "limit"
+                           },
+                           "properties": [
+                              {
+                                 "id": "color",
+                                 "value": {
+                                    "fixedColor": "#E02F44",
+                                    "mode": "fixed"
+                                 }
+                              },
+                              {
+                                 "id": "custom.fillOpacity",
+                                 "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
+                              }
+                           ]
+                        }
+                     ]
                   },
+                  "id": 10,
+                  "links": [ ],
+                  "options": {
+                     "legend": {
+                        "showLegend": true
+                     },
+                     "tooltip": {
+                        "mode": "multi",
+                        "sort": "desc"
+                     }
+                  },
+                  "span": 4,
+                  "targets": [
+                     {
+                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"querier\"}[$__rate_interval]))",
+                        "format": "time_series",
+                        "legendFormat": "{{pod}}",
+                        "legendLink": null
+                     },
+                     {
+                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"querier\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"querier\"})",
+                        "format": "time_series",
+                        "legendFormat": "limit",
+                        "legendLink": null
+                     },
+                     {
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"querier\",resource=\"cpu\"})",
+                        "format": "time_series",
+                        "legendFormat": "request",
+                        "legendLink": null
+                     }
+                  ],
+                  "title": "CPU",
+                  "type": "timeseries"
+               },
+               {
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "custom": {
+                           "drawStyle": "line",
+                           "fillOpacity": 0,
+                           "lineWidth": 1,
+                           "pointSize": 5,
+                           "showPoints": "never",
+                           "spanNulls": false,
+                           "stacking": {
+                              "group": "A",
+                              "mode": "none"
+                           }
+                        },
+                        "min": 0,
+                        "thresholds": {
+                           "mode": "absolute",
+                           "steps": [ ]
+                        },
+                        "unit": "bytes"
+                     },
+                     "overrides": [
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "request"
+                           },
+                           "properties": [
+                              {
+                                 "id": "color",
+                                 "value": {
+                                    "fixedColor": "#FFC000",
+                                    "mode": "fixed"
+                                 }
+                              },
+                              {
+                                 "id": "custom.fillOpacity",
+                                 "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "limit"
+                           },
+                           "properties": [
+                              {
+                                 "id": "color",
+                                 "value": {
+                                    "fixedColor": "#E02F44",
+                                    "mode": "fixed"
+                                 }
+                              },
+                              {
+                                 "id": "custom.fillOpacity",
+                                 "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
+                              }
+                           ]
+                        }
+                     ]
+                  },
+                  "id": 11,
+                  "links": [ ],
+                  "options": {
+                     "legend": {
+                        "showLegend": true
+                     },
+                     "tooltip": {
+                        "mode": "multi",
+                        "sort": "desc"
+                     }
+                  },
+                  "span": 4,
+                  "targets": [
+                     {
+                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"querier\"})",
+                        "format": "time_series",
+                        "legendFormat": "{{pod}}",
+                        "legendLink": null
+                     },
+                     {
+                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"querier\"} > 0)",
+                        "format": "time_series",
+                        "legendFormat": "limit",
+                        "legendLink": null
+                     },
+                     {
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"querier\",resource=\"memory\"})",
+                        "format": "time_series",
+                        "legendFormat": "request",
+                        "legendLink": null
+                     }
+                  ],
+                  "title": "Memory (workingset)",
+                  "type": "timeseries"
+               },
+               {
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "custom": {
+                           "drawStyle": "line",
+                           "fillOpacity": 0,
+                           "lineWidth": 1,
+                           "pointSize": 5,
+                           "showPoints": "never",
+                           "spanNulls": false,
+                           "stacking": {
+                              "group": "A",
+                              "mode": "none"
+                           }
+                        },
+                        "min": 0,
+                        "thresholds": {
+                           "mode": "absolute",
+                           "steps": [ ]
+                        },
+                        "unit": "bytes"
+                     },
+                     "overrides": [ ]
+                  },
+                  "id": 12,
+                  "links": [ ],
+                  "options": {
+                     "legend": {
+                        "showLegend": true
+                     },
+                     "tooltip": {
+                        "mode": "multi",
+                        "sort": "desc"
+                     }
+                  },
+                  "span": 4,
+                  "targets": [
+                     {
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"querier\"})",
+                        "format": "time_series",
+                        "legendFormat": "{{pod}}",
+                        "legendLink": null
+                     }
+                  ],
+                  "title": "Memory (go heap inuse)",
+                  "type": "timeseries"
+               }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": true,
+            "title": "Querier",
+            "titleSize": "h6"
+         },
+         {
+            "collapse": false,
+            "height": "250px",
+            "panels": [
+               {
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "custom": {
+                           "drawStyle": "line",
+                           "fillOpacity": 0,
+                           "lineWidth": 1,
+                           "pointSize": 5,
+                           "showPoints": "never",
+                           "spanNulls": false,
+                           "stacking": {
+                              "group": "A",
+                              "mode": "none"
+                           }
+                        },
+                        "min": 0,
+                        "thresholds": {
+                           "mode": "absolute",
+                           "steps": [ ]
+                        },
+                        "unit": "short"
+                     },
+                     "overrides": [
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "request"
+                           },
+                           "properties": [
+                              {
+                                 "id": "color",
+                                 "value": {
+                                    "fixedColor": "#FFC000",
+                                    "mode": "fixed"
+                                 }
+                              },
+                              {
+                                 "id": "custom.fillOpacity",
+                                 "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "limit"
+                           },
+                           "properties": [
+                              {
+                                 "id": "color",
+                                 "value": {
+                                    "fixedColor": "#E02F44",
+                                    "mode": "fixed"
+                                 }
+                              },
+                              {
+                                 "id": "custom.fillOpacity",
+                                 "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
+                              }
+                           ]
+                        }
+                     ]
+                  },
+                  "id": 13,
+                  "links": [ ],
+                  "options": {
+                     "legend": {
+                        "showLegend": true
+                     },
+                     "tooltip": {
+                        "mode": "multi",
+                        "sort": "desc"
+                     }
+                  },
+                  "span": 6,
+                  "targets": [
+                     {
+                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ingester\"}[$__rate_interval]))",
+                        "format": "time_series",
+                        "legendFormat": "{{pod}}",
+                        "legendLink": null
+                     },
+                     {
+                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ingester\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ingester\"})",
+                        "format": "time_series",
+                        "legendFormat": "limit",
+                        "legendLink": null
+                     },
+                     {
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ingester\",resource=\"cpu\"})",
+                        "format": "time_series",
+                        "legendFormat": "request",
+                        "legendLink": null
+                     }
+                  ],
+                  "title": "CPU",
+                  "type": "timeseries"
+               },
+               {
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "custom": {
+                           "drawStyle": "line",
+                           "fillOpacity": 0,
+                           "lineWidth": 1,
+                           "pointSize": 5,
+                           "showPoints": "never",
+                           "spanNulls": false,
+                           "stacking": {
+                              "group": "A",
+                              "mode": "none"
+                           }
+                        },
+                        "min": 0,
+                        "thresholds": {
+                           "mode": "absolute",
+                           "steps": [ ]
+                        },
+                        "unit": "bytes"
+                     },
+                     "overrides": [ ]
+                  },
+                  "id": 14,
+                  "links": [ ],
+                  "options": {
+                     "legend": {
+                        "showLegend": true
+                     },
+                     "tooltip": {
+                        "mode": "multi",
+                        "sort": "desc"
+                     }
+                  },
+                  "span": 6,
+                  "targets": [
+                     {
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ingester\"})",
+                        "format": "time_series",
+                        "legendFormat": "{{pod}}",
+                        "legendLink": null
+                     }
+                  ],
+                  "title": "Memory (go heap inuse)",
                   "type": "timeseries"
                }
             ],
@@ -2061,7 +1205,7 @@
          },
          {
             "collapse": false,
-            "collapsed": false,
+            "height": "250px",
             "panels": [
                {
                   "datasource": "$datasource",
@@ -2069,7 +1213,7 @@
                      "defaults": {
                         "custom": {
                            "drawStyle": "line",
-                           "fillOpacity": 10,
+                           "fillOpacity": 0,
                            "lineWidth": 1,
                            "pointSize": 5,
                            "showPoints": "never",
@@ -2079,6 +1223,241 @@
                               "mode": "none"
                            }
                         },
+                        "min": 0,
+                        "thresholds": {
+                           "mode": "absolute",
+                           "steps": [ ]
+                        },
+                        "unit": "bytes"
+                     },
+                     "overrides": [
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "request"
+                           },
+                           "properties": [
+                              {
+                                 "id": "color",
+                                 "value": {
+                                    "fixedColor": "#FFC000",
+                                    "mode": "fixed"
+                                 }
+                              },
+                              {
+                                 "id": "custom.fillOpacity",
+                                 "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "limit"
+                           },
+                           "properties": [
+                              {
+                                 "id": "color",
+                                 "value": {
+                                    "fixedColor": "#E02F44",
+                                    "mode": "fixed"
+                                 }
+                              },
+                              {
+                                 "id": "custom.fillOpacity",
+                                 "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
+                              }
+                           ]
+                        }
+                     ]
+                  },
+                  "id": 15,
+                  "links": [ ],
+                  "options": {
+                     "legend": {
+                        "showLegend": true
+                     },
+                     "tooltip": {
+                        "mode": "multi",
+                        "sort": "desc"
+                     }
+                  },
+                  "span": 6,
+                  "targets": [
+                     {
+                        "expr": "max by(pod) (container_memory_rss{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ingester\"})",
+                        "format": "time_series",
+                        "legendFormat": "{{pod}}",
+                        "legendLink": null
+                     },
+                     {
+                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ingester\"} > 0)",
+                        "format": "time_series",
+                        "legendFormat": "limit",
+                        "legendLink": null
+                     },
+                     {
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ingester\",resource=\"memory\"})",
+                        "format": "time_series",
+                        "legendFormat": "request",
+                        "legendLink": null
+                     }
+                  ],
+                  "title": "Memory (RSS)",
+                  "type": "timeseries"
+               },
+               {
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "custom": {
+                           "drawStyle": "line",
+                           "fillOpacity": 0,
+                           "lineWidth": 1,
+                           "pointSize": 5,
+                           "showPoints": "never",
+                           "spanNulls": false,
+                           "stacking": {
+                              "group": "A",
+                              "mode": "none"
+                           }
+                        },
+                        "min": 0,
+                        "thresholds": {
+                           "mode": "absolute",
+                           "steps": [ ]
+                        },
+                        "unit": "bytes"
+                     },
+                     "overrides": [
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "request"
+                           },
+                           "properties": [
+                              {
+                                 "id": "color",
+                                 "value": {
+                                    "fixedColor": "#FFC000",
+                                    "mode": "fixed"
+                                 }
+                              },
+                              {
+                                 "id": "custom.fillOpacity",
+                                 "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "limit"
+                           },
+                           "properties": [
+                              {
+                                 "id": "color",
+                                 "value": {
+                                    "fixedColor": "#E02F44",
+                                    "mode": "fixed"
+                                 }
+                              },
+                              {
+                                 "id": "custom.fillOpacity",
+                                 "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
+                              }
+                           ]
+                        }
+                     ]
+                  },
+                  "id": 16,
+                  "links": [ ],
+                  "options": {
+                     "legend": {
+                        "showLegend": true
+                     },
+                     "tooltip": {
+                        "mode": "multi",
+                        "sort": "desc"
+                     }
+                  },
+                  "span": 6,
+                  "targets": [
+                     {
+                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ingester\"})",
+                        "format": "time_series",
+                        "legendFormat": "{{pod}}",
+                        "legendLink": null
+                     },
+                     {
+                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ingester\"} > 0)",
+                        "format": "time_series",
+                        "legendFormat": "limit",
+                        "legendLink": null
+                     },
+                     {
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ingester\",resource=\"memory\"})",
+                        "format": "time_series",
+                        "legendFormat": "request",
+                        "legendLink": null
+                     }
+                  ],
+                  "title": "Memory (workingset)",
+                  "type": "timeseries"
+               }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": true,
+            "title": "",
+            "titleSize": "h6"
+         },
+         {
+            "collapse": false,
+            "height": "250px",
+            "panels": [
+               {
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "custom": {
+                           "drawStyle": "line",
+                           "fillOpacity": 1,
+                           "lineWidth": 1,
+                           "pointSize": 5,
+                           "showPoints": "never",
+                           "spanNulls": false,
+                           "stacking": {
+                              "group": "A",
+                              "mode": "none"
+                           }
+                        },
+                        "min": 0,
                         "thresholds": {
                            "mode": "absolute",
                            "steps": [ ]
@@ -2087,22 +1466,21 @@
                      },
                      "overrides": [ ]
                   },
-                  "gridPos": { },
-                  "id": 28,
-                  "interval": "1m",
+                  "id": 17,
                   "links": [ ],
                   "options": {
                      "legend": {
                         "showLegend": true
                      },
                      "tooltip": {
-                        "mode": "single",
+                        "mode": "multi",
                         "sort": "none"
                      }
                   },
+                  "span": 6,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (loki_prometheus_rule_group_rules{cluster=~\"$cluster\", job=~\"($namespace)/ruler\"}) or sum by(pod) (cortex_prometheus_rule_group_rules{cluster=~\"$cluster\", job=~\"($namespace)/ruler\"})",
+                        "expr": "sum by(pod) (cortex_prometheus_rule_group_rules{cluster=~\"$cluster\", job=~\"($namespace)/((ruler|cortex|mimir|mimir-backend.*))\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
@@ -2117,7 +1495,7 @@
                      "defaults": {
                         "custom": {
                            "drawStyle": "line",
-                           "fillOpacity": 10,
+                           "fillOpacity": 0,
                            "lineWidth": 1,
                            "pointSize": 5,
                            "showPoints": "never",
@@ -2127,6 +1505,7 @@
                               "mode": "none"
                            }
                         },
+                        "min": 0,
                         "thresholds": {
                            "mode": "absolute",
                            "steps": [ ]
@@ -2150,6 +1529,12 @@
                               {
                                  "id": "custom.fillOpacity",
                                  "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
                               }
                            ]
                         },
@@ -2169,57 +1554,71 @@
                               {
                                  "id": "custom.fillOpacity",
                                  "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
                               }
                            ]
                         }
                      ]
                   },
-                  "gridPos": { },
-                  "id": 29,
-                  "interval": "1m",
+                  "id": 18,
                   "links": [ ],
                   "options": {
                      "legend": {
                         "showLegend": true
                      },
                      "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
+                        "mode": "multi",
+                        "sort": "desc"
                      }
                   },
+                  "span": 6,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler|loki\", pod=~\"ruler|loki-backend-.*|$namespace-[0-9]*\"}[$__rate_interval]))",
+                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ruler\"}[$__rate_interval]))",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler|loki\", pod=~\"ruler|loki-backend-.*|$namespace-[0-9]*\", resource=\"cpu\"} > 0)",
+                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ruler\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ruler\"})",
                         "format": "time_series",
-                        "legendFormat": "request",
+                        "legendFormat": "limit",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler|loki\", pod=~\"ruler|loki-backend-.*|$namespace-[0-9]*\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler|loki\", pod=~\"ruler|loki-backend-.*|$namespace-[0-9]*\"})",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ruler\",resource=\"cpu\"})",
                         "format": "time_series",
-                        "legendFormat": "limit",
+                        "legendFormat": "request",
                         "legendLink": null
                      }
                   ],
                   "title": "CPU",
-                  "tooltip": {
-                     "sort": 2
-                  },
                   "type": "timeseries"
-               },
+               }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": true,
+            "title": "Ruler",
+            "titleSize": "h6"
+         },
+         {
+            "collapse": false,
+            "height": "250px",
+            "panels": [
                {
                   "datasource": "$datasource",
                   "fieldConfig": {
                      "defaults": {
                         "custom": {
                            "drawStyle": "line",
-                           "fillOpacity": 10,
+                           "fillOpacity": 0,
                            "lineWidth": 1,
                            "pointSize": 5,
                            "showPoints": "never",
@@ -2229,6 +1628,7 @@
                               "mode": "none"
                            }
                         },
+                        "min": 0,
                         "thresholds": {
                            "mode": "absolute",
                            "steps": [ ]
@@ -2252,6 +1652,12 @@
                               {
                                  "id": "custom.fillOpacity",
                                  "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
                               }
                            ]
                         },
@@ -2271,48 +1677,50 @@
                               {
                                  "id": "custom.fillOpacity",
                                  "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
                               }
                            ]
                         }
                      ]
                   },
-                  "gridPos": { },
-                  "id": 30,
-                  "interval": "1m",
+                  "id": 19,
                   "links": [ ],
                   "options": {
                      "legend": {
                         "showLegend": true
                      },
                      "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
+                        "mode": "multi",
+                        "sort": "desc"
                      }
                   },
+                  "span": 6,
                   "targets": [
                      {
-                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler|loki\", pod=~\"ruler|loki-backend-.*|$namespace-[0-9]*\"})",
+                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ruler\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler|loki\", pod=~\"ruler|loki-backend-.*|$namespace-[0-9]*\", resource=\"memory\"} > 0)",
+                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ruler\"} > 0)",
                         "format": "time_series",
-                        "legendFormat": "request",
+                        "legendFormat": "limit",
                         "legendLink": null
                      },
                      {
-                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"ruler|loki\", pod=~\"ruler|loki-backend-.*|$namespace-[0-9]*\"} > 0)",
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ruler\",resource=\"memory\"})",
                         "format": "time_series",
-                        "legendFormat": "limit",
+                        "legendFormat": "request",
                         "legendLink": null
                      }
                   ],
                   "title": "Memory (workingset)",
-                  "tooltip": {
-                     "sort": 2
-                  },
                   "type": "timeseries"
                },
                {
@@ -2321,7 +1729,7 @@
                      "defaults": {
                         "custom": {
                            "drawStyle": "line",
-                           "fillOpacity": 10,
+                           "fillOpacity": 0,
                            "lineWidth": 1,
                            "pointSize": 5,
                            "showPoints": "never",
@@ -2331,6 +1739,7 @@
                               "mode": "none"
                            }
                         },
+                        "min": 0,
                         "thresholds": {
                            "mode": "absolute",
                            "steps": [ ]
@@ -2339,31 +1748,27 @@
                      },
                      "overrides": [ ]
                   },
-                  "gridPos": { },
-                  "id": 31,
-                  "interval": "1m",
+                  "id": 20,
                   "links": [ ],
                   "options": {
                      "legend": {
                         "showLegend": true
                      },
                      "tooltip": {
-                        "mode": "single",
-                        "sort": "none"
+                        "mode": "multi",
+                        "sort": "desc"
                      }
                   },
+                  "span": 6,
                   "targets": [
                      {
-                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", job=~\"($namespace)/(.*ruler|loki-backend|loki-single-binary)\"})",
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"ruler\"})",
                         "format": "time_series",
                         "legendFormat": "{{pod}}",
                         "legendLink": null
                      }
                   ],
                   "title": "Memory (go heap inuse)",
-                  "tooltip": {
-                     "sort": 2
-                  },
                   "type": "timeseries"
                }
             ],
@@ -2371,15 +1776,578 @@
             "repeatIteration": null,
             "repeatRowId": null,
             "showTitle": true,
-            "title": "Ruler",
-            "titleSize": "h6",
-            "type": "row"
+            "title": "",
+            "titleSize": "h6"
+         },
+         {
+            "collapse": false,
+            "height": "250px",
+            "panels": [
+               {
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "custom": {
+                           "drawStyle": "line",
+                           "fillOpacity": 0,
+                           "lineWidth": 1,
+                           "pointSize": 5,
+                           "showPoints": "never",
+                           "spanNulls": false,
+                           "stacking": {
+                              "group": "A",
+                              "mode": "none"
+                           }
+                        },
+                        "min": 0,
+                        "thresholds": {
+                           "mode": "absolute",
+                           "steps": [ ]
+                        },
+                        "unit": "short"
+                     },
+                     "overrides": [
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "request"
+                           },
+                           "properties": [
+                              {
+                                 "id": "color",
+                                 "value": {
+                                    "fixedColor": "#FFC000",
+                                    "mode": "fixed"
+                                 }
+                              },
+                              {
+                                 "id": "custom.fillOpacity",
+                                 "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "limit"
+                           },
+                           "properties": [
+                              {
+                                 "id": "color",
+                                 "value": {
+                                    "fixedColor": "#E02F44",
+                                    "mode": "fixed"
+                                 }
+                              },
+                              {
+                                 "id": "custom.fillOpacity",
+                                 "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
+                              }
+                           ]
+                        }
+                     ]
+                  },
+                  "id": 21,
+                  "links": [ ],
+                  "options": {
+                     "legend": {
+                        "showLegend": true
+                     },
+                     "tooltip": {
+                        "mode": "multi",
+                        "sort": "desc"
+                     }
+                  },
+                  "span": 6,
+                  "targets": [
+                     {
+                        "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"store-gateway\"}[$__rate_interval]))",
+                        "format": "time_series",
+                        "legendFormat": "{{pod}}",
+                        "legendLink": null
+                     },
+                     {
+                        "expr": "min(container_spec_cpu_quota{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"store-gateway\"} / container_spec_cpu_period{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"store-gateway\"})",
+                        "format": "time_series",
+                        "legendFormat": "limit",
+                        "legendLink": null
+                     },
+                     {
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"store-gateway\",resource=\"cpu\"})",
+                        "format": "time_series",
+                        "legendFormat": "request",
+                        "legendLink": null
+                     }
+                  ],
+                  "title": "CPU",
+                  "type": "timeseries"
+               },
+               {
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "custom": {
+                           "drawStyle": "line",
+                           "fillOpacity": 0,
+                           "lineWidth": 1,
+                           "pointSize": 5,
+                           "showPoints": "never",
+                           "spanNulls": false,
+                           "stacking": {
+                              "group": "A",
+                              "mode": "none"
+                           }
+                        },
+                        "min": 0,
+                        "thresholds": {
+                           "mode": "absolute",
+                           "steps": [ ]
+                        },
+                        "unit": "bytes"
+                     },
+                     "overrides": [ ]
+                  },
+                  "id": 22,
+                  "links": [ ],
+                  "options": {
+                     "legend": {
+                        "showLegend": true
+                     },
+                     "tooltip": {
+                        "mode": "multi",
+                        "sort": "desc"
+                     }
+                  },
+                  "span": 6,
+                  "targets": [
+                     {
+                        "expr": "sum by(pod) (go_memstats_heap_inuse_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"store-gateway\"})",
+                        "format": "time_series",
+                        "legendFormat": "{{pod}}",
+                        "legendLink": null
+                     }
+                  ],
+                  "title": "Memory (go heap inuse)",
+                  "type": "timeseries"
+               }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": true,
+            "title": "Store-gateway",
+            "titleSize": "h6"
+         },
+         {
+            "collapse": false,
+            "height": "250px",
+            "panels": [
+               {
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "custom": {
+                           "drawStyle": "line",
+                           "fillOpacity": 0,
+                           "lineWidth": 1,
+                           "pointSize": 5,
+                           "showPoints": "never",
+                           "spanNulls": false,
+                           "stacking": {
+                              "group": "A",
+                              "mode": "none"
+                           }
+                        },
+                        "min": 0,
+                        "thresholds": {
+                           "mode": "absolute",
+                           "steps": [ ]
+                        },
+                        "unit": "bytes"
+                     },
+                     "overrides": [
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "request"
+                           },
+                           "properties": [
+                              {
+                                 "id": "color",
+                                 "value": {
+                                    "fixedColor": "#FFC000",
+                                    "mode": "fixed"
+                                 }
+                              },
+                              {
+                                 "id": "custom.fillOpacity",
+                                 "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "limit"
+                           },
+                           "properties": [
+                              {
+                                 "id": "color",
+                                 "value": {
+                                    "fixedColor": "#E02F44",
+                                    "mode": "fixed"
+                                 }
+                              },
+                              {
+                                 "id": "custom.fillOpacity",
+                                 "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
+                              }
+                           ]
+                        }
+                     ]
+                  },
+                  "id": 23,
+                  "links": [ ],
+                  "options": {
+                     "legend": {
+                        "showLegend": true
+                     },
+                     "tooltip": {
+                        "mode": "multi",
+                        "sort": "desc"
+                     }
+                  },
+                  "span": 6,
+                  "targets": [
+                     {
+                        "expr": "max by(pod) (container_memory_rss{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"store-gateway\"})",
+                        "format": "time_series",
+                        "legendFormat": "{{pod}}",
+                        "legendLink": null
+                     },
+                     {
+                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"store-gateway\"} > 0)",
+                        "format": "time_series",
+                        "legendFormat": "limit",
+                        "legendLink": null
+                     },
+                     {
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"store-gateway\",resource=\"memory\"})",
+                        "format": "time_series",
+                        "legendFormat": "request",
+                        "legendLink": null
+                     }
+                  ],
+                  "title": "Memory (RSS)",
+                  "type": "timeseries"
+               },
+               {
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "custom": {
+                           "drawStyle": "line",
+                           "fillOpacity": 0,
+                           "lineWidth": 1,
+                           "pointSize": 5,
+                           "showPoints": "never",
+                           "spanNulls": false,
+                           "stacking": {
+                              "group": "A",
+                              "mode": "none"
+                           }
+                        },
+                        "min": 0,
+                        "thresholds": {
+                           "mode": "absolute",
+                           "steps": [ ]
+                        },
+                        "unit": "bytes"
+                     },
+                     "overrides": [
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "request"
+                           },
+                           "properties": [
+                              {
+                                 "id": "color",
+                                 "value": {
+                                    "fixedColor": "#FFC000",
+                                    "mode": "fixed"
+                                 }
+                              },
+                              {
+                                 "id": "custom.fillOpacity",
+                                 "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
+                              }
+                           ]
+                        },
+                        {
+                           "matcher": {
+                              "id": "byName",
+                              "options": "limit"
+                           },
+                           "properties": [
+                              {
+                                 "id": "color",
+                                 "value": {
+                                    "fixedColor": "#E02F44",
+                                    "mode": "fixed"
+                                 }
+                              },
+                              {
+                                 "id": "custom.fillOpacity",
+                                 "value": 0
+                              },
+                              {
+                                 "id": "custom.lineStyle",
+                                 "value": {
+                                    "fill": "dash"
+                                 }
+                              }
+                           ]
+                        }
+                     ]
+                  },
+                  "id": 24,
+                  "links": [ ],
+                  "options": {
+                     "legend": {
+                        "showLegend": true
+                     },
+                     "tooltip": {
+                        "mode": "multi",
+                        "sort": "desc"
+                     }
+                  },
+                  "span": 6,
+                  "targets": [
+                     {
+                        "expr": "max by(pod) (container_memory_working_set_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"store-gateway\"})",
+                        "format": "time_series",
+                        "legendFormat": "{{pod}}",
+                        "legendLink": null
+                     },
+                     {
+                        "expr": "min(container_spec_memory_limit_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"store-gateway\"} > 0)",
+                        "format": "time_series",
+                        "legendFormat": "limit",
+                        "legendLink": null
+                     },
+                     {
+                        "expr": "min(kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\",container=~\"store-gateway\",resource=\"memory\"})",
+                        "format": "time_series",
+                        "legendFormat": "request",
+                        "legendLink": null
+                     }
+                  ],
+                  "title": "Memory (workingset)",
+                  "type": "timeseries"
+               }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": true,
+            "title": "",
+            "titleSize": "h6"
+         },
+         {
+            "collapse": false,
+            "height": "250px",
+            "panels": [
+               {
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "custom": {
+                           "drawStyle": "line",
+                           "fillOpacity": 100,
+                           "lineWidth": 0,
+                           "pointSize": 5,
+                           "showPoints": "never",
+                           "spanNulls": false,
+                           "stacking": {
+                              "group": "A",
+                              "mode": "normal"
+                           }
+                        },
+                        "min": 0,
+                        "thresholds": {
+                           "mode": "absolute",
+                           "steps": [ ]
+                        },
+                        "unit": "Bps"
+                     },
+                     "overrides": [ ]
+                  },
+                  "id": 25,
+                  "links": [ ],
+                  "options": {
+                     "legend": {
+                        "showLegend": true
+                     },
+                     "tooltip": {
+                        "mode": "multi",
+                        "sort": "none"
+                     }
+                  },
+                  "span": 4,
+                  "targets": [
+                     {
+                        "expr": "sum by(instance, pod, device) (\n  rate(\n    node_disk_written_bytes_total[$__rate_interval]\n  )\n)\n+\nignoring(pod) group_right() (\n  label_replace(\n    count by(\n      instance,\n      pod,\n      device\n    )\n    (\n      container_fs_writes_bytes_total{\n        cluster=~\"$cluster\", namespace=~\"$namespace\",\n        container=~\"store-gateway\",\n        device!~\".*sda.*\"\n      }\n    ),\n    \"device\",\n    \"$1\",\n    \"device\",\n    \"/dev/(.*)\"\n  ) * 0\n)\n\n",
+                        "format": "time_series",
+                        "legendFormat": "{{pod}} - {{device}}",
+                        "legendLink": null
+                     }
+                  ],
+                  "title": "Disk writes",
+                  "type": "timeseries"
+               },
+               {
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "defaults": {
+                        "custom": {
+                           "drawStyle": "line",
+                           "fillOpacity": 100,
+                           "lineWidth": 0,
+                           "pointSize": 5,
+                           "showPoints": "never",
+                           "spanNulls": false,
+                           "stacking": {
+                              "group": "A",
+                              "mode": "normal"
+                           }
+                        },
+                        "min": 0,
+                        "thresholds": {
+                           "mode": "absolute",
+                           "steps": [ ]
+                        },
+                        "unit": "Bps"
+                     },
+                     "overrides": [ ]
+                  },
+                  "id": 26,
+                  "links": [ ],
+                  "options": {
+                     "legend": {
+                        "showLegend": true
+                     },
+                     "tooltip": {
+                        "mode": "multi",
+                        "sort": "none"
+                     }
+                  },
+                  "span": 4,
+                  "targets": [
+                     {
+                        "expr": "sum by(instance, pod, device) (\n  rate(\n    node_disk_read_bytes_total[$__rate_interval]\n  )\n) + ignoring(pod) group_right() (\n  label_replace(\n    count by(\n      instance,\n      pod,\n      device\n    )\n    (\n      container_fs_writes_bytes_total{\n        cluster=~\"$cluster\", namespace=~\"$namespace\",\n        container=~\"store-gateway\",\n        device!~\".*sda.*\"\n      }\n    ),\n    \"device\",\n    \"$1\",\n    \"device\",\n    \"/dev/(.*)\"\n  ) * 0\n)\n\n",
+                        "format": "time_series",
+                        "legendFormat": "{{pod}} - {{device}}",
+                        "legendLink": null
+                     }
+                  ],
+                  "title": "Disk reads",
+                  "type": "timeseries"
+               },
+               {
+                  "datasource": "$datasource",
+                  "fieldConfig": {
+                     "custom": {
+                        "fillOpacity": 0
+                     },
+                     "defaults": {
+                        "custom": {
+                           "drawStyle": "line",
+                           "fillOpacity": 1,
+                           "lineWidth": 1,
+                           "pointSize": 5,
+                           "showPoints": "never",
+                           "spanNulls": false,
+                           "stacking": {
+                              "group": "A",
+                              "mode": "none"
+                           }
+                        },
+                        "min": 0,
+                        "thresholds": {
+                           "mode": "absolute",
+                           "steps": [ ]
+                        },
+                        "unit": "percentunit"
+                     },
+                     "overrides": [ ]
+                  },
+                  "id": 27,
+                  "links": [ ],
+                  "options": {
+                     "legend": {
+                        "showLegend": true
+                     },
+                     "tooltip": {
+                        "mode": "multi",
+                        "sort": "none"
+                     }
+                  },
+                  "span": 4,
+                  "targets": [
+                     {
+                        "expr": "max by(persistentvolumeclaim) (\n  kubelet_volume_stats_used_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", persistentvolumeclaim=~\".*(store-gateway).*\"} /\n  kubelet_volume_stats_capacity_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\", persistentvolumeclaim=~\".*(store-gateway).*\"}\n)\n",
+                        "format": "time_series",
+                        "legendFormat": "{{persistentvolumeclaim}}",
+                        "legendLink": null
+                     }
+                  ],
+                  "title": "Disk space utilization",
+                  "type": "timeseries"
+               }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": true,
+            "title": "",
+            "titleSize": "h6"
          }
       ],
       "schemaVersion": 14,
       "style": "dark",
       "tags": [
-         "loki"
+         "mimir"
       ],
       "templating": {
          "list": [
@@ -2398,22 +2366,22 @@
                "type": "datasource"
             },
             {
-               "allValue": null,
+               "allValue": ".*",
                "current": {
                   "text": "prod",
                   "value": "prod"
                },
                "datasource": "$datasource",
                "hide": 0,
-               "includeAll": false,
+               "includeAll": true,
                "label": "cluster",
                "multi": false,
                "name": "cluster",
                "options": [ ],
-               "query": "label_values(loki_build_info, cluster)",
+               "query": "label_values(cortex_build_info, cluster)",
                "refresh": 1,
                "regex": "",
-               "sort": 2,
+               "sort": 1,
                "tagValuesQuery": "",
                "tags": [ ],
                "tagsQuery": "",
@@ -2433,10 +2401,10 @@
                "multi": false,
                "name": "namespace",
                "options": [ ],
-               "query": "label_values(loki_build_info{cluster=~\"$cluster\"}, namespace)",
+               "query": "label_values(cortex_build_info{cluster=~\"$cluster\"}, namespace)",
                "refresh": 1,
                "regex": "",
-               "sort": 2,
+               "sort": 1,
                "tagValuesQuery": "",
                "tags": [ ],
                "tagsQuery": "",
@@ -2475,7 +2443,7 @@
          ]
       },
       "timezone": "utc",
-      "title": "Loki / Reads Resources",
-      "uid": "reads-resources",
+      "title": "Mimir / Reads resources",
+      "uid": "cc86fd5aa9301c6528986572ad974db9",
       "version": 0
    }

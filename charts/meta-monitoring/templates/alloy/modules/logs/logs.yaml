@@ -1,0 +1,142 @@
+{{- if index .Values "alloy-logs" "enabled" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logs
+  namespace: {{ .Release.Namespace }}
+data:
+  logs: |
+    declare "pod_logs" {
+      argument "namespaces" {
+        comment = "Namespaces to search"
+      }
+
+      argument "forward_to" {
+        comment = "Remote Write Component"
+      }
+
+      discovery.kubernetes "targets" {
+        role = "pod"
+
+        namespaces {
+          names = argument.namespaces.value
+        }
+      }
+
+      discovery.relabel "targets" {
+        targets = discovery.kubernetes.targets.targets
+
+        rule {
+          action = "replace"
+          separator = "/"
+          source_labels = [
+            "__meta_kubernetes_pod_uid",
+            "__meta_kubernetes_pod_container_name",
+          ]
+          replacement = "/var/log/pods/*$1/*.log"
+          target_label = "__path__"    
+        }
+
+        rule {
+          action = "replace"
+          source_labels = ["__meta_kubernetes_pod_node_name"]
+          target_label = "__host__"
+        }
+
+        rule {
+          action = "labelmap"
+          regex = "__meta_kubernetes_pod_label_(.+)"
+        }
+
+        // make all annotations on the pod available to the pipeline as labels,
+        // they are omitted before write via labelallow unless explicitly set
+        rule {
+          action = "labelmap"
+          regex = "__meta_kubernetes_pod_annotation_(.+)"
+        }
+
+        rule {
+          source_labels = ["__meta_kubernetes_namespace"]
+          target_label  = "namespace"
+        }
+
+        rule {
+          source_labels = ["__meta_kubernetes_pod_name"]
+          target_label  = "pod"
+        }
+
+        rule {
+          source_labels = ["__meta_kubernetes_pod_container_name"]
+          target_label  = "container"
+        }
+
+        rule {
+          source_labels = [
+            "__meta_kubernetes_pod_controller_kind",
+            "__meta_kubernetes_pod_controller_name",
+          ]
+          separator = "/"
+          target_label  = "workload"
+        }
+
+        rule {
+          source_labels = ["workload"]
+          regex = "(ReplicaSet/.+)-.+"
+          target_label  = "workload"
+        }
+
+        rule {
+          action = "replace"
+          source_labels = [
+            "__meta_kubernetes_pod_label_app_kubernetes_io_name",
+            "__meta_kubernetes_pod_label_k8s_app",
+            "__meta_kubernetes_pod_label_app",
+          ]
+          separator = ";"
+          regex = "^(?:;*)?([^;]+).*$"
+          replacement = "$1"
+          target_label = "app"
+        }
+
+        rule {
+          action = "replace"
+          source_labels = [
+            "__meta_kubernetes_pod_label_app_kubernetes_io_component",
+            "__meta_kubernetes_pod_label_k8s_component",
+            "__meta_kubernetes_pod_label_component",
+          ]
+          regex = "^(?:;*)?([^;]+).*$"
+          replacement = "$1"
+          target_label = "component"
+        }
+
+        rule {
+          action = "replace"
+          source_labels = [
+            "workload",
+            "__meta_kubernetes_namespace",
+          ]
+          regex = ".+\\/(.+);(.+)"
+          replacement = "$2/$1"
+          target_label = "job"
+        }
+      }
+
+      local.file_match "pods" {
+        path_targets = discovery.relabel.targets.output
+      }
+
+      loki.source.file "targets" {
+        targets = local.file_match.pods.targets
+        forward_to = [loki.process.label_keep.receiver]
+      }
+
+      loki.process "label_keep" {
+        forward_to = argument.forward_to.value
+
+        stage.label_keep {
+          values = ["job", "component", "app", "workload", "pod", "namespace", "container"]
+        }
+      }
+    }
+{{- end }}

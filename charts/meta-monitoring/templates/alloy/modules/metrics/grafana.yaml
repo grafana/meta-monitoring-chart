@@ -1,0 +1,251 @@
+{{- if index .Values "alloy-metrics" "grafana" "enabled" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-metrics
+  namespace: {{ .Release.Namespace }}
+data:
+  grafana: |
+    /*
+    Module: job-grafana
+    Description: Scrapes grafana
+
+    Note: Every argument except for "forward_to" is optional, and does have a defined default value.  However, the values for these
+          arguments are not defined using the default = " ... " argument syntax, but rather using the coalesce(argument.value, " ... ").
+          This is because if the argument passed in from another consuming module is set to null, the default = " ... " syntax will
+          does not override the value passed in, where coalesce() will return the first non-null value.
+    */
+    declare "kubernetes" {
+      // arguments for kubernetes discovery
+      argument "namespaces" {
+        comment = "The namespaces to look for targets in (default: [] is all namespaces)"
+        optional = true
+      }
+
+      argument "port_name" {
+        comment = "The of the port to scrape metrics from (default: http-metrics)"
+        optional = true
+      }
+
+      // grafana service discovery for all of the pods
+      discovery.kubernetes "grafana" {
+        role = "pod"
+
+        namespaces {
+          names = coalesce(argument.namespaces.value, [])
+        }
+      }
+
+      // grafana relabelings (pre-scrape)
+      discovery.relabel "kubernetes" {
+        targets = discovery.kubernetes.grafana.targets
+
+        // keep only the specified metrics port name, and pods that are Running and ready
+        rule {
+          source_labels = [
+            "__meta_kubernetes_pod_container_port_name",
+            "__meta_kubernetes_pod_phase",
+            "__meta_kubernetes_pod_ready",
+            "__meta_kubernetes_pod_container_init",
+          ]
+          separator = "@"
+          regex = coalesce(argument.port_name.value, "http-metrics") + "@Running@true@false"
+          action = "keep"
+        }
+
+        rule {
+          action = "replace"
+          source_labels = ["__meta_kubernetes_pod_node_name"]
+          target_label = "__host__"
+        }
+
+        rule {
+          action = "labelmap"
+          regex = "__meta_kubernetes_pod_label_(.+)"
+        }
+
+        // make all annotations on the pod available to the pipeline as labels,
+        // they are omitted before write via labelallow unless explicitly set
+        rule {
+          action = "labelmap"
+          regex = "__meta_kubernetes_pod_annotation_(.+)"
+        }
+
+        rule {
+          source_labels = ["__meta_kubernetes_namespace"]
+          target_label  = "namespace"
+        }
+
+        rule {
+          source_labels = ["__meta_kubernetes_pod_name"]
+          target_label  = "pod"
+        }
+
+        rule {
+          source_labels = ["__meta_kubernetes_pod_container_name"]
+          target_label  = "container"
+        }
+
+        rule {
+          source_labels = [
+            "__meta_kubernetes_pod_controller_kind",
+            "__meta_kubernetes_pod_controller_name",
+          ]
+          separator = "/"
+          target_label  = "workload"
+        }
+
+        rule {
+          source_labels = ["workload"]
+          regex = "(ReplicaSet/.+)-.+"
+          target_label  = "workload"
+        }
+
+        rule {
+          action = "replace"
+          source_labels = [
+            "__meta_kubernetes_pod_label_app_kubernetes_io_name",
+            "__meta_kubernetes_pod_label_k8s_app",
+            "__meta_kubernetes_pod_label_app",
+          ]
+          separator = ";"
+          regex = "^(?:;*)?([^;]+).*$"
+          replacement = "$1"
+          target_label = "app"
+        }
+
+        rule {
+          action = "replace"
+          source_labels = [
+            "__meta_kubernetes_pod_label_app_kubernetes_io_component",
+            "__meta_kubernetes_pod_label_k8s_component",
+            "__meta_kubernetes_pod_label_component",
+          ]
+          regex = "^(?:;*)?([^;]+).*$"
+          replacement = "$1"
+          target_label = "component"
+        }
+
+        rule {
+          action = "replace"
+          source_labels = [
+            "workload",
+            "__meta_kubernetes_namespace",
+          ]
+          regex = ".+\\/(.+);(.+)"
+          replacement = "$2/$1"
+          target_label = "job"
+        }
+      }
+
+      export "output" {
+        value = discovery.relabel.kubernetes.output
+      }
+    }
+
+    declare "local" {
+      argument "port" {
+        comment = "The port to use (default: 3000)"
+        optional = true
+      }
+
+      // arguments for local (static)
+      discovery.relabel "local" {
+        targets = [
+          {
+            "__address__" = "localhost" + format("%s", coalesce(argument.port.value, "3000")),
+            "source" = "local",
+          },
+        ]
+      }
+
+      export "output" {
+        value = discovery.relabel.local.output
+      }
+    }
+
+    declare "scrape" {
+      argument "targets" {
+        comment = "Must be a list() of targets"
+      }
+
+      argument "forward_to" {
+        comment = "Must be a list(MetricsReceiver) where collected logs should be forwarded to"
+      }
+
+      argument "job_label" {
+        comment = "The job label to add for all grafana metric (default: integrations/grafana)"
+        optional = true
+      }
+
+      argument "keep_metrics" {
+        comment = "A regular expression of metrics to keep (default: see below)"
+        optional = true
+      }
+
+      argument "drop_metrics" {
+        comment = "A regular expression of metrics to drop (default: see below)"
+        optional = true
+      }
+
+      argument "scrape_interval" {
+        comment = "How often to scrape metrics from the targets (default: 60s)"
+        optional = true
+      }
+
+      argument "scrape_timeout" {
+        comment = "How long before a scrape times out (default: 10s)"
+        optional = true
+      }
+
+      argument "max_cache_size" {
+        comment = "The maximum number of elements to hold in the relabeling cache (default: 100000).  This should be at least 2x-5x your largest scrape target or samples appended rate."
+        optional = true
+      }
+
+      argument "clustering" {
+        // Docs: https://grafana.com/docs/agent/latest/flow/concepts/clustering/
+        comment = "Whether or not clustering should be enabled (default: false)"
+        optional = true
+      }
+
+      // grafana scrape job
+      prometheus.scrape "grafana" {
+        job_name = coalesce(argument.job_label.value, "integrations/grafana")
+        forward_to = [prometheus.relabel.grafana.receiver]
+        targets = argument.targets.value
+        scrape_interval = coalesce(argument.scrape_interval.value, "60s")
+        scrape_timeout = coalesce(argument.scrape_timeout.value, "10s")
+
+        clustering {
+          enabled = coalesce(argument.clustering.value, false)
+        }
+      }
+
+      // grafana metric relabelings (post-scrape)
+      prometheus.relabel "grafana" {
+        forward_to = argument.forward_to.value
+        max_cache_size = coalesce(argument.max_cache_size.value, 100000)
+
+        // drop metrics that match the drop_metrics regex
+        rule {
+          source_labels = ["__name__"]
+          regex = coalesce(argument.drop_metrics.value, "(^(go|process)_.+$)")
+          action = "drop"
+        }
+
+        // keep only metrics that match the keep_metrics regex
+        rule {
+          source_labels = ["__name__"]
+          regex = coalesce(argument.keep_metrics.value, "(.+)")
+          action = "keep"
+        }
+
+        rule {
+          action = "labelkeep"
+          regex = "__name__|job|component|app|workload|namespace|pod|container|route|status|status_code|le|operation|reason"
+        }
+      }
+    }
+
+{{- end }}

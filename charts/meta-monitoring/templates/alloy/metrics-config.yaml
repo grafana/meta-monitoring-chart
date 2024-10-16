@@ -1,0 +1,251 @@
+{{- if index .Values "alloy-metrics" "enabled" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alloy-metrics-config
+  namespace: {{ .Release.Namespace }}
+data:
+  config.alloy: |
+    {{- if index .Values "alloy-metrics" "mimir" "enabled" }}
+
+    remote.kubernetes.configmap "mimir" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "mimir-metrics"
+    }
+
+    import.string "mimir" {
+      content = remote.kubernetes.configmap.mimir.data.mimir
+    }
+
+    mimir.kubernetes "targets" {
+      namespaces = ["{{- index .Values "alloy-metrics" "mimir" "namespace" -}}"]
+    }
+
+    mimir.scrape "metrics" {
+      targets = mimir.kubernetes.targets.output
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }
+    {{- end }}
+
+    {{- if index .Values "alloy-metrics" "loki" "enabled" }}
+    remote.kubernetes.configmap "loki" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "loki-metrics"
+    }
+
+    import.string "loki" {
+      content = remote.kubernetes.configmap.loki.data.loki
+    }
+
+    loki.kubernetes "targets" {
+        namespaces = ["{{- index .Values "alloy-metrics" "loki" "namespace" -}}"]
+        label_selectors = ["app.kubernetes.io/name=enterprise-logs"]
+    }
+
+    loki.scrape "metrics" {
+      targets = loki.kubernetes.targets.output
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }    
+    {{- end }}
+
+    {{- if index .Values "alloy-metrics" "tempo" "enabled" }}
+    remote.kubernetes.configmap "tempo" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "tempo-metrics"
+    }
+
+    import.string "tempo" {
+      content = remote.kubernetes.configmap.tempo.data.tempo
+    }
+
+    tempo.kubernetes "targets" {
+        namespaces = ["{{- index .Values "alloy-metrics" "tempo" "namespace" -}}"]
+    }
+
+    tempo.scrape "metrics" {
+      targets = tempo.kubernetes.targets.output
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }    
+    {{- end }}
+
+    {{- if index .Values "alloy-metrics" "grafana" "enabled" }}
+    remote.kubernetes.configmap "grafana" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "grafana-metrics"
+    }
+
+    import.string "grafana" {
+      content = remote.kubernetes.configmap.grafana.data.grafana
+    }
+
+    grafana.kubernetes "targets" {
+        namespaces = ["{{- index .Values "alloy-metrics" "grafana" "namespace" -}}"]
+    }
+
+    grafana.scrape "metrics" {
+      targets = grafana.kubernetes.targets.output
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }    
+    {{- end }}
+
+    {{- if index .Values "alloy-metrics" "alloy" "enabled" }}
+    remote.kubernetes.configmap "alloy" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "alloy-metrics"
+    }
+
+    import.string "alloy" {
+      content = remote.kubernetes.configmap.alloy.data.alloy
+    }
+
+    alloy.kubernetes "targets" {
+        namespaces = ["{{- index .Values "alloy-metrics" "alloy" "namespace" -}}"]
+    }
+
+    alloy.scrape "metrics" {
+      targets = alloy.kubernetes.targets.output
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }    
+    {{- end }}
+
+    {{- if index .Values "alloy-metrics" "meta-monitoring" "enabled" }}
+    remote.kubernetes.configmap "meta_monitoring" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "alloy-metrics"
+    }
+
+    import.string "meta_monitoring" {
+      content = remote.kubernetes.configmap.meta_monitoring.data.alloy
+    }
+
+    meta_monitoring.kubernetes "targets" {
+        namespaces = ["{{ .Release.Namespace -}}"]
+    }
+
+    meta_monitoring.scrape "metrics" {
+      targets = meta_monitoring.kubernetes.targets.output
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }    
+    {{- end }}
+
+    {{- if index .Values "alloy-metrics" "node_exporter" "enabled" }}
+    remote.kubernetes.configmap "node_exporter" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "node-exporter-metrics"
+    }
+
+    import.string "node_exporter" {
+      content = remote.kubernetes.configmap.node_exporter.data.node_exporter
+    }
+
+    node_exporter.kubernetes "targets" {
+      label_selectors = [{{ include "alloy.node_exporter.labelselectors" . }}]
+    }
+
+    node_exporter.scrape "metrics" {
+      targets = node_exporter.kubernetes.targets.output
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }    
+    {{- end }}
+
+    {{- if index .Values "alloy-metrics" "kube_state_metrics" "enabled" }}
+    remote.kubernetes.configmap "kube_state_metrics" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "kube-state-metrics-metrics"
+    }
+
+    import.string "kube_state_metrics" {
+      content = remote.kubernetes.configmap.kube_state_metrics.data.kube_state_metrics
+    }
+
+    kube_state_metrics.kubernetes "targets" {
+      namespaces = [{{- include "alloy.ksm.namespaces" . }}]
+      label_selectors = [{{ include "alloy.ksm.labelselectors" . }}]
+    }
+
+    kube_state_metrics.scrape "metrics" {
+      targets = kube_state_metrics.kubernetes.targets.output
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }    
+    {{- end }}
+
+    {{- if index .Values "alloy-metrics" "cadvisor" "enabled" }}
+
+    remote.kubernetes.configmap "cadvisor" {
+      namespace = "{{ .Release.Namespace }}"
+      name = "cadvisor-metrics"
+    }
+
+    import.string "cadvisor" {
+      content = remote.kubernetes.configmap.cadvisor.data.cadvisor
+    }
+
+    cadvisor.cadvisor "targets" {
+      namespaces = [{{- include "alloy.cadvisor.namespaces" . }}]
+      clustering = true
+      forward_to = [
+        {{ include "agent.prometheus_write_targets" . }},
+      ]
+    }
+    {{- end }}
+
+    {{- if .Values.cloud.metrics.enabled }}
+    prometheus.remote_write "cloud" {
+      endpoint {
+        url = nonsensitive(remote.kubernetes.secret.metrics_credentials.data["endpoint"])
+        basic_auth {
+          username = nonsensitive(remote.kubernetes.secret.metrics_credentials.data["username"])
+          password = remote.kubernetes.secret.metrics_credentials.data["password"]
+        }
+      }
+
+      external_labels = {
+          cluster = "{{- .Values.clusterLabelValue -}}",
+      }
+    }
+    {{- end }}
+
+
+    {{- if .Values.local.metrics.enabled }}
+    prometheus.remote_write "local" {
+      endpoint {
+        url = "http://{{- .Release.Name -}}-mimir-nginx.{{- .Release.Namespace -}}.svc:80/api/v1/push"
+      }
+
+      external_labels = {
+          cluster = "{{- .Values.clusterLabelValue -}}",
+          environment = "{{- .Values.environmentLabelValue -}}",
+      }
+    }
+    {{- end }}
+
+
+    remote.kubernetes.secret "metrics_credentials" {
+      namespace = "{{- $.Release.Namespace -}}"
+      name = "{{- .Values.cloud.metrics.secret -}}"
+    }
+{{- end }}
