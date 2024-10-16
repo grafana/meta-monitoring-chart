@@ -253,6 +253,7 @@ node-exporter:
     annotations:
       metrics.agent.grafana.com/tenant: primary
       metrics.agent.grafana.com/scrape: "true"
+  # Additional label created to provide a mechanism to prevent other telemetry collectors from scraping
   podLabels:
     app.kubernetes.io/purpose: meta-monitoring
 
@@ -271,8 +272,9 @@ kube-state-metrics:
     annotations:
       metrics.agent.grafana.com/tenant: primary
       metrics.agent.grafana.com/scrape: "true"
+  # Additional label created to provide a mechanism to prevent other telemetry collectors from scraping
   podLabels:
-    app.kubernetes.io/purpose: meta-monitoring
+    app.kubernetes.io/purpose: meta-monitoring 
 
   # This should include the namespaces of any GE/GEM/GEL/GET/Alloy deployments
   namespaces:
