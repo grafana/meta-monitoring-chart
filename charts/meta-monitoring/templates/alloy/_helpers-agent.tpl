@@ -118,3 +118,19 @@
 {{- end }}
 {{- join ", " $list }}
 {{- end }}
+
+{{- define "alloy.node_exporter.labelselectors" -}}
+{{- $list := list }}
+{{- range index .Values "alloy-metrics" "node_exporter" "labelSelectors" }}
+{{- $list = append $list (printf "\"%s\"" .) }}
+{{- end }}
+{{- join ", " $list }}
+{{- end }}
+
+{{- define "alloy.ksm.labelselectors" -}}
+{{- $list := list }}
+{{- range index .Values "alloy-metrics" "kube_state_metrics" "labelSelectors" }}
+{{- $list = append $list (printf "\"%s\"" .) }}
+{{- end }}
+{{- join ", " $list }}
+{{- end }}

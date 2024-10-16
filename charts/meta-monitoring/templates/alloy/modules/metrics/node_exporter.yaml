@@ -30,7 +30,7 @@ data:
 
       argument "label_selectors" {
         // Docs: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-        comment = "The label selectors to use to find matching targets (default: [\"app.kubernetes.io/name=prometheus-node-exporter\"])"
+        comment = "The label selectors to use to find matching targets (default: [\"app.kubernetes.io/name=node-exporter\"])"
         optional = true
       }
 

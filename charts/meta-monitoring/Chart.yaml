@@ -20,10 +20,6 @@ version: 1.0.0
 # It is recommended to use it with quotes.
 appVersion: "0.0.2"
 dependencies:
-- name: loki
-  repository: https://grafana.github.io/helm-charts
-  version: 6.6.2
-  condition: local.logs.enabled
 
 - name: alloy
   repository: https://grafana.github.io/helm-charts
@@ -45,7 +41,22 @@ dependencies:
   version: 0.7.0
   alias: alloy-traces
   condition: alloy-traces.enabled
+
+- name: prometheus-node-exporter
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 4.39.0
+  alias: node-exporter
+  condition: node-exporter.enabled
+- name: kube-state-metrics
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 5.25.1
+  alias: kube-state-metrics
+  condition: kube-state-metrics.enabled
   
+- name: loki
+  repository: https://grafana.github.io/helm-charts
+  version: 6.6.2
+  condition: local.logs.enabled
 - name: mimir-distributed
   repository: https://grafana.github.io/helm-charts
   version: 5.3.0

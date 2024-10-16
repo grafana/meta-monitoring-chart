@@ -54,21 +54,26 @@ alloy-metrics:
     enabled: true
 
   # Enable to collect node_exporter metrics.
-  # Node Exporter must be installed separately. See https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus-node-exporter
+  # Node Exporter must be installed separately, or as a part of this chart. See https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus-node-exporter
+  # Ensure your label selector(s) match
   node_exporter:
     enabled: true
+
+    labelSelectors:
+      - "app.kubernetes.io/name=node-exporter"
+      - "app.kubernetes.io/purpose=meta-monitoring"
 
   # Enable to collect kube state metrics from the specified namespaces
   # Kube State Metrics must be installed separate. See https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-state-metrics
   kube_state_metrics:
     enabled: true
-    # This should include the namespace of any enabled component namespaces
+
+    labelSelectors:
+      - "app.kubernetes.io/name=kube-state-metrics"
+      - "app.kubernetes.io/purpose=meta-monitoring"
+
     namespacesToMonitor:
-      - gem
-      - gel
-      - get
-      - ge
-      - alloy
+      - meta-monitoring
 
   # Enable to collect cadvisor metrics
   cadvisor:
@@ -92,6 +97,7 @@ alloy-metrics:
     clustering:
       enabled: true
       name: alloy-metrics
+      portName: http
     configMap:
       create: false
       name: "alloy-metrics-config"
@@ -104,43 +110,13 @@ alloy-metrics:
         memory: '4Gi'
   controller:
     type: "statefulset"
-    replicas: 1
     autoscaling:
-      enabled: false
+      enabled: true
       minReplicas: 3
       maxReplicas: 30
       targetMemoryUtilizationPercentage: 90
       targetCPUUtilizationPercentage: 90
 
-  service:
-    enabled: true
-    type: NodePort
-    ipFamilies:
-      - "IPv6"
-    port: 80
-    targetPort: 3000
-    annotations:
-      metrics.agent.grafana.com/scrape: "true"
-      metrics.agent.grafana.com/tenant: ops
-      metrics.agent.grafana.com/port: "3000"
-
-  ingress:
-    enabled: true
-    ingressClassName: alb
-    annotations:
-      kubernetes.io/ingress.class: alb
-      alb.ingress.kubernetes.io/scheme: internet-facing
-      alb.ingress.kubernetes.io/target-type: ip
-      alb.ingress.kubernetes.io/ip-address-type: dualstack
-    hosts: {}
-    extraPaths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: meta-monitoring-alloy-metrics
-            port:
-              number: 80
 
 ########################################################################################################
 # Grafana Alloy Logs Configuration
@@ -258,6 +234,47 @@ alloy-events:
       targetMemoryUtilizationPercentage: 90
       targetCPUUtilizationPercentage: 90
 
+#####################################################################################################
+# Node Exporter
+# Enable to send Metrics, Logs or Traces to a Grafana Cloud Instance (Recommended)
+# A secret with the configured name must be deployed in the namespace you deploy meta-monitoring to.
+# See Installation documentation for more info. 
+#####################################################################################################
+node-exporter:
+  enabled: true
+
+  service:
+    annotations:
+      metrics.agent.grafana.com/tenant: primary
+      metrics.agent.grafana.com/scrape: "true"
+  podLabels:
+    app.kubernetes.io/purpose: meta-monitoring
+
+
+#####################################################################################################
+# Kube State Metrics
+# Enable to send Metrics, Logs or Traces to a Grafana Cloud Instance (Recommended)
+# A secret with the configured name must be deployed in the namespace you deploy meta-monitoring to.
+# See Installation documentation for more info. 
+#####################################################################################################
+kube-state-metrics:
+  enabled: true
+
+  service:
+    annotations:
+      metrics.agent.grafana.com/tenant: primary
+      metrics.agent.grafana.com/scrape: "true"
+  podLabels:
+    app.kubernetes.io/purpose: meta-monitoring
+
+    # This should include the namespace of any enabled component namespaces
+  namespaces:
+    - gem
+    - gel
+    - get
+    - ge
+    - alloy
+    - meta-monitoring
 
 #####################################################################################################
 # GRAFANA CLOUD

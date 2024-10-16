@@ -156,7 +156,9 @@ data:
       content = remote.kubernetes.configmap.node_exporter.data.node_exporter
     }
 
-    node_exporter.kubernetes "targets" {}
+    node_exporter.kubernetes "targets" {
+      label_selectors = [{{ include "alloy.node_exporter.labelselectors" . }}]
+    }
 
     node_exporter.scrape "metrics" {
       targets = node_exporter.kubernetes.targets.output
@@ -179,6 +181,7 @@ data:
 
     kube_state_metrics.kubernetes "targets" {
       namespaces = [{{- include "alloy.ksm.namespaces" . }}]
+      label_selectors = [{{ include "alloy.ksm.labelselectors" . }}]
     }
 
     kube_state_metrics.scrape "metrics" {
