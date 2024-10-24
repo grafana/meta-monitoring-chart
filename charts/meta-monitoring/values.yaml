@@ -66,9 +66,11 @@ logs:
 # The lines matching these will be kept in Loki
   retain:
   # This shows the queries
+  - executing query
   - caller=metrics.go
   # This shows any errors
   - level=error
+  - level=warn
   # Log lines for delete requests
   - delete request for user added
   - Started processing delete request
