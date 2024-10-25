@@ -1,6 +1,7 @@
 # Specify the namespaces to monitor here
-namespacesToMonitor:
-- loki
+# By default the chart will monitor the namespace it is installed in
+# namespacesToMonitor:
+# - loki
 # The name of the cluster where this will be installed
 clusterLabelValue: "meta"
 # Set to true to write logs, metrics or traces to Grafana Cloud
