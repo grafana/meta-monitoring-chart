@@ -1,0 +1,116 @@
+namespacesToMonitor:
+- loki
+
+local:
+  grafana:
+    enabled: true
+  logs:
+    enabled: true
+  metrics:
+    enabled: true
+  traces:
+    enabled: true
+  minio:
+    enabled: true
+    createSecret: false
+
+cloud:
+  logs:
+    enabled: false
+    secret: logs
+  metrics:
+    enabled: false
+    secret: metrics
+  traces:
+    enabled: false
+    secret: traces
+
+grafana:
+  ingress:
+    hosts:
+      - host: monitoring.example.com
+        paths:
+          - path: /
+            pathType: Prefix
+
+minio:
+  existingSecret: ""
+  rootUser: "abcdefghi"
+  rootPassword: "defghijkl"
+
+loki:
+  deploymentMode: SingleBinary
+  singleBinary:
+    replicas: 1
+    resources:
+      limits:
+        cpu: 3
+        memory: 4Gi
+      requests:
+        cpu: 2
+        memory: 2Gi
+    extraEnv:
+      # Keep a little bit lower than memory limits
+      - name: GOMEMLIMIT
+        value: 3750MiB
+
+  chunksCache:
+    # default is 500MB, with limited memory keep this smaller
+    writebackSizeLimit: 10MB
+
+  # Zero out replica counts of other deployment modes
+  backend:
+    replicas: 0
+  read:
+    replicas: 0
+  write:
+    replicas: 0
+
+  ingester:
+    replicas: 0
+  querier:
+    replicas: 0
+  queryFrontend:
+    replicas: 0
+  queryScheduler:
+    replicas: 0
+  distributor:
+    replicas: 0
+  compactor:
+    replicas: 0
+  indexGateway:
+    replicas: 0
+  bloomCompactor:
+    replicas: 0
+  bloomGateway:
+    replicas: 0
+
+mimir-distributed:
+  minio:
+    enabled: false
+  global:
+    extraEnvFrom:
+    - secretRef:
+        name: "meta-minio"
+
+tempo-distributed:
+  distributor:
+    extraEnvFrom:
+    - secretRef:
+        name: "meta-minio"
+  ingester:
+    extraEnvFrom:
+    - secretRef:
+        name: "meta-minio"
+  compactor:
+    extraEnvFrom:
+    - secretRef:
+        name: "meta-minio"
+  querier:
+    extraEnvFrom:
+    - secretRef:
+        name: "meta-minio"
+  queryFrontend:
+    extraEnvFrom:
+    - secretRef:
+        name: "meta-minio"

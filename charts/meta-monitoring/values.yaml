@@ -27,7 +27,8 @@ local:
   traces:
     enabled: false
   minio:
-    enabled: false # This should be set to true if any of the previous is enabled
+    enabled: false  # This should be set to true if any of the previous is enabled
+    createSecret: false  # This is used for testing, do not use in production
 grafana:
   version: 10.4.2
   # Gateway ingress configuration
@@ -53,14 +54,14 @@ grafana:
             #     port:
             #       number: TODO
     # -- TLS configuration for the gateway ingress. Hosts passed through the `tpl` function to allow templating
-    #tls:
+    # tls:
     #  - secretName: grafana-tls
     #    hosts:
     #      - monitoring.example.com
 logs:
   # Adding regexes here will add a stage.replace block for logs. For more information see
   # https://grafana.com/docs/agent/latest/flow/reference/components/loki.process/#stagereplace-block
-  piiRegexes: null # This example replaces the word after password with *****
+  piiRegexes: null  # This example replaces the word after password with *****
 # - expression: "password (\\\\S+)"
 #   source: ""         # Empty uses the log message
 #   replace: "*****""
