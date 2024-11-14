@@ -1,6 +1,6 @@
-{{- if not (eq .Values.local.minio.enabled (or .Values.local.traces.enabled)) -}}
-  {{- fail "minio.enabled should be set to true if any of the the local databases is enabled " -}}
-{{- end -}}
+# {{- if not (eq .Values.local.minio.enabled (or .Values.local.traces.enabled (or .Values.local.logs.enabled .Values.local.metrics.enabled))) -}}
+#   {{- fail "minio.enabled should be set to true if any of the the local databases is enabled " -}}
+# {{- end -}}
 
 {{- if eq .Values.cloud.logs.enabled true -}}
   {{- if empty .Values.cloud.logs.secret -}}
