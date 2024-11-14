@@ -1,6 +1,6 @@
 # Specify the namespaces to monitor here
 namespacesToMonitor:
-- loki
+  - loki
 # The name of the cluster where this will be installed
 clusterLabelValue: "meta"
 # Set to true to write logs, metrics or traces to Grafana Cloud
@@ -56,23 +56,24 @@ grafana:
     #  - secretName: grafana-tls
     #    hosts:
     #      - monitoring.example.com
+  config: {}
 logs:
   # Adding regexes here will add a stage.replace block for logs. For more information see
   # https://grafana.com/docs/agent/latest/flow/reference/components/loki.process/#stagereplace-block
   piiRegexes: null # This example replaces the word after password with *****
-# - expression: "password (\\\\S+)"
-#   source: ""         # Empty uses the log message
-#   replace: "*****""
-# The lines matching these will be kept in Loki
+  # - expression: "password (\\\\S+)"
+  #   source: ""         # Empty uses the log message
+  #   replace: "*****""
+  # The lines matching these will be kept in Loki
   retain:
-  # This shows the queries
-  - caller=metrics.go
-  # This shows any errors
-  - level=error
-  # Log lines for delete requests
-  - delete request for user added
-  - Started processing delete request
-  - delete request for user marked as processed
+    # This shows the queries
+    - caller=metrics.go
+    # This shows any errors
+    - level=error
+    # Log lines for delete requests
+    - delete request for user added
+    - Started processing delete request
+    - delete request for user marked as processed
   # This shows the ingest requests and is very noisy. Uncomment to include.
   # - caller=push.go
   # Additional log lines to retain
@@ -80,201 +81,201 @@ logs:
 metrics:
   # The list of metrics to retain for logging dashboards
   retain:
-  - alloy_build_info
-  - alloy_config_last_load_success_timestamp_seconds
-  - alloy_config_last_load_successful
-  - alloy_config_load_failures_total
-  - alloy_component_controller_evaluating
-  - alloy_component_dependencies_wait_seconds
-  - alloy_component_dependencies_wait_seconds_bucket
-  - alloy_component_evaluation_seconds
-  - alloy_component_evaluation_seconds_bucket
-  - alloy_component_evaluation_seconds_count
-  - alloy_component_evaluation_seconds_sum
-  - alloy_component_evaluation_slow_seconds
-  - alloy_component_controller_running_components
-  - alloy_resources_machine_rx_bytes_total
-  - alloy_resources_machine_tx_bytes_total
-  - alloy_resources_process_cpu_seconds_total
-  - alloy_resources_process_resident_memory_bytes
-  - prometheus_remote_write_wal_samples_appended_total
-  - prometheus_remote_write_wal_storage_active_series
-  - cluster_node_info
-  - cluster_node_lamport_time
-  - cluster_node_update_observers
-  - cluster_node_gossip_health_score
-  - cluster_node_gossip_proto_version
-  - cluster_node_gossip_received_events_total
-  - cluster_node_peers
-  - cluster_transport_rx_bytes_total
-  - cluster_transport_rx_packets_total
-  - cluster_transport_rx_packets_failed_total
-  - cluster_transport_stream_rx_bytes_total
-  - cluster_transport_stream_rx_packets_failed_total
-  - cluster_transport_stream_rx_packets_total
-  - cluster_transport_stream_tx_bytes_total
-  - cluster_transport_stream_tx_packets_total
-  - cluster_transport_stream_tx_packets_failed_total
-  - cluster_transport_streams
-  - cluster_transport_tx_packets_total
-  - cluster_transport_tx_packets_failed_total
-  - cluster_transport_rx_packet_queue_length
-  - cluster_transport_tx_packet_queue_length
-  - container_cpu_usage_seconds_total
-  - container_fs_writes_bytes_total
-  - container_memory_working_set_bytes
-  - container_network_receive_bytes_total
-  - container_network_transmit_bytes_total
-  - container_spec_cpu_period
-  - container_spec_cpu_quota
-  - container_spec_memory_limit_bytes
-  - cortex_ingester_flush_queue_length
-  - cortex_prometheus_rule_group_iterations_total
-  - cortex_prometheus_rule_evaluation_failures_total
-  - cortex_prometheus_rule_group_rules
-  - cortex_prometheus_rule_group_last_duration_seconds
-  - cortex_prometheus_rule_group_last_evaluation_timestamp_seconds
-  - cortex_prometheus_rule_group_iterations_missed_total
-  - exporter_send_failed_spans_ratio_total
-  - exporter_sent_spans_ratio_total
-  - go_gc_duration_seconds
-  - go_gc_duration_seconds_count
-  - go_goroutines
-  - go_memstats_heap_inuse_bytes
-  - kubelet_volume_stats_used_bytes
-  - kubelet_volume_stats_capacity_bytes
-  - kube_deployment_created
-  - kube_persistentvolumeclaim_labels
-  - kube_pod_container_info
-  - kube_pod_container_resource_requests
-  - kube_pod_container_status_last_terminated_reason
-  - kube_pod_container_status_restarts_total
-  - loki_azure_blob_request_duration_seconds_bucket
-  - loki_boltdb_shipper_compact_tables_operation_duration_seconds
-  - loki_boltdb_shipper_compact_tables_operation_last_successful_run_timestamp_seconds
-  - loki_boltdb_shipper_retention_marker_count_total
-  - loki_boltdb_shipper_retention_marker_table_processed_duration_seconds_bucket
-  - loki_boltdb_shipper_retention_marker_table_processed_duration_seconds_count
-  - loki_boltdb_shipper_retention_marker_table_processed_duration_seconds_sum
-  - loki_boltdb_shipper_retention_marker_table_processed_total
-  - loki_boltdb_shipper_request_duration_seconds_bucket
-  - loki_boltdb_shipper_request_duration_seconds_count
-  - loki_boltdb_shipper_request_duration_seconds_sum
-  - loki_boltdb_shipper_retention_sweeper_chunk_deleted_duration_seconds_bucket
-  - loki_boltdb_shipper_retention_sweeper_chunk_deleted_duration_seconds_count
-  - loki_boltdb_shipper_retention_sweeper_chunk_deleted_duration_seconds_sum
-  - loki_boltdb_shipper_retention_sweeper_marker_files_current
-  - loki_boltdb_shipper_retention_sweeper_marker_file_processing_current_time
-  - loki_build_info
-  - loki_chunk_store_deduped_chunks_total
-  - loki_chunk_store_index_entries_per_chunk_bucket
-  - loki_chunk_store_index_entries_per_chunk_count
-  - loki_chunk_store_index_entries_per_chunk_sum
-  - loki_compactor_delete_requests_processed_total
-  - loki_compactor_delete_requests_received_total
-  - loki_compactor_deleted_lines
-  - loki_compactor_oldest_pending_delete_request_age_seconds
-  - loki_compactor_pending_delete_requests_count
-  - loki_consul_request_duration_seconds_bucket
-  - loki_discarded_samples_total
-  - loki_discarded_bytes_total
-  - loki_distributor_bytes_received_total
-  - loki_distributor_lines_received_total
-  - loki_distributor_structured_metadata_bytes_received_total
-  - loki_gcs_request_duration_seconds_bucket
-  - loki_gcs_request_duration_seconds_count
-  - loki_index_request_duration_seconds_bucket
-  - loki_index_request_duration_seconds_count
-  - loki_ingester_chunk_age_seconds_bucket
-  - loki_ingester_chunk_age_seconds_count
-  - loki_ingester_chunk_age_seconds_sum
-  - loki_ingester_chunk_bounds_hours_bucket
-  - loki_ingester_chunk_bounds_hours_count
-  - loki_ingester_chunk_bounds_hours_sum
-  - loki_ingester_chunk_entries_bucket
-  - loki_ingester_chunk_entries_count
-  - loki_ingester_chunk_entries_sum
-  - loki_ingester_chunk_size_bytes_bucket
-  - loki_ingester_chunk_utilization_bucket
-  - loki_ingester_chunk_utilization_count
-  - loki_ingester_chunk_utilization_sum
-  - loki_ingester_chunks_flushed_total
-  - loki_ingester_flush_queue_length
-  - loki_ingester_memory_chunks
-  - loki_ingester_memory_streams
-  - loki_ingester_streams_created_total
-  - loki_request_duration_seconds_bucket
-  - loki_request_duration_seconds_count
-  - loki_request_duration_seconds_sum
-  - loki_ruler_wal_appender_ready
-  - loki_ruler_wal_disk_size
-  - loki_ruler_wal_prometheus_remote_storage_highest_timestamp_in_seconds
-  - loki_ruler_wal_prometheus_remote_storage_queue_highest_sent_timestamp_seconds
-  - loki_ruler_wal_prometheus_remote_storage_samples_pending
-  - loki_ruler_wal_prometheus_remote_storage_samples_total
-  - loki_ruler_wal_samples_appended_total
-  - loki_ruler_wal_storage_created_series_total
-  - loki_s3_request_duration_seconds_bucket
-  - loki_s3_request_duration_seconds_count
-  - loki_write_batch_retries_total
-  - loki_write_dropped_bytes_total
-  - loki_write_dropped_entries_total
-  - loki_write_sent_bytes_total
-  - loki_write_sent_entries_total
-  - node_disk_read_bytes_total
-  - node_disk_written_bytes_total
-  - process_start_time_seconds
-  - processor_batch_batch_send_size_ratio_bucket
-  - processor_batch_metadata_cardinality_ratio
-  - processor_batch_timeout_trigger_send_ratio_total
-  - prometheus_remote_storage_bytes_total
-  - prometheus_remote_storage_enqueue_retries_total
-  - prometheus_remote_storage_highest_timestamp_in_seconds
-  - prometheus_remote_storage_metadata_bytes_total
-  - prometheus_remote_storage_queue_highest_sent_timestamp_seconds
-  - prometheus_remote_storage_samples_dropped_total
-  - prometheus_remote_storage_samples_failed_total
-  - prometheus_remote_storage_samples_pending
-  - prometheus_remote_storage_samples_retried_total
-  - prometheus_remote_storage_samples_total
-  - prometheus_remote_storage_sent_batch_duration_seconds_bucket
-  - prometheus_remote_storage_sent_batch_duration_seconds_count
-  - prometheus_remote_storage_sent_batch_duration_seconds_sum
-  - prometheus_remote_storage_shard_capacity
-  - prometheus_remote_storage_shards
-  - prometheus_remote_storage_shards_desired
-  - prometheus_remote_storage_shards_max
-  - prometheus_remote_storage_shards_min
-  - prometheus_remote_storage_succeeded_samples_total
-  - prometheus_remote_write_wal_samples_appended_total
-  - prometheus_remote_write_wal_storage_active_series
-  - prometheus_sd_discovered_targets
-  - prometheus_target_interval_length_seconds_count
-  - prometheus_target_interval_length_seconds_sum
-  - prometheus_target_scrapes_exceeded_sample_limit_total
-  - prometheus_target_scrapes_sample_duplicate_timestamp_total
-  - prometheus_target_scrapes_sample_out_of_bounds_total
-  - prometheus_target_scrapes_sample_out_of_order_total
-  - prometheus_target_sync_length_seconds_sum
-  - prometheus_wal_watcher_current_segment
-  - promtail_custom_bad_words_total
-  - promtail_dropped_bytes_total
-  - promtail_files_active_total
-  - promtail_read_bytes_total
-  - promtail_read_lines_total
-  - promtail_request_duration_seconds_bucket
-  - promtail_sent_entries_total
-  - rpc_server_duration_milliseconds_bucket
-  - receiver_accepted_spans_ratio_total
-  - receiver_refused_spans_ratio_total
-  - scrape_duration_seconds
-  - traces_exporter_sent_spans
-  - traces_exporter_send_failed_spans
-  - traces_loadbalancer_backend_outcome
-  - traces_loadbalancer_num_backends
-  - traces_receiver_accepted_spans
-  - traces_receiver_refused_spans
-  - up
+    - alloy_build_info
+    - alloy_config_last_load_success_timestamp_seconds
+    - alloy_config_last_load_successful
+    - alloy_config_load_failures_total
+    - alloy_component_controller_evaluating
+    - alloy_component_dependencies_wait_seconds
+    - alloy_component_dependencies_wait_seconds_bucket
+    - alloy_component_evaluation_seconds
+    - alloy_component_evaluation_seconds_bucket
+    - alloy_component_evaluation_seconds_count
+    - alloy_component_evaluation_seconds_sum
+    - alloy_component_evaluation_slow_seconds
+    - alloy_component_controller_running_components
+    - alloy_resources_machine_rx_bytes_total
+    - alloy_resources_machine_tx_bytes_total
+    - alloy_resources_process_cpu_seconds_total
+    - alloy_resources_process_resident_memory_bytes
+    - prometheus_remote_write_wal_samples_appended_total
+    - prometheus_remote_write_wal_storage_active_series
+    - cluster_node_info
+    - cluster_node_lamport_time
+    - cluster_node_update_observers
+    - cluster_node_gossip_health_score
+    - cluster_node_gossip_proto_version
+    - cluster_node_gossip_received_events_total
+    - cluster_node_peers
+    - cluster_transport_rx_bytes_total
+    - cluster_transport_rx_packets_total
+    - cluster_transport_rx_packets_failed_total
+    - cluster_transport_stream_rx_bytes_total
+    - cluster_transport_stream_rx_packets_failed_total
+    - cluster_transport_stream_rx_packets_total
+    - cluster_transport_stream_tx_bytes_total
+    - cluster_transport_stream_tx_packets_total
+    - cluster_transport_stream_tx_packets_failed_total
+    - cluster_transport_streams
+    - cluster_transport_tx_packets_total
+    - cluster_transport_tx_packets_failed_total
+    - cluster_transport_rx_packet_queue_length
+    - cluster_transport_tx_packet_queue_length
+    - container_cpu_usage_seconds_total
+    - container_fs_writes_bytes_total
+    - container_memory_working_set_bytes
+    - container_network_receive_bytes_total
+    - container_network_transmit_bytes_total
+    - container_spec_cpu_period
+    - container_spec_cpu_quota
+    - container_spec_memory_limit_bytes
+    - cortex_ingester_flush_queue_length
+    - cortex_prometheus_rule_group_iterations_total
+    - cortex_prometheus_rule_evaluation_failures_total
+    - cortex_prometheus_rule_group_rules
+    - cortex_prometheus_rule_group_last_duration_seconds
+    - cortex_prometheus_rule_group_last_evaluation_timestamp_seconds
+    - cortex_prometheus_rule_group_iterations_missed_total
+    - exporter_send_failed_spans_ratio_total
+    - exporter_sent_spans_ratio_total
+    - go_gc_duration_seconds
+    - go_gc_duration_seconds_count
+    - go_goroutines
+    - go_memstats_heap_inuse_bytes
+    - kubelet_volume_stats_used_bytes
+    - kubelet_volume_stats_capacity_bytes
+    - kube_deployment_created
+    - kube_persistentvolumeclaim_labels
+    - kube_pod_container_info
+    - kube_pod_container_resource_requests
+    - kube_pod_container_status_last_terminated_reason
+    - kube_pod_container_status_restarts_total
+    - loki_azure_blob_request_duration_seconds_bucket
+    - loki_boltdb_shipper_compact_tables_operation_duration_seconds
+    - loki_boltdb_shipper_compact_tables_operation_last_successful_run_timestamp_seconds
+    - loki_boltdb_shipper_retention_marker_count_total
+    - loki_boltdb_shipper_retention_marker_table_processed_duration_seconds_bucket
+    - loki_boltdb_shipper_retention_marker_table_processed_duration_seconds_count
+    - loki_boltdb_shipper_retention_marker_table_processed_duration_seconds_sum
+    - loki_boltdb_shipper_retention_marker_table_processed_total
+    - loki_boltdb_shipper_request_duration_seconds_bucket
+    - loki_boltdb_shipper_request_duration_seconds_count
+    - loki_boltdb_shipper_request_duration_seconds_sum
+    - loki_boltdb_shipper_retention_sweeper_chunk_deleted_duration_seconds_bucket
+    - loki_boltdb_shipper_retention_sweeper_chunk_deleted_duration_seconds_count
+    - loki_boltdb_shipper_retention_sweeper_chunk_deleted_duration_seconds_sum
+    - loki_boltdb_shipper_retention_sweeper_marker_files_current
+    - loki_boltdb_shipper_retention_sweeper_marker_file_processing_current_time
+    - loki_build_info
+    - loki_chunk_store_deduped_chunks_total
+    - loki_chunk_store_index_entries_per_chunk_bucket
+    - loki_chunk_store_index_entries_per_chunk_count
+    - loki_chunk_store_index_entries_per_chunk_sum
+    - loki_compactor_delete_requests_processed_total
+    - loki_compactor_delete_requests_received_total
+    - loki_compactor_deleted_lines
+    - loki_compactor_oldest_pending_delete_request_age_seconds
+    - loki_compactor_pending_delete_requests_count
+    - loki_consul_request_duration_seconds_bucket
+    - loki_discarded_samples_total
+    - loki_discarded_bytes_total
+    - loki_distributor_bytes_received_total
+    - loki_distributor_lines_received_total
+    - loki_distributor_structured_metadata_bytes_received_total
+    - loki_gcs_request_duration_seconds_bucket
+    - loki_gcs_request_duration_seconds_count
+    - loki_index_request_duration_seconds_bucket
+    - loki_index_request_duration_seconds_count
+    - loki_ingester_chunk_age_seconds_bucket
+    - loki_ingester_chunk_age_seconds_count
+    - loki_ingester_chunk_age_seconds_sum
+    - loki_ingester_chunk_bounds_hours_bucket
+    - loki_ingester_chunk_bounds_hours_count
+    - loki_ingester_chunk_bounds_hours_sum
+    - loki_ingester_chunk_entries_bucket
+    - loki_ingester_chunk_entries_count
+    - loki_ingester_chunk_entries_sum
+    - loki_ingester_chunk_size_bytes_bucket
+    - loki_ingester_chunk_utilization_bucket
+    - loki_ingester_chunk_utilization_count
+    - loki_ingester_chunk_utilization_sum
+    - loki_ingester_chunks_flushed_total
+    - loki_ingester_flush_queue_length
+    - loki_ingester_memory_chunks
+    - loki_ingester_memory_streams
+    - loki_ingester_streams_created_total
+    - loki_request_duration_seconds_bucket
+    - loki_request_duration_seconds_count
+    - loki_request_duration_seconds_sum
+    - loki_ruler_wal_appender_ready
+    - loki_ruler_wal_disk_size
+    - loki_ruler_wal_prometheus_remote_storage_highest_timestamp_in_seconds
+    - loki_ruler_wal_prometheus_remote_storage_queue_highest_sent_timestamp_seconds
+    - loki_ruler_wal_prometheus_remote_storage_samples_pending
+    - loki_ruler_wal_prometheus_remote_storage_samples_total
+    - loki_ruler_wal_samples_appended_total
+    - loki_ruler_wal_storage_created_series_total
+    - loki_s3_request_duration_seconds_bucket
+    - loki_s3_request_duration_seconds_count
+    - loki_write_batch_retries_total
+    - loki_write_dropped_bytes_total
+    - loki_write_dropped_entries_total
+    - loki_write_sent_bytes_total
+    - loki_write_sent_entries_total
+    - node_disk_read_bytes_total
+    - node_disk_written_bytes_total
+    - process_start_time_seconds
+    - processor_batch_batch_send_size_ratio_bucket
+    - processor_batch_metadata_cardinality_ratio
+    - processor_batch_timeout_trigger_send_ratio_total
+    - prometheus_remote_storage_bytes_total
+    - prometheus_remote_storage_enqueue_retries_total
+    - prometheus_remote_storage_highest_timestamp_in_seconds
+    - prometheus_remote_storage_metadata_bytes_total
+    - prometheus_remote_storage_queue_highest_sent_timestamp_seconds
+    - prometheus_remote_storage_samples_dropped_total
+    - prometheus_remote_storage_samples_failed_total
+    - prometheus_remote_storage_samples_pending
+    - prometheus_remote_storage_samples_retried_total
+    - prometheus_remote_storage_samples_total
+    - prometheus_remote_storage_sent_batch_duration_seconds_bucket
+    - prometheus_remote_storage_sent_batch_duration_seconds_count
+    - prometheus_remote_storage_sent_batch_duration_seconds_sum
+    - prometheus_remote_storage_shard_capacity
+    - prometheus_remote_storage_shards
+    - prometheus_remote_storage_shards_desired
+    - prometheus_remote_storage_shards_max
+    - prometheus_remote_storage_shards_min
+    - prometheus_remote_storage_succeeded_samples_total
+    - prometheus_remote_write_wal_samples_appended_total
+    - prometheus_remote_write_wal_storage_active_series
+    - prometheus_sd_discovered_targets
+    - prometheus_target_interval_length_seconds_count
+    - prometheus_target_interval_length_seconds_sum
+    - prometheus_target_scrapes_exceeded_sample_limit_total
+    - prometheus_target_scrapes_sample_duplicate_timestamp_total
+    - prometheus_target_scrapes_sample_out_of_bounds_total
+    - prometheus_target_scrapes_sample_out_of_order_total
+    - prometheus_target_sync_length_seconds_sum
+    - prometheus_wal_watcher_current_segment
+    - promtail_custom_bad_words_total
+    - promtail_dropped_bytes_total
+    - promtail_files_active_total
+    - promtail_read_bytes_total
+    - promtail_read_lines_total
+    - promtail_request_duration_seconds_bucket
+    - promtail_sent_entries_total
+    - rpc_server_duration_milliseconds_bucket
+    - receiver_accepted_spans_ratio_total
+    - receiver_refused_spans_ratio_total
+    - scrape_duration_seconds
+    - traces_exporter_sent_spans
+    - traces_exporter_send_failed_spans
+    - traces_loadbalancer_backend_outcome
+    - traces_loadbalancer_num_backends
+    - traces_receiver_accepted_spans
+    - traces_receiver_refused_spans
+    - up
   # Additional metrics to retain
   extraMetrics: []
 # Set enabled = true to add the default logs dashboards to the local Grafana
@@ -341,22 +342,22 @@ loki:
       enabled: false
   write:
     extraArgs:
-    - "-config.expand-env=true"
+      - "-config.expand-env=true"
     extraEnvFrom:
-    - secretRef:
-        name: "minio"
+      - secretRef:
+          name: "minio"
   read:
     extraArgs:
-    - "-config.expand-env=true"
+      - "-config.expand-env=true"
     extraEnvFrom:
-    - secretRef:
-        name: "minio"
+      - secretRef:
+          name: "minio"
   backend:
     extraArgs:
-    - "-config.expand-env=true"
+      - "-config.expand-env=true"
     extraEnvFrom:
-    - secretRef:
-        name: "minio"
+      - secretRef:
+          name: "minio"
 alloy:
   alloy:
     clustering:
@@ -364,22 +365,22 @@ alloy:
     configMap:
       create: false
       name: "agent-configmap"
-      key: 'config.river'
+      key: "config.river"
     resources:
       requests:
-        cpu: '1000m'
-        memory: '600Mi'
+        cpu: "1000m"
+        memory: "600Mi"
       limits:
-        memory: '4Gi'
+        memory: "4Gi"
     extraPorts:
-    - name: "otel"
-      port: 4317
-      targetPort: 4317
-      protocol: "TCP"
-    - name: "thrifthttp"
-      port: 14268
-      targetPort: 14268
-      protocol: "TCP"
+      - name: "otel"
+        port: 4317
+        targetPort: 4317
+        protocol: "TCP"
+      - name: "thrifthttp"
+        port: 14268
+        targetPort: 14268
+        protocol: "TCP"
   controller:
     type: "statefulset"
     autoscaling:
@@ -393,8 +394,8 @@ mimir-distributed:
     enabled: false
   global:
     extraEnvFrom:
-    - secretRef:
-        name: "minio"
+      - secretRef:
+          name: "minio"
   mimir:
     structuredConfig:
       alertmanager_storage:
@@ -432,34 +433,34 @@ tempo-distributed:
             insecure: true
   distributor:
     extraArgs:
-    - "-config.expand-env=true"
+      - "-config.expand-env=true"
     extraEnvFrom:
-    - secretRef:
-        name: "minio"
+      - secretRef:
+          name: "minio"
   ingester:
     extraArgs:
-    - "-config.expand-env=true"
+      - "-config.expand-env=true"
     extraEnvFrom:
-    - secretRef:
-        name: "minio"
+      - secretRef:
+          name: "minio"
   compactor:
     extraArgs:
-    - "-config.expand-env=true"
+      - "-config.expand-env=true"
     extraEnvFrom:
-    - secretRef:
-        name: "minio"
+      - secretRef:
+          name: "minio"
   querier:
     extraArgs:
-    - "-config.expand-env=true"
+      - "-config.expand-env=true"
     extraEnvFrom:
-    - secretRef:
-        name: "minio"
+      - secretRef:
+          name: "minio"
   queryFrontend:
     extraArgs:
-    - "-config.expand-env=true"
+      - "-config.expand-env=true"
     extraEnvFrom:
-    - secretRef:
-        name: "minio"
+      - secretRef:
+          name: "minio"
   traces:
     otlp:
       http:

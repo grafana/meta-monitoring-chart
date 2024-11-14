@@ -1,0 +1,10 @@
+{{- if .Values.grafana.config }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-global-ini
+  labels:
+    app: grafana
+data:
+  {{- include "grafana.configData" . | nindent 2 }}
+{{- end }}∏
