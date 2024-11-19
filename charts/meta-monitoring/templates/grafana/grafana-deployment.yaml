@@ -9,6 +9,7 @@ spec:
   selector:
     matchLabels:
       app: grafana
+  replicas: "{{- .Values.grafana.replicas }}"
   template:
     metadata:
       labels:
@@ -20,7 +21,7 @@ spec:
           - 0
       containers:
         - name: grafana
-          image: grafana/grafana:{{- .Values.grafana.version }}
+          image: "{{ .Values.grafana.image }}:{{ .Values.grafana.version }}"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
