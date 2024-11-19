@@ -19,7 +19,7 @@ cloud:
 # Set to true for a local version of logs, metrics or traces
 local:
   grafana:
-    enabled: false
+    enabled: true
   logs:
     enabled: false
   metrics:
@@ -29,6 +29,10 @@ local:
   minio:
     enabled: false # This should be set to true if any of the previous is enabled
 grafana:
+  replicas: 1
+  # Change the image if you want to use a private repositoy
+  image: grafana/grafana
+  # Grafana image tag
   version: 10.4.2
   # Gateway ingress configuration
   ingress:
