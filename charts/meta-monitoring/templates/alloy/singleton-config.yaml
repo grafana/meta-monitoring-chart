@@ -1,0 +1,43 @@
+{{- if index .Values "alloy-singleton" "enabled" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alloy-singleton-config
+  namespace: {{ .Release.Namespace }}
+data:
+  config.alloy: |
+    logging {
+        level = "info"
+        format = "logfmt"
+    }
+
+    remote.kubernetes.secret "mimir_credentials" {
+      namespace = "{{- $.Release.Namespace -}}"
+      name = "{{- .Values.cloud.metrics.secret -}}"
+    }
+
+    mimir.rules.kubernetes "rules" {
+      address = string.trim_suffix(convert.nonsensitive(remote.kubernetes.secret.mimir_credentials.data["endpoint"]), "/api/prom/push")
+      basic_auth {
+        username = convert.nonsensitive(remote.kubernetes.secret.mimir_credentials.data["username"])
+        password = remote.kubernetes.secret.mimir_credentials.data["password"]
+      }
+
+      label_selector {
+        match_labels = ["app.kubernetes.io/namespace={{- $.Release.Namespace -}}"]
+      }
+    }
+
+    remote.kubernetes.secret "loki_credentials" {
+      namespace = "{{- $.Release.Namespace -}}"
+      name = "{{- .Values.cloud.logs.secret -}}"
+    }
+
+    loki.rules.kubernetes "rules" {
+      address = string.trim_suffix(convert.nonsensitive(remote.kubernetes.secret.loki_credentials.data["endpoint"]), "/loki/api/v1/push")
+      basic_auth {
+        username = convert.nonsensitive(remote.kubernetes.secret.loki_credentials.data["username"])
+        password = remote.kubernetes.secret.loki_credentials.data["password"]
+      }
+    }
+{{- end }}

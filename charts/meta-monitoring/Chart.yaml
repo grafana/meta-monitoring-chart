@@ -23,24 +23,29 @@ dependencies:
 
 - name: alloy
   repository: https://grafana.github.io/helm-charts
-  version: 0.7.0
+  version: 0.10.1
   alias: alloy-metrics
   condition: alloy-metrics.enabled
 - name: alloy
   repository: https://grafana.github.io/helm-charts
-  version: 0.7.0
+  version: 0.10.1
   alias: alloy-logs
   condition: alloy-logs.enabled
 - name: alloy
   repository: https://grafana.github.io/helm-charts
-  version: 0.7.0
+  version: 0.10.1
   alias: alloy-events
   condition: alloy-events.enabled
 - name: alloy
   repository: https://grafana.github.io/helm-charts
-  version: 0.7.0
+  version: 0.10.1
   alias: alloy-traces
   condition: alloy-traces.enabled
+- name: alloy
+  repository: https://grafana.github.io/helm-charts
+  version: 0.10.1
+  alias: alloy-singleton
+  condition: alloy-singleton.enabled
 
 - name: prometheus-node-exporter
   repository: https://prometheus-community.github.io/helm-charts

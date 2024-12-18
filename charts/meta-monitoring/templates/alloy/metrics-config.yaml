@@ -227,6 +227,12 @@ data:
           cluster = "{{- .Values.clusterLabelValue -}}",
       }
     }
+    
+    remote.kubernetes.secret "metrics_credentials" {
+      namespace = "{{- $.Release.Namespace -}}"
+      name = "{{- .Values.cloud.metrics.secret -}}"
+    }
+
     {{- end }}
 
 
@@ -243,9 +249,4 @@ data:
     }
     {{- end }}
 
-
-    remote.kubernetes.secret "metrics_credentials" {
-      namespace = "{{- $.Release.Namespace -}}"
-      name = "{{- .Values.cloud.metrics.secret -}}"
-    }
 {{- end }}

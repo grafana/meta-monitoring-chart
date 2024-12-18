@@ -1,16 +1,19 @@
 dependencies:
 - name: alloy
   repository: https://grafana.github.io/helm-charts
-  version: 0.7.0
+  version: 0.10.1
 - name: alloy
   repository: https://grafana.github.io/helm-charts
-  version: 0.7.0
+  version: 0.10.1
 - name: alloy
   repository: https://grafana.github.io/helm-charts
-  version: 0.7.0
+  version: 0.10.1
 - name: alloy
   repository: https://grafana.github.io/helm-charts
-  version: 0.7.0
+  version: 0.10.1
+- name: alloy
+  repository: https://grafana.github.io/helm-charts
+  version: 0.10.1
 - name: prometheus-node-exporter
   repository: https://prometheus-community.github.io/helm-charts
   version: 4.39.0
@@ -29,5 +32,5 @@ dependencies:
 - name: minio
   repository: https://charts.min.io
   version: 5.2.0
-digest: sha256:392372cf41bae2bc475417ae7308f81f226f5c24a3557fe31a65338aad25b2f8
-generated: "2024-10-09T07:39:50.634321671-05:00"
+digest: sha256:58a021b2092b2f01a3d9ab0311dee747a8c1f03044fe10f03a506d4a132a7974
+generated: "2024-12-17T21:20:47.95886125-06:00"

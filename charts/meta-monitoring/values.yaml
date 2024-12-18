@@ -240,6 +240,39 @@ alloy-events:
       targetMemoryUtilizationPercentage: 90
       targetCPUUtilizationPercentage: 90
 
+########################################################################################################
+# Grafana Alloy Singleton Configuration
+# Deploys Mimir & Loki Recording and Alerting Rules
+# By default, will use the secrets for metrics and logs, unless specified in extraEnv: {}
+########################################################################################################
+alloy-singleton:
+  # Set to false to not deploy the alloy-singleton
+  enabled: true
+
+  # Alloy deployment configuration
+  nameOverride: alloy-singleton
+  fullnameOverride: meta-monitoring-alloy-singleton
+  crds:
+    create: false
+  alloy:
+    configMap:
+      create: false
+      name: "alloy-singleton-config"
+      key: 'config.alloy'
+    resources:
+      requests:
+        cpu: '64m'
+        memory: '100Mi'
+      limits:
+        memory: '200Mi'
+    extraEnv: {}
+
+  controller:
+    type: "statefulset"
+    replicas: 1
+    autoscaling:
+      enabled: false
+
 #####################################################################################################
 # Node Exporter
 # Enable to deploy node-exporter as a daemonset to the cluster to collect node infrastructure metrics
