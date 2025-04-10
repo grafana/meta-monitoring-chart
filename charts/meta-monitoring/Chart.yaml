@@ -26,14 +26,14 @@ dependencies:
   condition: local.logs.enabled
 - name: alloy
   repository: https://grafana.github.io/helm-charts
-  version: 0.12.5
+  version: 1.0.0
 - name: mimir-distributed
   repository: https://grafana.github.io/helm-charts
   version: 5.6.0
   condition: local.metrics.enabled
 - name: tempo-distributed
   repository: https://grafana.github.io/helm-charts
-  version: 1.33.0
+  version: 1.35.0
   condition: local.traces.enabled
 - name: minio
   repository: https://charts.min.io
