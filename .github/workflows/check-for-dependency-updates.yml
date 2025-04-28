@@ -24,10 +24,12 @@ jobs:
           id-token: write
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af6838  # v4
+              with:
+                persist-credentials: false
 
             - name: Install Updatecli
-              uses: updatecli/updatecli-action@v2
+              uses: updatecli/updatecli-action@ae3030ce1710c6496214fb1f8fd3bd9437b2a69d  # v2.82.0
 
             - name: Run Updatecli for Loki
               id: update-loki
@@ -70,14 +72,9 @@ jobs:
                 fi
 
             - id: get-secrets
-              uses: grafana/shared-workflows/actions/get-vault-secrets@main
-              with:
-                # Secrets placed in the ci/repo/grafana/<repo>/<path> path in Vault
-                repo_secrets: |
-                  APP_ID=github-app:app-id
-                  PRIVATE_KEY=github-app:private-key
+              uses: grafana/shared-workflows/actions/get-vault-secrets@4ea1476b297f17f388a7d9003ae28216c05bdb59  # main
 
-            - uses: actions/create-github-app-token@v1
+            - uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547  # v1
               id: app-token
               with:
                 app-id: ${{ env.APP_ID }}
@@ -85,7 +82,7 @@ jobs:
 
             - name: Create pull request
               if: steps.update-loki.outputs.changed == 'true' || steps.update-grafana-alloy.outputs.changed == 'true' || steps.update-mimir-distributed.outputs.changed == 'true' || steps.update-tempo-distributed.outputs.changed == 'true' || steps.update-minio.outputs.changed == 'true'
-              uses: peter-evans/create-pull-request@v5
+              uses: peter-evans/create-pull-request@4e1beaa7521e8b457b572c090b25bd3db56bf1c5  # v5
               with:
                 title: "[dependency] Update the subcharts"
                 body: "Updates the subcharts"
@@ -107,10 +104,12 @@ jobs:
           id-token: write
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4
+              with:
+                persist-credentials: false
 
             - name: Install Updatecli
-              uses: updatecli/updatecli-action@v2
+              uses: updatecli/updatecli-action@ae3030ce1710c6496214fb1f8fd3bd9437b2a69d  # v2.82.0
 
             - name: Run Updatecli
               id: update-grafana
@@ -121,14 +120,9 @@ jobs:
                 fi
 
             - id: get-secrets
-              uses: grafana/shared-workflows/actions/get-vault-secrets@main
-              with:
-                # Secrets placed in the ci/repo/grafana/<repo>/<path> path in Vault
-                repo_secrets: |
-                  APP_ID=github-app:app-id
-                  PRIVATE_KEY=github-app:private-key
+              uses: grafana/shared-workflows/actions/get-vault-secrets@4ea1476b297f17f388a7d9003ae28216c05bdb59  # main
 
-            - uses: actions/create-github-app-token@v1
+            - uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547  # v1
               id: app-token
               with:
                 app-id: ${{ env.APP_ID }}
@@ -136,7 +130,7 @@ jobs:
 
             - name: Create pull request
               if: steps.update-grafana.outputs.changed == 'true'
-              uses: peter-evans/create-pull-request@v5
+              uses: peter-evans/create-pull-request@4e1beaa7521e8b457b572c090b25bd3db56bf1c5  # v5
               with:
                 title: "[dependency] Update the Grafana version"
                 body: "Updates the Grafana version"
