@@ -12,7 +12,6 @@ env:
   CR_PACKAGE_PATH: "${{ github.workspace }}/.cr-release-packages"
   CR_TOOL_PATH: "${{ github.workspace }}/.cr-tool"
   CR_VERSION: "1.5.0"
-  GITHUB_REF_NAME: ${{ github.ref_name }}
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -30,9 +29,11 @@ jobs:
         persist-credentials: false
 
     - name: Validate Ref Name
+      env:
+        REF_NAME: ${{ github.ref_name }}
       run: |
-        if ! echo "${{ github.ref_name }}" | grep -Eq '^[a-zA-Z0-9_.-]+$'; then
-          echo "Error: Invalid ref name: ${{ github.ref_name }}"
+        if ! echo "$REF_NAME" | grep -Eq '^[a-zA-Z0-9_.-]+$'; then
+          echo "Error: Invalid ref name: $REF_NAME"
           exit 1
         fi
         echo "Ref name validated."
@@ -42,13 +43,15 @@ jobs:
 
     - name: List changed charts
       id: list-changed
+      env:
+        REF_NAME: ${{ github.ref_name }}
       run: |
         cd source
 
         latest_tag=$( if ! git describe --tags --abbrev=0 --match='helm-chart/*' 2> /dev/null ; then git rev-list --max-parents=0 --first-parent HEAD; fi )
 
-        echo "Running: ct list-changed --config ${CT_CONFIGFILE} --since ${latest_tag} --target-branch ${GITHUB_REF_NAME}"
-        changed=$(ct list-changed --config "${CT_CONFIGFILE}" --since "${latest_tag}" --target-branch "${GITHUB_REF_NAME}")
+        echo "Running: ct list-changed --config ${CT_CONFIGFILE} --since ${latest_tag} --target-branch ${REF_NAME}"
+        changed=$(ct list-changed --config "${CT_CONFIGFILE}" --since "${latest_tag}" --target-branch "${REF_NAME}")
         echo "${changed}"
 
         num_changed=$(wc -l <<< ${changed})
@@ -83,10 +86,11 @@ jobs:
       chartpath: ${{ needs.setup.outputs.chartpath }}
     steps:
       - name: Validate Chart Path
+        env:
+          CHART_PATH: ${{ needs.setup.outputs.chartpath }}
         run: |
-          CHART_PATH="${{ needs.setup.outputs.chartpath }}"
-          if ! echo "${CHART_PATH}" | grep -Eq '^[a-zA-Z0-9/_.-]+$'; then
-            echo "Error: Invalid chart path: ${CHART_PATH}"
+          if ! echo "$CHART_PATH" | grep -Eq '^[a-zA-Z0-9/_.-]+$'; then
+            echo "Error: Invalid chart path: $CHART_PATH"
             exit 1
           fi
           echo "Chartpath validated."

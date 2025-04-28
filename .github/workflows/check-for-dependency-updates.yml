@@ -73,6 +73,11 @@ jobs:
 
             - id: get-secrets
               uses: grafana/shared-workflows/actions/get-vault-secrets@4ea1476b297f17f388a7d9003ae28216c05bdb59  # main
+              with:
+                # Secrets placed in the ci/repo/grafana/<repo>/<path> path in Vault
+                repo_secrets: |
+                  APP_ID=github-app:app-id
+                  PRIVATE_KEY=github-app:private-key
 
             - uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547  # v1
               id: app-token
@@ -121,6 +126,11 @@ jobs:
 
             - id: get-secrets
               uses: grafana/shared-workflows/actions/get-vault-secrets@4ea1476b297f17f388a7d9003ae28216c05bdb59  # main
+              with:
+                # Secrets placed in the ci/repo/grafana/<repo>/<path> path in Vault
+                repo_secrets: |
+                  APP_ID=github-app:app-id
+                  PRIVATE_KEY=github-app:private-key
 
             - uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547  # v1
               id: app-token
