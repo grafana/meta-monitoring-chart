@@ -72,7 +72,7 @@ jobs:
                 fi
 
             - id: get-secrets
-              uses: grafana/shared-workflows/actions/get-vault-secrets@4ea1476b297f17f388a7d9003ae28216c05bdb59  # main
+              uses: grafana/shared-workflows/actions/get-vault-secrets@3adde9659883b3cd0c65d6acaa356b78a5f8f7f4  # main
               with:
                 # Secrets placed in the ci/repo/grafana/<repo>/<path> path in Vault
                 repo_secrets: |
@@ -125,7 +125,7 @@ jobs:
                 fi
 
             - id: get-secrets
-              uses: grafana/shared-workflows/actions/get-vault-secrets@4ea1476b297f17f388a7d9003ae28216c05bdb59  # main
+              uses: grafana/shared-workflows/actions/get-vault-secrets@3adde9659883b3cd0c65d6acaa356b78a5f8f7f4  # main
               with:
                 # Secrets placed in the ci/repo/grafana/<repo>/<path> path in Vault
                 repo_secrets: |
