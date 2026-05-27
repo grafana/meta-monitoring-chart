@@ -188,7 +188,7 @@ jobs:
         "${CR_TOOL_PATH}/cr" package "${CHART_OUT_PATH}" --config "${CR_CONFIGFILE}" --package-path "${CR_PACKAGE_PATH}"
 
     - name: Make a release on this repo
-      uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631  # v2
+      uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65  # v2
       with:
         name: ${{ steps.process-chart.outputs.tagname }}
         repository: grafana/meta-monitoring-chart
@@ -202,7 +202,7 @@ jobs:
     # The tag name in grafana/helm-charts is <package>-<version>, while the
     # tag name for grafana/meta-monitoring-chart is <version>.
     - name: Make release on Helm Charts
-      uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631  # v2
+      uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65  # v2
       with:
         name: ${{ steps.process-chart.outputs.packagename }}
         repository: grafana/helm-charts
