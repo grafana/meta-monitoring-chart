@@ -109,7 +109,7 @@ jobs:
       CHARTPATH: ${{ needs.validate-path.outputs.chartpath }}
     steps:
     - id: get-secrets
-      uses: grafana/shared-workflows/actions/get-vault-secrets@4ea1476b297f17f388a7d9003ae28216c05bdb59  # main
+      uses: grafana/shared-workflows/actions/get-vault-secrets@8eef102d2f5f93bc3d2b26937e7bec29115d81e8  # main
       with:
         # Secrets placed in the ci/repo/grafana/<repo>/<path> path in Vault
         repo_secrets: |
