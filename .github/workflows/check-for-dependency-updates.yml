@@ -29,7 +29,7 @@ jobs:
                 persist-credentials: false
 
             - name: Install Updatecli
-              uses: updatecli/updatecli-action@ae3030ce1710c6496214fb1f8fd3bd9437b2a69d  # v2.82.0
+              uses: updatecli/updatecli-action@93ae2608256484ef8598e902aa675bbc9e278e4e  # v3.10.0
 
             - name: Run Updatecli for Loki
               id: update-loki
@@ -114,7 +114,7 @@ jobs:
                 persist-credentials: false
 
             - name: Install Updatecli
-              uses: updatecli/updatecli-action@ae3030ce1710c6496214fb1f8fd3bd9437b2a69d  # v2.82.0
+              uses: updatecli/updatecli-action@93ae2608256484ef8598e902aa675bbc9e278e4e  # v3.10.0
 
             - name: Run Updatecli
               id: update-grafana
